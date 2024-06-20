@@ -1,5 +1,9 @@
+import Navbar from "@/components/Navbar";
+
 export default function Inicio() {
     return (
-        <div>Página inicial (apresentação)</div>
+        <div>
+            <Navbar />
+        </div>
     )
 }

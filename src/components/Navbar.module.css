@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background: linear-gradient(to right, #FA680F, #FA240F);
+    padding: 1em;
+    width: 100%;
+    border-bottom: 3px solid #ffffff;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.list {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+
+.item {
+    margin-right: 1em;
+}
+
+.item a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 22px;
+}
+
+.item a:hover {
+    color: #D8FFDB;
+    text-decoration: underline;
+    transform: scale(1.2);
+}
+
+.logo {
+    font-size: 20px;
+    height: 60px;
+    font-family: 'Pacifico', cursive;
+    color: #FAF0EC;
+    text-decoration: none;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+}
+
+.opcoesNavbar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.opcoesNavbar button {
+    display: flex;
+    gap: 10px;
+    font-size: 18px;
+    color: #FA240F;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.opcoesNavbar button .divIcon {
+    height: 18px;
+    width: 18px;
+}
+.divUserIcon {
+    border: 1px solid white;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FA240F;
+    background-color: #FAF0EC;
+    border-radius: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.opcoesNavbar button:hover, .divUserIcon:hover {
+    background-color: #D8FFDB;
+    transform: scale(1.1);
+}
+
+@media (max-width: 500px) {
+    .logo h1 {
+        display: none;
+    }
+}
+
+@media (min-width: 500px) {
+    .logo img {
+        display: none;
+    }
+}
