@@ -1,0 +1,82 @@
+.cadastro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cardCadastro{
+    display: flex;
+    flex-direction: column;
+    background: #fdf1cf;
+    align-items: center;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 5px 5px 0px #656053;
+    text-align: center;
+    width: 300px;
+}
+
+.cardCadastro h1 {
+    font-family: 'Lobster', cursive;
+    color: #FA240F;
+    font-size: 30px;
+}
+
+.formCadastro {
+    width: 100%;
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.formCadastro input {
+    border: none;
+    box-shadow: 3px 3px 0px #FA680F;
+    background: #fdf6e3;
+    border-radius: 10px;
+    padding: 8px 0px 8px 10px;
+    outline: none;
+    width: 100%;
+}
+
+.formCadastro input::placeholder {
+    color: #FA680F;
+}
+
+.inputSenha {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    color: #FA680F;
+}
+
+.submitButton {
+    background: #FA680F;
+    color: #FFF7E1;
+    border-radius: 30px;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 10px 10px 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.submitButton a {
+    text-decoration: none;
+    color: #FFF7E1;
+}
+
+.submitButton:hover {
+    background: #FA240F;
+}
