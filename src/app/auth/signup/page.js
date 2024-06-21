@@ -12,6 +12,7 @@ import { useForm } from "react-hook-form";
 import { apiUrl } from "@/config/api";
 import Modal from "@/components/SucessErrorModal";
 import axios from "axios";
+import Loading from "@/components/Loading";
 
 const schema = yup.object().shape({
     nome: yup.string().min(3, 'O nome de usuário deve ter pelo menos 3 dígitos').required('O nome deve vser preenchido'),
@@ -24,6 +25,7 @@ export default function Signup() {
     const router = useRouter()
 
     const [message, setMessage] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
@@ -31,7 +33,7 @@ export default function Signup() {
     })
 
     const onSubmit = (data) => {
-        //setLoading(true)
+        setLoading(true)
         axios.post(`${apiUrl}/register`, {
             nome: data.nome,
             email: data.email,
@@ -39,9 +41,10 @@ export default function Signup() {
             confirmPassword: data.confirmPassword
         }).then((response) => {
             setMessage('Foi enviado um link de confirmação para o seu email.')
+            setLoading(false)
             //router.push('/auth/signupConfirm')
         }).catch((error) => {
-            //setLoading(false)
+            setLoading(false)
             if (error.response) {
                 const responseData = error.response.data;
                 if (responseData.error) {
@@ -67,67 +70,71 @@ export default function Signup() {
     return (
         <>
             <Navbar />
-            <section className={styles.cadastro}>
-                <div className={styles.cardCadastro}>
-                    <h1>Cadastro</h1>
-                    <form onSubmit={handleSubmit(onSubmit)} className={styles.formCadastro}>
-                        <input
-                            type='text'
-                            id='nome'
-                            name='nome'
-                            placeholder='Digite seu nome'
-                            required
-                            {...register("nome")}
-                        />
-                        {errors.nome && <p className={styles.mensagemDeErro}>{errors.nome.message}</p>}
-                        <input
-                            type='text'
-                            id='email'
-                            name='email'
-                            placeholder='Digite seu email'
-                            required
-                            {...register("email")}
-                        />
-                        {errors.email && <p className={styles.mensagemDeErro}>{errors.email.message}</p>}
-
-
-                        <div className={styles.inputSenha}>
+            {loading ? (
+                <Loading />
+            ) : (
+                <section className={styles.cadastro}>
+                    <div className={styles.cardCadastro}>
+                        <h1>Cadastro</h1>
+                        <form onSubmit={handleSubmit(onSubmit)} className={styles.formCadastro}>
                             <input
-                                type={showPassword ? "text" : "password"}
-                                id='password'
-                                name='password'
-                                placeholder='Digite sua senha'
+                                type='text'
+                                id='nome'
+                                name='nome'
+                                placeholder='Digite seu nome'
                                 required
-                                {...register("password")}
+                                {...register("nome")}
                             />
-                            <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={() => togglePasswordVisibility('password')} />
-                        </div>
-                        {errors.password && <p className={styles.mensagemDeErro}>{errors.password.message}</p>}
-
-
-                        <div className={styles.inputSenha}>
+                            {errors.nome && <p className={styles.mensagemDeErro}>{errors.nome.message}</p>}
                             <input
-                                type={showConfirmPassword ? 'text' : 'password'}
-                                id='confirmPassword'
-                                name='confirmPassword'
-                                placeholder='Confirme sua senha'
+                                type='text'
+                                id='email'
+                                name='email'
+                                placeholder='Digite seu email'
                                 required
-                                {...register("confirmPassword")}
+                                {...register("email")}
                             />
-                            <FontAwesomeIcon className={styles.icon} icon={showConfirmPassword ? faEyeSlash : faEye} onClick={() => togglePasswordVisibility('confirmPassword')} />
-                        </div>
-                        {errors.confirmPassword && <p className={styles.mensagemDeErro}>{errors.confirmPassword.message}</p>}
+                            {errors.email && <p className={styles.mensagemDeErro}>{errors.email.message}</p>}
 
-                        <button
-                            id="buttonLogin"
-                            className={styles.submitButton}
-                            type="submit"
-                        >
-                            Cadastrar
-                        </button>
-                    </form>
-                </div>
-            </section>
+
+                            <div className={styles.inputSenha}>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    id='password'
+                                    name='password'
+                                    placeholder='Digite sua senha'
+                                    required
+                                    {...register("password")}
+                                />
+                                <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={() => togglePasswordVisibility('password')} />
+                            </div>
+                            {errors.password && <p className={styles.mensagemDeErro}>{errors.password.message}</p>}
+
+
+                            <div className={styles.inputSenha}>
+                                <input
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    id='confirmPassword'
+                                    name='confirmPassword'
+                                    placeholder='Confirme sua senha'
+                                    required
+                                    {...register("confirmPassword")}
+                                />
+                                <FontAwesomeIcon className={styles.icon} icon={showConfirmPassword ? faEyeSlash : faEye} onClick={() => togglePasswordVisibility('confirmPassword')} />
+                            </div>
+                            {errors.confirmPassword && <p className={styles.mensagemDeErro}>{errors.confirmPassword.message}</p>}
+
+                            <button
+                                id="buttonLogin"
+                                className={styles.submitButton}
+                                type="submit"
+                            >
+                                Cadastrar
+                            </button>
+                        </form>
+                    </div>
+                </section>
+            )}
             {message &&
                 <Modal
                     isOpen={true}
