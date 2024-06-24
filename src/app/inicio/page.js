@@ -6,6 +6,7 @@ export default function Inicio() {
         <div>
             <Navbar />
             <Link href={'/auth/signup'}>Cadastro</Link>
+            <Link href={'/auth/login'}>Login</Link>
         </div>
     )
 }
