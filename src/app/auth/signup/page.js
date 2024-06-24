@@ -97,7 +97,7 @@ export default function Signup() {
                             {errors.email && <p className={styles.mensagemDeErro}>{errors.email.message}</p>}
 
 
-                            <div className={styles.inputSenha}>
+                            <div className={styles.inputDiv}>
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     id='password'
@@ -111,7 +111,7 @@ export default function Signup() {
                             {errors.password && <p className={styles.mensagemDeErro}>{errors.password.message}</p>}
 
 
-                            <div className={styles.inputSenha}>
+                            <div className={styles.inputDiv}>
                                 <input
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     id='confirmPassword'
