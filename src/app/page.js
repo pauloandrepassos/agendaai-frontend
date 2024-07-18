@@ -35,7 +35,7 @@ export default function Home() {
             }
           }
         } else if (status === "expirado") {
-          router.push("/login");
+          router.push("/auth/login");
         } else {
           router.push("/inicio");
         }
