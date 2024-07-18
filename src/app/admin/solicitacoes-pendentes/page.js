@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 import styles from './solicitacoes-pendentes.module.css';
 import Navbar from "@/components/Navbar";
 import { apiUrl } from '@/config/api';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function SolicitacoesPendentes() {
     const [verificado, setVerificado] = useState([]);
     const [aguardandoVerificacao, setAguardandoVerificacao] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const router = useRouter()
 
     useEffect(() => {
         const fetchSolicitacoes = async () => {
@@ -52,6 +55,7 @@ export default function SolicitacoesPendentes() {
                                         <p><strong>CEP:</strong> {solicitacao.cep}</p>
                                         {/*solicitacao.imagem && <img src={solicitacao.imagem} alt={solicitacao.nomeLanchonete} className={styles.image} />*/}
                                         <p><strong>Status:</strong> {solicitacao.status}</p>
+                                        <button><Link className={styles.button} href={`/admin/solicitacao/${solicitacao.id}`}>Ver solicitação</Link></button>
                                     </li>
                                 ))}
                             </ul>
@@ -69,6 +73,7 @@ export default function SolicitacoesPendentes() {
                                         <p><strong>CEP:</strong> {solicitacao.cep}</p>
                                         {/*solicitacao.imagem && <img src={solicitacao.imagem} alt={solicitacao.nomeLanchonete} className={styles.image} />*/}
                                         <p><strong>Status:</strong> {solicitacao.status}</p>
+                                        <button><Link className={styles.button} href={`/admin/solicitacao/${solicitacao.id}`}>Ver solicitação</Link></button>
                                     </li>
                                 ))}
                             </ul>
