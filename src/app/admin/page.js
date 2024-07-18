@@ -14,22 +14,21 @@ export default function Admin() {
         <div className={styles.adminContainer}>
             <Navbar />
             <div className={styles.dashboard}>
-                <h1 className={styles.title}>Visão Geral</h1>
 
                 <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Resumo das Atividades Recentes</h2>
+                    <h2 className={styles.sectionTitle}>Atividades Recentes</h2>
                     <ul className={styles.activityList}>
                         <li>Aprovação pendente: Lanchonete X</li>
                         <li>Novo cliente cadastrado: João Silva</li>
                         <li>Nova reserva: Lanche Y na Lanchonete Z</li>
                     </ul>
                     <button className={styles.viewAllButton} onClick={handleViewPendingApprovals}>
-                        Ver Todas as Aprovações Pendentes
+                        Ver Todas as Solicitações Pendentes
                     </button>
                 </section>
 
                 <section className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Estatísticas Gerais</h2>
+                    <h2 className={styles.sectionTitle}>Estatísticas</h2>
                     <div className={styles.stats}>
                         <div className={styles.stat}>
                             <span className={styles.statNumber}>10</span>

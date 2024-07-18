@@ -13,6 +13,11 @@
     margin: auto;
 }
 
+.solicitacaoContainer {
+    display: flex;
+    flex-direction: column;
+}
+
 .title {
     color: #FA240F;
     font-size: 2rem;
@@ -47,4 +52,13 @@
 
 .desaprovarButton:hover {
     background-color: #d91e0d; /* Tom de vermelho mais escuro */
+}
+
+@media (max-width: 500px){
+    .actions {
+        margin: auto;
+        margin-top: 20px;
+        display: flex;
+        gap: 30px;
+    }
 }

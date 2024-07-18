@@ -63,7 +63,7 @@ export default function Solicitacao({ params }) {
                     <p>{error}</p>
                 ) : (
                     solicitacao && (
-                        <>
+                        <div className={styles.solicitacaoContainer}>
                             <h1 className={styles.title}>{solicitacao.nomeLanchonete}</h1>
                             <p><strong>Gerente:</strong> {solicitacao.gerente}</p>
                             <p><strong>Email:</strong> {solicitacao.email}</p>
@@ -76,7 +76,7 @@ export default function Solicitacao({ params }) {
                                 <button onClick={handleAprovar} className={styles.aprovarButton}>Aprovar</button>
                                 <button onClick={handleDesaprovar} className={styles.desaprovarButton}>Desaprovar</button>
                             </div>
-                        </>
+                        </div>
                     )
                 )}
             </div>
