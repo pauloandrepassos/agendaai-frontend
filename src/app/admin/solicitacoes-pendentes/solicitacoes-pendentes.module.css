@@ -1,0 +1,59 @@
+/* styles/solicitacoes-pendentes.module.css */
+.container {
+    background-color: #f8f8f8;
+    min-height: 100vh;
+}
+
+.content {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.title {
+    color: #FA240F;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.section {
+    margin-bottom: 30px;
+}
+
+.sectionTitle {
+    color: #333333;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+}
+
+.listItem {
+    background-color: #f0f0f0;
+    border-left: 4px solid #FA240F;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.listItem h2 {
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.listItem p {
+    color: #555555;
+    margin: 5px 0;
+}
+
+.image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
