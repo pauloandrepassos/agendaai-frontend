@@ -8,16 +8,30 @@ import logo from '/public/logo-agendaai.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-export default function Navbar({ opcoesCliente, opcoesGerente }) {
+library.add(faSignOutAlt, faUser);
+
+export default function Navbar() {
+
+    const [token, setToken] = useState(null)
     const router = useRouter()
 
     const handleLogout = () => {
         localStorage.removeItem("token")
         router.push("/inicio")
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const storedToken = localStorage.getItem('token')
+            if(storedToken) {
+                setToken(storedToken)
+            }
+        }
+        fetchData()
+    }, [token])
 
     return (
         <nav className={styles.navbar}>
@@ -26,28 +40,20 @@ export default function Navbar({ opcoesCliente, opcoesGerente }) {
                     <Image src={logo} alt="logo_agendaai" />
                     <h1>Agenda aí</h1>
                 </Link>
-                <div className={styles.opcoesNavbar}>
-                    {(opcoesCliente) &&
-                        <Link href='/user' passHref>
-                            <div className={styles}>
-                                <div className={styles.divUserIcon}>
-                                    <FontAwesomeIcon icon={faUser}/>
-                                </div>
-                            </div>
+                {token &&
+                    <ul className={styles.list}>
+                    <li className={styles.item}>
+                        <Link href='/perfil' passHref>
+                            <FontAwesomeIcon icon="user" />
                         </Link>
-                    }
-                    {(opcoesCliente || opcoesGerente) &&
-                        <div className={styles}>
-                            <button onClick={handleLogout}>
-                                Sair
-                                <div className={styles.divIcon}>
-                                    <FontAwesomeIcon icon={faSignOutAlt} />
-                                </div>
-                            </button>
-                        </div>
-                    }
-                </div>
-
+                    </li>
+                    <li className={styles.item}>
+                        <button onClick={handleLogout} className={styles.logoutButton}>
+                            <FontAwesomeIcon icon="sign-out-alt" />
+                        </button>
+                    </li>
+                </ul>
+                }
             </div>
         </nav>
     )

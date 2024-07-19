@@ -1,3 +1,4 @@
+/* styles/Navbar.module.css */
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 .navbar {
@@ -14,6 +15,7 @@
     max-width: 1200px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
     flex-wrap: wrap;
 }
@@ -22,74 +24,47 @@
     display: flex;
     list-style: none;
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .item {
     margin-right: 1em;
 }
 
-.item a {
+.item a,
+.item button {
     color: #fff;
     text-decoration: none;
     font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
-.item a:hover {
+.item a:hover,
+.item button:hover {
     color: #D8FFDB;
     text-decoration: underline;
     transform: scale(1.2);
 }
 
 .logo {
-    font-size: 20px;
-    height: 60px;
-    font-family: 'Pacifico', cursive;
-    color: #FAF0EC;
+    display: flex;
+    align-items: center;
     text-decoration: none;
 }
 
-.logo img {
-    width: 100%;
-    height: 100%;
+.logo h1 {
+    font-size: 20px;
+    font-family: 'Pacifico', cursive;
+    color: #FAF0EC;
+    margin-left: 10px;
 }
 
-.opcoesNavbar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-.opcoesNavbar button {
-    display: flex;
-    gap: 10px;
-    font-size: 18px;
-    color: #FA240F;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.opcoesNavbar button .divIcon {
-    height: 18px;
-    width: 18px;
-}
-.divUserIcon {
-    border: 1px solid white;
-    height: 50px;
-    width: 50px;
-    font-size: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #FA240F;
-    background-color: #FAF0EC;
-    border-radius: 1em;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.opcoesNavbar button:hover, .divUserIcon:hover {
-    background-color: #D8FFDB;
-    transform: scale(1.1);
+.logo img {
+    width: 60px;
+    height: auto;
 }
 
 @media (max-width: 500px) {
