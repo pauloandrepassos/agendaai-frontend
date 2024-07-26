@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import { apiUrl } from '@/config/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import PrivateRouter from '@/components/PrivateRouter';
 
 export default function SolicitacoesPendentes() {
     const [verificado, setVerificado] = useState([]);
@@ -32,7 +33,7 @@ export default function SolicitacoesPendentes() {
     }, []);
 
     return (
-        <div className={styles.container}>
+        <PrivateRouter tipoUsuario={'admin'} className={styles.container}>
             <Navbar />
             <div className={styles.content}>
                 <h1 className={styles.title}>Solicitações Pendentes</h1>
@@ -81,6 +82,6 @@ export default function SolicitacoesPendentes() {
                     </>
                 )}
             </div>
-        </div>
+        </PrivateRouter>
     );
 }

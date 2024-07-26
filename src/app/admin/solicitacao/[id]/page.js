@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { apiUrl } from '@/config/api';
 import styles from './solicitacao.module.css';
+import PrivateRouter from "@/components/PrivateRouter";
 
 export default function Solicitacao({ params }) {
     const [solicitacao, setSolicitacao] = useState(null);
@@ -54,7 +55,7 @@ export default function Solicitacao({ params }) {
     };
 
     return (
-        <div className={styles.container}>
+        <PrivateRouter tipoUsuario={'admin'} className={styles.container}>
             <Navbar />
             <div className={styles.content}>
                 {loading ? (
@@ -80,6 +81,6 @@ export default function Solicitacao({ params }) {
                     )
                 )}
             </div>
-        </div>
+        </PrivateRouter>
     );
 }

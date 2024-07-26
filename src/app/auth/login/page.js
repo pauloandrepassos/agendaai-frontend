@@ -35,6 +35,8 @@ export default function Login() {
                 router.push('/home')
             } else if (response.data.papel === 'admin') {
                 router.push('/admin')
+            } else if (response.data.papel === 'gerente') {
+                router.push('/dashboard')
             }
              else {
                 router.push('/')

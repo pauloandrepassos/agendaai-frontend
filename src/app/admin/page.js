@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation';
 import styles from './admin.module.css';
 import Navbar from "@/components/Navbar";
+import PrivateRouter from '@/components/PrivateRouter';
 
 export default function Admin() {
     const router = useRouter()
@@ -11,7 +12,7 @@ export default function Admin() {
     };
 
     return (
-        <div className={styles.adminContainer}>
+        <PrivateRouter tipoUsuario={'admin'} className={styles.adminContainer}>
             <Navbar />
             <div className={styles.dashboard}>
 
@@ -58,6 +59,6 @@ export default function Admin() {
                     </div>
                 </section>
             </div>
-        </div>
+        </PrivateRouter>
     )
 }

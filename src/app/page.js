@@ -24,7 +24,7 @@ export default function Home() {
                 router.push("/admin");
                 break;
               case "gerente":
-                router.push("/gerente");
+                router.push("/dashboard");
                 break;
               case "cliente":
                 router.push("/home");
