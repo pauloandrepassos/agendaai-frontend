@@ -33,7 +33,10 @@ export default function Login() {
 
             if(response.data.papel === 'cliente') {
                 router.push('/home')
-            } else {
+            } else if (response.data.papel === 'admin') {
+                router.push('/admin')
+            }
+             else {
                 router.push('/')
             }
         }).catch((error) => {

@@ -35,6 +35,7 @@ export default function Home() {
             }
           }
         } else if (status === "expirado") {
+          localStorage.removeItem('token')
           router.push("/auth/login");
         } else {
           router.push("/inicio");
