@@ -11,7 +11,7 @@ export default function Dashboard() {
             <div className={styles.container}>
                 <Navbar />
                 <div className={styles.content}>
-                    dashboard
+                    <Link href={'/horario-funcionamento'}>Horários</Link>
                 </div>
             </div>
         </PrivateRouter>

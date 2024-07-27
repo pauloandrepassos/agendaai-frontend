@@ -1,0 +1,94 @@
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f8f9fa;
+}
+
+.content {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    padding: 2em;
+}
+
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+.horarios {
+    margin-bottom: 2em;
+}
+
+.horarios h2 {
+    font-size: 20px;
+    margin-bottom: 0.5em;
+}
+
+.horariosTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.horariosTable th,
+.horariosTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.horariosTable th {
+    background-color: #f2f2f2;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    margin-bottom: 1em;
+    font-weight: bold;
+}
+
+.select,
+.input {
+    width: 100%;
+    padding: 0.5em;
+    margin-top: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.button:hover {
+    background-color: #218838;
+}
+
+.message {
+    margin-top: 1em;
+    font-weight: bold;
+}
+
+.deleteIcon {
+    color: #dc3545;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.deleteIcon:hover {
+    color: #c82333;
+}
