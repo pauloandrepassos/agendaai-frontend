@@ -8,6 +8,113 @@
 .content {
     width: 100%;
     max-width: 1200px;
+    min-height: 100%;
     background-color: #fff;
     padding: 2em;
+    border-radius: 8px;
+}
+
+.painelLanchonete {
+    display: flex;
+    padding: 1em;
+    border: 1px solid #ddd;
+    background-color: #fafafa;
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.image {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.image img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.info {
+    width: 50%;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info h1 {
+    font-size: 25px;
+    margin-bottom: 0.5em;
+}
+
+.textDescription {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.singleInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 12px;
+}
+
+.divIcon {
+    color: #FA240F;
+    font-size: 1.5em;
+}
+
+.icon {
+    margin-right: 0.5em;
+}
+
+.divIcon a {
+    color: #FA240F;
+    text-decoration: none;
+}
+
+.divIcon a:hover {
+    text-decoration: underline;
+}
+
+.linksContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin-top: 2em;
+    justify-content: space-around;
+}
+
+.linkButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.5em 1em;
+    background-color: #FA240F;
+    color: #fff;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.linkButton:hover {
+    background-color: #d21d0e;
+}
+
+@media (max-width: 800px) {
+    .painelLanchonete {
+        flex-direction: column;
+    }
+    .image, .info {
+        width: 100%;
+    }
+    .linksContainer {
+        flex-direction: column;
+    }
 }
