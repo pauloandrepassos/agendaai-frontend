@@ -1,9 +1,10 @@
-
+/* styles/horario-funcionamento.module.css */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: #f8f9fa;
+    min-height: 100%;
 }
 
 .content {
@@ -12,7 +13,6 @@
     background-color: #fff;
     padding: 2em;
 }
-
 
 .title {
     font-size: 24px;
@@ -72,6 +72,8 @@
     border-radius: 4px;
     cursor: pointer;
     margin-top: 1em;
+    display: flex;
+    align-items: center;
 }
 
 .button:hover {
@@ -91,4 +93,24 @@
 
 .deleteIcon:hover {
     color: #c82333;
+}
+
+.addButton {
+    background-color: #28a745;
+}
+
+.addButton:hover {
+    background-color: #218838;
+}
+
+.cancelButton {
+    background-color: #dc3545;
+}
+
+.cancelButton:hover {
+    background-color: #c82333;
+}
+
+.addIcon {
+    margin-left: 8px;
 }
