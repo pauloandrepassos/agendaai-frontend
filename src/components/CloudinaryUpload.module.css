@@ -1,0 +1,35 @@
+/* CloudinaryUpload.module.css */
+.cloudinary {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.image img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+.upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FA240F;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    gap: 8px;
+}
+
+.icon {
+    font-size: 1.5rem;
+    /* Tamanho do ícone */
+}
