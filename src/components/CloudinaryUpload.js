@@ -59,7 +59,10 @@ function CloudinaryUpload({ onURLChange, defaultImage, width, height }) {
             return (
               <button
                 className={styles.upload}
-                style={{ width: `${width}px`, height: `${height}px` }}
+                style={{
+                  maxWidth: `${width}px`,
+                  width: `100%`,
+                  height: `${height}px` }}
                 onClick={handleOnClick}
               >
                 <FontAwesomeIcon icon={faUpload} className={styles.icon}/>
