@@ -1,10 +1,51 @@
+.authpage {
+    height: 100vh;
+    position: relative;
+}
+
 .cadastro {
-    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
+
+.section1, .section2 {
+    height: 100%;
+}
+
+.section1 {
+    display: flex;
+    justify-content: flex-start;
+    align-items: end;
+    width: 40%;
+}
+
+.section1 img {
+    width: auto;
+    height: 400px;
+}
+
+.section2 {
+    width: 60%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circle {
+    background: linear-gradient(to right, #FA680F, #FA240F);
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    width: 110%;
+    height: 110%;
+    margin-top: -60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .cardCadastro{
     display: flex;
@@ -79,4 +120,16 @@
 
 .submitButton:hover {
     background: #FA240F;
+}
+
+@media(max-width: 850px) {
+    .section1 {
+        display: none;
+    }
+    .section2 {
+        width: 100%;
+    }
+    .circle {
+        border-radius: 0%;
+    }
 }

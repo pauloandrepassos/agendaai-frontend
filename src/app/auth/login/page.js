@@ -13,6 +13,10 @@ import { apiUrl } from '@/config/api'
 import Modal from '@/components/SucessErrorModal'
 
 
+import imagem from '/public/undraw_login1.png'
+import Image from 'next/image'
+
+
 export default function Login() {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
@@ -66,36 +70,43 @@ export default function Login() {
     };
 
     return (
-        <>
+        <div className={styles.authpage}>
             <Navbar />
             {loading ? (
                 <Loading />
             ) : (
                 <section className={styles.cadastro}>
-                    <div className={styles.cardCadastro}>
-                        <h1>Login</h1>
-                        <form onSubmit={handleSubmit(onSubmit)} className={styles.formCadastro}>
-                        <div className={styles.inputDiv}>
-                                    <input
-                                        id="login"
-                                        type="email"
-                                        placeholder="Email"
-                                        required
-                                        {...register("email")}
-                                    />
-                                </div>
+                    <div className={styles.section1}>
+                        <Image src={imagem}/>
+                    </div>
+                    <div className={styles.section2}>
+                        <div className={styles.circle}>
+                            <div className={styles.cardCadastro}>
+                                <h1>Login</h1>
+                                <form onSubmit={handleSubmit(onSubmit)} className={styles.formCadastro}>
                                 <div className={styles.inputDiv}>
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        id="password"
-                                        placeholder="Senha"
-                                        required
-                                        {...register('password')}
-                                    />
-                                    <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} />
-                                </div>
-                                <button id='buttonLogin' className={styles.submitButton} type='submit'>Entrar</button>
-                            </form>
+                                            <input
+                                                id="login"
+                                                type="email"
+                                                placeholder="Email"
+                                                required
+                                                {...register("email")}
+                                            />
+                                        </div>
+                                        <div className={styles.inputDiv}>
+                                            <input
+                                                type={showPassword ? "text" : "password"}
+                                                id="password"
+                                                placeholder="Senha"
+                                                required
+                                                {...register('password')}
+                                            />
+                                            <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} />
+                                        </div>
+                                        <button id='buttonLogin' className={styles.submitButton} type='submit'>Entrar</button>
+                                    </form>
+                            </div>
+                        </div>
                     </div>
                 </section>
             )}
@@ -106,6 +117,6 @@ export default function Login() {
                 message={message}
             />
             }
-        </>
+        </div>
     )
 }
