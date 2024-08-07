@@ -1,7 +1,7 @@
 // pages/lanchonete/adicionar-horario.js
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import styles from "./horario-funcionamento.module.css";
 import { apiUrl } from "@/config/api";
@@ -21,15 +21,21 @@ export default function AdicionarHorario() {
     const [horarioFechamento, setHorarioFechamento] = useState("");
     const [mensagem, setMensagem] = useState("");
     const [showForm, setShowForm] = useState(false);
-    const [idLanchonete, setIdLanchonete] = useState(2)
-    const [loading, setLoading] = useState(true)
+    const { id } = useParams();
+    const [loading, setLoading] = useState(true);
     const router = useRouter();
+
+    const token = localStorage.getItem("token"); // Supondo que o token esteja armazenado no localStorage
 
     const fetchHorarios = async () => {
         try {
-            const response = await fetch(`${apiUrl}/lanchonete/${idLanchonete}/horarios`);
+            const response = await fetch(`${apiUrl}/lanchonete/${id}/horarios`, {
+                headers: {
+                    "token": token
+                }
+            });
             const data = await response.json();
-            setLoading(false)
+            setLoading(false);
             setHorarios(data);
             if (data.length === 0) {
                 setShowForm(true);
@@ -45,8 +51,11 @@ export default function AdicionarHorario() {
 
     const handleDelete = async (horarioId) => {
         try {
-            const response = await fetch(`${apiUrl}/lanchonete/${idLanchonete}/horario/${horarioId}`, {
+            const response = await fetch(`${apiUrl}/lanchonete/${id}/horario/${horarioId}`, {
                 method: "DELETE",
+                headers: {
+                    "token": token
+                }
             });
 
             const result = await response.json();
@@ -72,10 +81,11 @@ export default function AdicionarHorario() {
         };
 
         try {
-            const response = await fetch(`${apiUrl}/lanchonete/${idLanchonete}/horario`, {
+            const response = await fetch(`${apiUrl}/lanchonete/${id}/horario`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "token": token
                 },
                 body: JSON.stringify(dados),
             });
@@ -132,7 +142,6 @@ export default function AdicionarHorario() {
 
     return (
         <PrivateRouter tipoUsuario={'gerente'}>
-
             <div className={styles.container}>
                 <Navbar />
                 {loading ? (
@@ -226,10 +235,6 @@ export default function AdicionarHorario() {
                     </div>
                 )}
             </div>
-
-
-
-
         </PrivateRouter>
     );
 }

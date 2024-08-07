@@ -2,23 +2,23 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f8f9fa;
+    background-color: #FFF7E1;
+    height: 100%;
 }
 
 .content {
     width: 100%;
     max-width: 1200px;
-    min-height: 100%;
-    background-color: #fff;
+    height: 100%;
+    background-color: #FDF1CF;
     padding: 2em;
-    border-radius: 8px;
 }
 
 .painelLanchonete {
     display: flex;
     padding: 1em;
     border: 1px solid #ddd;
-    background-color: #fafafa;
+    background-color: #FFF7E1;
     margin-bottom: 2em;
     text-align: center;
 }

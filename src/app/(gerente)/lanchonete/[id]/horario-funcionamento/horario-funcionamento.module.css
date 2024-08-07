@@ -1,16 +1,16 @@
-/* styles/horario-funcionamento.module.css */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f8f9fa;
-    min-height: 100%;
+    background-color: #FFF7E1;
+    height: 100%;
 }
 
 .content {
     width: 100%;
     max-width: 1200px;
-    background-color: #fff;
+    height: 100%;
+    background-color: #FDF1CF;
     padding: 2em;
 }
 

@@ -91,7 +91,7 @@ export default function Dashboard() {
 
 
                         <div className={styles.linksContainer}>
-                            <Link href='/horario-funcionamento' className={styles.linkButton}>
+                            <Link href={`/lanchonete/${lanchonete.id}/horario-funcionamento`} className={styles.linkButton}>
                                 <FontAwesomeIcon icon={faClock} /> Horários
                             </Link>
                             <Link href='/lanches' className={styles.linkButton}>
