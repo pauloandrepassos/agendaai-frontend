@@ -1,0 +1,10 @@
+.notFound {
+    border: 1px solid;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 50px;
+    background: linear-gradient(to right, #FFF7E1, #FDF1CF);
+}
