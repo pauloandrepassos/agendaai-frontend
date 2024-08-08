@@ -1,4 +1,4 @@
-import styles from './Input.module.css'
+import styles from './Form.module.css'
 
 export default function TextInput({ id, label, value, onChange, required = false }) {
     return (

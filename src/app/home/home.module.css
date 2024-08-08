@@ -64,7 +64,8 @@
 
 .card {
     height: 200px;
-    background: #FFF7E1;
+    background-color: #FFF7E1;
+    border: 1px solid #ddd;
     border-radius: 5px;
     margin: 5px;
     display: flex;
@@ -72,12 +73,13 @@
     color: #FA240F;
     font-family: 'Roboto', sans-serif;
     transition: 0.2s;
-    box-shadow: 3px 3px 2px #656053;
     text-decoration: none;
 }
 
 .card:hover {
     transform: scale(1.01);
+    box-shadow: 3px 3px 2px #656053;
+    border: 1px solid #FA240F;
 }
 
 .cardImage {

@@ -36,3 +36,18 @@
     border-color: #FA680F;
     box-shadow: 0 0 5px rgba(91, 157, 217, 0.7);
 }
+
+.submitButton {
+    padding: 0.75em;
+    background-color: #FA680F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    text-align: center;
+}
+
+.submitButton:hover {
+    background-color: #FA240F;
+}

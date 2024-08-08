@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from './Input.module.css';
+import styles from './Form.module.css';
 
 function PriceInput({ label, value, onChange, currencySymbol = "R$", ...props }) {
     const [inputValue, setInputValue] = useState("");

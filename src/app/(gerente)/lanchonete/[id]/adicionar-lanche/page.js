@@ -8,10 +8,11 @@ import CloudinaryUpload from "@/components/CloudinaryUpload";
 import styles from './adicionar-lanche.module.css';
 import { apiUrl } from "@/config/api";
 import Loading from "@/components/Loading";
-import TextInput from "@/components/Input/TextInput";
-import NumberInput from "@/components/Input/NumberInput";
-import SelectInput from "@/components/Input/SelectInput";
-import PriceInput from "@/components/Input/PriceInput";
+import TextInput from "@/components/Form/TextInput";
+import NumberInput from "@/components/Form/NumberInput";
+import SelectInput from "@/components/Form/SelectInput";
+import PriceInput from "@/components/Form/PriceInput";
+import SubmitButton from "@/components/Form/SubmitButton";
 
 export default function AdicionarLanche() {
     const { id } = useParams();
@@ -80,13 +81,6 @@ export default function AdicionarLanche() {
                                     onChange={(e) => setDescricao(e.target.value)}
                                     required
                                 />
-                                {/*<NumberInput
-                                    id="preco"
-                                    label="Preço:"
-                                    value={preco}
-                                    onChange={(e) => setPreco(e.target.value)}
-                                    required
-                                />*/}
                                 <PriceInput
                                     id="preco"
                                     label="Preço:"
@@ -109,8 +103,10 @@ export default function AdicionarLanche() {
                                     required
                                 />
 
-
-                                <button type="submit" className={styles.submitButton}>Adicionar Lanche</button>
+                                <SubmitButton
+                                    text={`Adicionar Lanche`}
+                                    isLoading={loading}
+                                />
                             </div>
                         </form>
                     )}
