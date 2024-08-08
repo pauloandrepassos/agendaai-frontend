@@ -17,7 +17,7 @@
 .section1 {
     display: flex;
     justify-content: flex-start;
-    align-items: end;
+    align-items: flex-end;
     width: 40%;
 }
 
