@@ -94,12 +94,12 @@ export default function Dashboard() {
                             <Link href={`/lanchonete/${lanchonete.id}/horario-funcionamento`} className={styles.linkButton}>
                                 <FontAwesomeIcon icon={faClock} /> Horários
                             </Link>
-                            <Link href='/lanches' className={styles.linkButton}>
+                            <Link href={`/lanchonete/${lanchonete.id}/lanche`} className={styles.linkButton}>
                                 <FontAwesomeIcon icon={faHamburger} /> Lanches
                             </Link>
-                            <Link href='/cardapio' className={styles.linkButton}>
+                            {/*<Link href='/cardapio' className={styles.linkButton}>
                                 <FontAwesomeIcon icon={faClipboardList} /> Cardápio
-                            </Link>
+                            </Link>*/}
                             <Link href='/agendamentos' className={styles.linkButton}>
                                 <FontAwesomeIcon icon={faCalendarAlt} /> Agendamentos
                             </Link>
