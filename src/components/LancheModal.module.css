@@ -20,6 +20,7 @@
     max-width: 100%;
     position: relative;
     text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 .modalContent {
@@ -49,6 +50,29 @@
     border-radius: 5px;
 }
 
+.quantityControl {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.quantityControl button {
+    background-color: #FA680F;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .closeButton {
     position: absolute;
     top: 10px;
@@ -59,7 +83,7 @@
     cursor: pointer;
 }
 
-.infoArea button {
+.infoArea .botaoAdicionar {
     padding: 5px;
     background-color: #FA680F;
     color: white;
@@ -70,7 +94,7 @@
     text-align: center;
 }
 
-.infoArea button:hover {
+.infoArea .botaoAdicionar:hover {
     background-color: #FA240F;
 }
 
