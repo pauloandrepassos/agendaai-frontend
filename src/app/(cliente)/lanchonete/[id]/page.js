@@ -6,10 +6,11 @@ import styles from './lanchonete.module.css';
 import Image from "next/image";
 import Loading from "@/components/Loading";
 import { apiUrl } from "@/config/api";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faClock, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import CardLanche from "@/components/CardLanche";
+import LancheModal from "@/components/LancheModal";
 
 export default function LanchontePage() {
     const [lanchonete, setLanchonete] = useState(null);
@@ -17,7 +18,10 @@ export default function LanchontePage() {
     const [erro, setErro] = useState(null);
     const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
     const [horarioSelecionado, setHorarioSelecionado] = useState("Todos");
+    const [lancheSelecionado, setLancheSelecionado] = useState(null); // Estado para o lanche selecionado
     const { id } = useParams();
+    const router = useRouter();
+    const searchParams = useSearchParams();
 
     useEffect(() => {
         const fetchLanchonete = async () => {
@@ -71,9 +75,19 @@ export default function LanchontePage() {
         fetchLanches();
     }, [id]);
 
-    const lanchesFiltrados = lanches.filter(lanche => 
-        (tipoSelecionado === "Todos" || lanche.tipo === tipoSelecionado) /*&&
-        /*(horarioSelecionado === "Todos" || lanche.horario === horarioSelecionado)*/
+    useEffect(() => {
+        const lancheId = searchParams.get('lanche');
+        if (lancheId && lanches.length > 0) {
+            const lanche = lanches.find(l => l.id === parseInt(lancheId));
+            if (lanche) {
+                setLancheSelecionado(lanche);
+            }
+        }
+    }, [searchParams, lanches]);
+
+    const lanchesFiltrados = lanches.filter(lanche =>
+        (tipoSelecionado === "Todos" || lanche.tipo === tipoSelecionado) &&
+        (horarioSelecionado === "Todos" || lanche.horario === horarioSelecionado)
     );
 
     const handleSelectTipo = (e) => {
@@ -82,6 +96,15 @@ export default function LanchontePage() {
 
     const handleSelectHorario = (e) => {
         setHorarioSelecionado(e.target.value);
+    };
+
+    const handleCardClick = (idLanche) => {
+        router.push(`/lanchonete/${id}?lanche=${idLanche}`);
+    };
+
+    const closeModal = () => {
+        setLancheSelecionado(null);
+        router.push(`/lanchonete/${id}`);
     };
 
     return (
@@ -158,13 +181,19 @@ export default function LanchontePage() {
                                         nome={lanche.nome}
                                         imagem={lanche.imagem}
                                         preco={lanche.preco}
-                                        url={`/`}
+                                        url={`/lanchonete/${id}?lanche=${lanche.id}`}
+                                        onClick={() => handleCardClick(lanche.id)}
                                     />
                                 ))
                             ) : (
                                 <p>Nenhum lanche disponível.</p>
                             )}
                         </div>
+
+                        {lancheSelecionado && (
+                            <LancheModal lanche={lancheSelecionado} onClose={closeModal} />
+                        )}
+
                     </div>
                 ) : (
                     <Loading />

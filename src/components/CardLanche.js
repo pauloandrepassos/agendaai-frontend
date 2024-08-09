@@ -3,7 +3,7 @@ import styles from './CardLanche.module.css'
 
 export default function CardLanche({ id, nome, preco, imagem, url }) {
     return (
-        <Link href={`/lanche/${id}`} key={id} className={styles.card}>
+        <Link href={url || `/lanche/${id}`} key={id} className={styles.card}>
             <div className={styles.cardImage}>
                 <img src={imagem} alt={nome} />
             </div>
