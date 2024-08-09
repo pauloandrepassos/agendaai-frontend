@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import Navbar from "@/components/Navbar";
 import PrivateRouter from "@/components/PrivateRouter";
 import { useEffect, useState } from "react";
-import styles from './lanchonete.module.css'
+import styles from './lanchonete.module.css';
 import Image from "next/image";
 import Loading from "@/components/Loading";
 import { apiUrl } from "@/config/api";
@@ -11,11 +11,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faClock, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import CardLanche from "@/components/CardLanche";
 
-
 export default function LanchontePage() {
     const [lanchonete, setLanchonete] = useState(null);
     const [lanches, setLanches] = useState([]);
     const [erro, setErro] = useState(null);
+    const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
+    const [horarioSelecionado, setHorarioSelecionado] = useState("Todos");
     const { id } = useParams();
 
     useEffect(() => {
@@ -70,6 +71,19 @@ export default function LanchontePage() {
         fetchLanches();
     }, [id]);
 
+    const lanchesFiltrados = lanches.filter(lanche => 
+        (tipoSelecionado === "Todos" || lanche.tipo === tipoSelecionado) /*&&
+        /*(horarioSelecionado === "Todos" || lanche.horario === horarioSelecionado)*/
+    );
+
+    const handleSelectTipo = (e) => {
+        setTipoSelecionado(e.target.value);
+    };
+
+    const handleSelectHorario = (e) => {
+        setHorarioSelecionado(e.target.value);
+    };
+
     return (
         <PrivateRouter tipoUsuario={'cliente'}>
             <div className={styles.container}>
@@ -115,11 +129,29 @@ export default function LanchontePage() {
                             </div>
                         </div>
 
+                        <div className={styles.menuOpcoes}>
+                            <select value={tipoSelecionado} onChange={handleSelectTipo} className={styles.select}>
+                                <option value="Todos">Todos</option>
+                                <option value="Salgado">Salgado</option>
+                                <option value="Doce">Doce</option>
+                                <option value="Bolo">Bolo</option>
+                                <option value="Bebida">Bebida</option>
+                                <option value="Outros">Outros</option>
+                            </select>
+
+                            <select value={horarioSelecionado} onChange={handleSelectHorario} className={styles.select}>
+                                <option value="Todos">Todos os horários</option>
+                                <option value="Manhã">Manhã</option>
+                                <option value="Tarde">Tarde</option>
+                                <option value="Noite">Noite</option>
+                            </select>
+                        </div>
+
                         <h3>Lanches Disponíveis</h3>
 
                         <div className={styles.lanchesContainer}>
-                            {lanches.length > 0 ? (
-                                lanches.map((lanche) => (
+                            {lanchesFiltrados.length > 0 ? (
+                                lanchesFiltrados.map((lanche) => (
                                     <CardLanche
                                         key={lanche.id}
                                         id={lanche.id}

@@ -25,7 +25,7 @@
     padding: 1em;
     border: 1px solid #ddd;
     background-color: #FFF7E1;
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     text-align: center;
     border-radius: 4px;
 }
@@ -88,6 +88,37 @@
 
 .divIcon a:hover {
     text-decoration: underline;
+}
+
+.menuOpcoes {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.menuOpcoes select {
+    border: none;
+    border: 1px solid #ddd;
+    background-color: #FFF7E1;
+    padding: 8px;
+    outline: none;
+    text-align: center;
+    width: 100%;
+}
+
+.menuOpcoes select {
+    color: #FA240F;
+}
+
+.menuOpcoes select option {
+    background-color: #fdf6e3;
+    color: #FA240F;
+}
+
+.menuOpcoes select:focus {
+    outline: none;
+    border-color: #FA680F;
+    box-shadow: 0 0 5px rgba(91, 157, 217, 0.7);
 }
 
 .lanchesContainer {
