@@ -45,6 +45,21 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
     border: 1px solid #ddd;
+    position: relative;
+}
+
+.removeButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #FA240F;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #FFF;
+    padding: 8px;
+    border-radius: 5px;
+
 }
 
 .lancheItem:hover {
@@ -92,6 +107,51 @@
 .actionButton:hover {
     background-color: #FA240F;
 }
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modalActions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.confirmButton, .cancelButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirmButton {
+    background-color: #FA240F;
+    color: white;
+}
+
+.cancelButton {
+    background-color: #ddd;
+    color: #333;
+}
+
 
 
 @media (max-width: 600px) {
