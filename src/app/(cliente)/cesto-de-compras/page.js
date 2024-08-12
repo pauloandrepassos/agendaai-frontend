@@ -4,7 +4,7 @@ import styles from './cesto-de-compras.module.css'
 import Navbar from "@/components/Navbar"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { apiUrl } from "@/config/api"
+import { apiUrl, wsApiUrl } from "@/config/api"
 import Loading from "@/components/Loading"
 import { useRouter } from "next/navigation"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -13,9 +13,27 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons"
 export default function CestoDeComprasPage() {
     const [cesto, setCesto] = useState(null)
     const [erro, setErro] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal
+    const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal de remoção
+    const [pedidoModalVisible, setPedidoModalVisible] = useState(false)  // Controla a visibilidade da modal de confirmação do pedido
     const [lancheSelecionado, setLancheSelecionado] = useState(null) // Controla o lanche que será removido
     const router = useRouter()
+    const token = localStorage.getItem('token')
+
+    useEffect(() => {
+        const ws = new WebSocket(`${wsApiUrl}?token=${token}`);
+    
+    ws.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        if (message.type === 'cestoAtualizado') {
+            setCesto(message.cesto);
+        }
+    };
+
+    // Fechar a conexão WebSocket quando o componente for desmontado
+    return () => {
+        ws.close();
+    };
+}, []);
 
     useEffect(() => {
         const fetchCesto = async () => {
@@ -35,9 +53,9 @@ export default function CestoDeComprasPage() {
         fetchCesto()
     }, [])
 
-    const removerItem = (lancheId) => {
-        setLancheSelecionado(lancheId)
-        setModalVisible(true)  // Exibe a modal de confirmação
+    const removerItem = (idLanche) => {
+        setLancheSelecionado(idLanche)
+        setModalVisible(true)  // Exibe a modal de confirmação de remoção
     }
 
     const handleRemoverConfirmado = async () => {
@@ -53,7 +71,7 @@ export default function CestoDeComprasPage() {
             // Remove o lanche da lista localmente
             setCesto(prevCesto => ({
                 ...prevCesto,
-                lanches: prevCesto.lanches.filter(lanche => lanche.lancheId !== lancheSelecionado)
+                lanches: prevCesto.lanches.filter(lanche => lanche.idLanche !== lancheSelecionado)
             }))
 
             setModalVisible(false)  // Fecha a modal
@@ -68,12 +86,38 @@ export default function CestoDeComprasPage() {
         setLancheSelecionado(null)
     }
 
-    const handleCancelarPedido = async () => {
-        // Implementar a funcionalidade de cancelar pedido
+    const handleConfirmarPedido = () => {
+        setPedidoModalVisible(true)  // Exibe a modal de confirmação do pedido
     }
 
-    const handleConfirmarPedido = async () => {
-        // Implementar a funcionalidade de confirmar pedido
+    const handlePedidoConfirmado = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            await axios.post(`${apiUrl}/pedido`, {
+                idLanchonete: cesto.lanchoneteId,
+                lanches: cesto.lanches.map(lanche => ({
+                    idLanche: lanche.idLanche,
+                    quantidade: lanche.quantidade
+                }))
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            })
+
+            setPedidoModalVisible(false)  // Fecha a modal
+            router.push('/pedido-confirmado')  // Redireciona para uma página de confirmação do pedido
+        } catch (error) {
+            setErro(error.response ? error.response.data.error : 'Erro ao confirmar o pedido')
+        }
+    }
+
+    const handleCancelarPedidoConfirmacao = () => {
+        setPedidoModalVisible(false)
+    }
+
+    const handleCancelarPedido = () => {
     }
 
     return (
@@ -86,9 +130,9 @@ export default function CestoDeComprasPage() {
                         <h2>Lanchonete: {cesto.lanchoneteNome}</h2>
                         <ul>
                             {cesto.lanches.map((lanche) => (
-                                <li key={lanche.lancheId} className={styles.lancheItem}>
-                                    <button className={styles.removeButton} onClick={() => removerItem(lanche.lancheId)}>
-                                        <FontAwesomeIcon icon={faTrash}/>
+                                <li key={lanche.idLanche} className={styles.lancheItem}>
+                                    <button className={styles.removeButton} onClick={() => removerItem(lanche.idLanche)}>
+                                        <FontAwesomeIcon icon={faTrash} />
                                     </button>
                                     <img src={lanche.imagem} alt={lanche.nome} className={styles.lancheImagem} />
                                     <div>
@@ -106,7 +150,12 @@ export default function CestoDeComprasPage() {
                         </div>
                     </div>
                 ) : (
-                    <Loading />
+                    <div className={styles.content}>
+                        <div className={styles.emptyCesto}>
+                            <p>Não há lanches no seu cesto de compras.</p>
+                            <button onClick={() => router.push(`/home`)} className={styles.actionButton}>Adicionar lanches</button>
+                        </div>
+                    </div>
                 )}
 
                 {modalVisible && (
@@ -116,6 +165,18 @@ export default function CestoDeComprasPage() {
                             <div className={styles.modalActions}>
                                 <button onClick={handleRemoverConfirmado} className={styles.confirmButton}>Confirmar</button>
                                 <button onClick={handleCancelarRemocao} className={styles.cancelButton}>Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {pedidoModalVisible && (
+                    <div className={styles.modalOverlay}>
+                        <div className={styles.modal}>
+                            <p>Deseja confirmar o pedido?</p>
+                            <div className={styles.modalActions}>
+                                <button onClick={handlePedidoConfirmado} className={styles.confirmButton}>Confirmar</button>
+                                <button onClick={handleCancelarPedidoConfirmacao} className={styles.cancelButton}>Cancelar</button>
                             </div>
                         </div>
                     </div>
