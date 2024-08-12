@@ -17,23 +17,32 @@ export default function CestoDeComprasPage() {
     const [pedidoModalVisible, setPedidoModalVisible] = useState(false)  // Controla a visibilidade da modal de confirmação do pedido
     const [lancheSelecionado, setLancheSelecionado] = useState(null) // Controla o lanche que será removido
     const router = useRouter()
-    const token = localStorage.getItem('token')
+    const [token, setToken] = useState(null);
 
     useEffect(() => {
-        const ws = new WebSocket(`${wsApiUrl}?token=${token}`);
-    
-    ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
-        if (message.type === 'cestoAtualizado') {
-            setCesto(message.cesto);
+        if (typeof window !== 'undefined') {
+            const storedToken = localStorage.getItem('token');
+            setToken(storedToken);
         }
-    };
+    }, []);
 
-    // Fechar a conexão WebSocket quando o componente for desmontado
-    return () => {
-        ws.close();
-    };
-}, []);
+    useEffect(() => {
+        if (token) {
+            const ws = new WebSocket(`${wsApiUrl}?token=${token}`);
+
+            ws.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                if (message.type === 'cestoAtualizado') {
+                    setCesto(message.cesto);
+                }
+            };
+
+            // Fechar a conexão WebSocket quando o componente for desmontado
+            return () => {
+                ws.close();
+            };
+        }
+    }, [token]);
 
     useEffect(() => {
         const fetchCesto = async () => {
