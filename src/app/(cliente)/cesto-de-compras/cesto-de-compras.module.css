@@ -1,0 +1,122 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF7E1;
+    min-height: 100vh;
+}
+
+.content {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #FDF1CF;
+    padding: 2em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.content h1 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    color: #333;
+    text-align: center;
+}
+
+.content h2 {
+    font-size: 1.8em;
+    margin-bottom: 1.5em;
+    color: #555;
+    text-align: center;
+}
+
+.content ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.lancheItem {
+    display: flex;
+    align-items: center;
+    background-color: #FFF;
+    margin-bottom: 1em;
+    padding: 1em;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    border: 1px solid #ddd;
+}
+
+.lancheItem:hover {
+    box-shadow: 3px 3px 2px #656053;
+    border: 1px solid #FA240F;
+}
+
+.lancheImagem {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 1em;
+    object-fit: cover;
+}
+
+.lancheItem h3 {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    color: #333;
+}
+
+.lancheItem p {
+    margin: 0.2em 0;
+    font-size: 1.2em;
+    color: #777;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.actionButton {
+    padding: 0.75em;
+    background-color: #FA680F;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    text-align: center;
+}
+
+.actionButton:hover {
+    background-color: #FA240F;
+}
+
+
+@media (max-width: 600px) {
+    .content {
+        padding: 1em;
+    }
+
+    .lancheItem {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lancheImagem {
+        margin-bottom: 1em;
+    }
+
+    .lancheItem h3 {
+        font-size: 1.2em;
+    }
+
+    .lancheItem p {
+        font-size: 1em;
+    }
+    .actions {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

@@ -6,7 +6,7 @@ import styles from './Navbar.module.css'
 import logo from '/public/logo-agendaai.png'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -26,7 +26,7 @@ export default function Navbar() {
     useEffect(() => {
         const fetchData = async () => {
             const storedToken = localStorage.getItem('token')
-            if(storedToken) {
+            if (storedToken) {
                 setToken(storedToken)
             }
         }
@@ -42,17 +42,22 @@ export default function Navbar() {
                 </Link>
                 {token &&
                     <ul className={styles.list}>
-                    <li className={styles.item}>
-                        <Link href='/perfil' passHref>
-                            <FontAwesomeIcon icon="user" />
-                        </Link>
-                    </li>
-                    <li className={styles.item}>
-                        <button onClick={handleLogout} className={styles.logoutButton}>
-                            <FontAwesomeIcon icon="sign-out-alt" />
-                        </button>
-                    </li>
-                </ul>
+                        <li className={styles.item}>
+                            <Link href='/cesto-de-compras' passHref>
+                                <FontAwesomeIcon icon={faShoppingBasket} />
+                            </Link>
+                        </li>
+                        <li className={styles.item}>
+                            <Link href='/perfil' passHref>
+                                <FontAwesomeIcon icon="user" />
+                            </Link>
+                        </li>
+                        <li className={styles.item}>
+                            <button onClick={handleLogout} className={styles.logoutButton}>
+                                <FontAwesomeIcon icon="sign-out-alt" />
+                            </button>
+                        </li>
+                    </ul>
                 }
             </div>
         </nav>
