@@ -159,7 +159,7 @@ export default function LanchontePage() {
                                 <option value="Doce">Doce</option>
                                 <option value="Bolo">Bolo</option>
                                 <option value="Bebida">Bebida</option>
-                                <option value="Outros">Outros</option>
+                                <option value="Outro">Outros</option>
                             </select>
 
                             <select value={horarioSelecionado} onChange={handleSelectHorario} className={styles.select}>

@@ -17,32 +17,32 @@ export default function CestoDeComprasPage() {
     const [pedidoModalVisible, setPedidoModalVisible] = useState(false)  // Controla a visibilidade da modal de confirmação do pedido
     const [lancheSelecionado, setLancheSelecionado] = useState(null) // Controla o lanche que será removido
     const router = useRouter()
-    const [token, setToken] = useState(null);
+    const [token, setToken] = useState(null)
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const storedToken = localStorage.getItem('token');
-            setToken(storedToken);
+            const storedToken = localStorage.getItem('token')
+            setToken(storedToken)
         }
-    }, []);
+    }, [])
 
     useEffect(() => {
         if (token) {
-            const ws = new WebSocket(`${wsApiUrl}?token=${token}`);
+            const ws = new WebSocket(`${wsApiUrl}?token=${token}`)
 
             ws.onmessage = (event) => {
-                const message = JSON.parse(event.data);
+                const message = JSON.parse(event.data)
                 if (message.type === 'cestoAtualizado') {
-                    setCesto(message.cesto);
+                    setCesto(message.cesto)
                 }
-            };
+            }
 
             // Fechar a conexão WebSocket quando o componente for desmontado
             return () => {
-                ws.close();
-            };
+                ws.close()
+            }
         }
-    }, [token]);
+    }, [token])
 
     useEffect(() => {
         const fetchCesto = async () => {
@@ -61,6 +61,15 @@ export default function CestoDeComprasPage() {
         }
         fetchCesto()
     }, [])
+
+    const calcularPrecoTotal = () => {
+        if (cesto && cesto.lanches) {
+            return cesto.lanches.reduce((total, lanche) => {
+                return total + lanche.preco * lanche.quantidade
+            }, 0).toFixed(2)
+        }
+        return "0.00"
+    }
 
     const removerItem = (idLanche) => {
         setLancheSelecionado(idLanche)
@@ -152,6 +161,7 @@ export default function CestoDeComprasPage() {
                                 </li>
                             ))}
                         </ul>
+                        <h2>Preço total: <strong>R$ {calcularPrecoTotal()}</strong></h2>
                         <div className={styles.actions}>
                             <button onClick={() => router.push(`/lanchonete/${cesto.lanchoneteId}`)} className={styles.actionButton}>Adicionar mais itens</button>
                             <button onClick={handleCancelarPedido} className={styles.actionButton}>Cancelar pedido</button>

@@ -46,7 +46,7 @@ export default function LancheModal({ lanche, onClose }) {
         setTimeout(() => {
             setAdicionando(false); // Reseta o estado do botão
             onClose(); // Fecha a modal após o tempo definido
-        }, 2000); // Aguarda 2 segundos antes de fechar a modal
+        }); // Aguarda 2 segundos antes de fechar a modal
     };
 
     return (
