@@ -10,6 +10,8 @@ import { apiUrl } from "@/config/api";
 import styles from './cadastroLanchonete.module.css';
 import CloudinaryUpload from "@/components/CloudinaryUpload";
 import Image from "next/image";
+import Loading from "@/components/Loading";
+import Modal from "@/components/SucessErrorModal";
 
 const solicitacaoSchema = yup.object().shape({
     nome: yup.string().required('Nome é obrigatório'),
@@ -26,14 +28,18 @@ const solicitacaoSchema = yup.object().shape({
 });
 
 export default function CadastroLanchonete() {
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState(null)
+
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = useForm({
         resolver: yupResolver(solicitacaoSchema),
         mode: "onChange"
     });
-    const [ imageUrl, setImageUrl ] = useState(null)
+    const [imageUrl, setImageUrl] = useState(null)
     const [section, setSection] = useState(1);
 
     const onSubmit = async (data) => {
+        setLoading(true)
         try {
             await axios.post(`${apiUrl}/solicitacao`, {
                 nome: data.nome,
@@ -49,9 +55,11 @@ export default function CadastroLanchonete() {
                 cidade: data.cidade,
                 estado: data.estado
             });
-            alert("Solicitação enviada com sucesso");
+            setMessage('Solicitação enviada com sucesso! Nossa equipe de administradores avaliará seu cadastro em breve. Fique atento ao seu e-mail para acompanhar o status.')
+            setLoading(false)
         } catch (error) {
-            alert(`Erro ao criar solicitação: ${error.response?.data?.error || error.message}`);
+            setMessage(`Erro ao enviar solicitação: ${error.response?.data?.error || error.message}`)
+            setLoading(false)
         }
     };
 
@@ -94,82 +102,93 @@ export default function CadastroLanchonete() {
     return (
         <div className={styles.CadastroLanchonetePage}>
             <Navbar />
-            <div className={styles.container}>
-                <h2>Cadastro de Lanchonete</h2>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div>
-                        {section === 1 && (
-                            <div>
-                                <label>Insira uma imagem da lanchonete</label>
-                                <CloudinaryUpload
-                                    width={500}
-                                    height={300}
-                                    onURLChange={handleImageChange}
-                                    defaultImage={imageUrl}
-                                />
-                                <p>{errors.imagem?.message}</p>
-                            </div>
-                        )}
-                        {section === 2 && (
-                            <div>
-                                <label>Nome</label>
-                                <input type="text" {...register('nome')} />
-                                <p>{errors.nome?.message}</p>
-                                <label>Email</label>
-                                <input type="email" {...register('email')} />
-                                <p>{errors.email?.message}</p>
-                                <label>Senha</label>
-                                <input type="password" {...register('password')} />
-                                <p>{errors.password?.message}</p>
-                                <label>Nome da Lanchonete</label>
-                                <input type="text" {...register('nomeLanchonete')} />
-                                <p>{errors.nomeLanchonete?.message}</p>
-                                <label>CNPJ</label>
-                                <input type="text" {...register('cnpj')} />
-                                <p>{errors.cnpj?.message}</p>
-                            </div>
-                        )}
-                        {section === 3 && (
-                            <div>
-                                <label>CEP</label>
-                                <input type="text" {...register('cep')} />
-                                <p>{errors.cep?.message}</p>
-                                <label>Logradouro</label>
-                                <input type="text" {...register('logradouro')} />
-                                <p>{errors.logradouro?.message}</p>
-                                <label>Número</label>
-                                <input type="text" {...register('numero')} />
-                                <p>{errors.numero?.message}</p>
-                                <label>Bairro</label>
-                                <input type="text" {...register('bairro')} />
-                                <p>{errors.bairro?.message}</p>
-                                <label>Cidade</label>
-                                <input type="text" {...register('cidade')} />
-                                <p>{errors.cidade?.message}</p>
-                                <label>Estado</label>
-                                <input type="text" {...register('estado')} />
-                                <p>{errors.estado?.message}</p>
-                            </div>
-                        )}
-                    </div>
-                    <div className={styles.prev_next_buttons}>
+            {loading ? (
+                <Loading />
+            ) : (
+                <div className={styles.container}>
+                    <h2>Cadastro de Lanchonete</h2>
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            {(section === 2 || section === 3) && (
-                                <button type="button" onClick={prevSection}>Seção anterior</button>
+                            {section === 1 && (
+                                <div>
+                                    <label>Insira uma imagem da lanchonete</label>
+                                    <CloudinaryUpload
+                                        width={500}
+                                        height={300}
+                                        onURLChange={handleImageChange}
+                                        defaultImage={imageUrl}
+                                    />
+                                    <p>{errors.imagem?.message}</p>
+                                </div>
+                            )}
+                            {section === 2 && (
+                                <div>
+                                    <label>Nome</label>
+                                    <input type="text" {...register('nome')} />
+                                    <p>{errors.nome?.message}</p>
+                                    <label>Email</label>
+                                    <input type="email" {...register('email')} />
+                                    <p>{errors.email?.message}</p>
+                                    <label>Senha</label>
+                                    <input type="password" {...register('password')} />
+                                    <p>{errors.password?.message}</p>
+                                    <label>Nome da Lanchonete</label>
+                                    <input type="text" {...register('nomeLanchonete')} />
+                                    <p>{errors.nomeLanchonete?.message}</p>
+                                    <label>CNPJ</label>
+                                    <input type="text" {...register('cnpj')} />
+                                    <p>{errors.cnpj?.message}</p>
+                                </div>
+                            )}
+                            {section === 3 && (
+                                <div>
+                                    <label>CEP</label>
+                                    <input type="text" {...register('cep')} />
+                                    <p>{errors.cep?.message}</p>
+                                    <label>Logradouro</label>
+                                    <input type="text" {...register('logradouro')} />
+                                    <p>{errors.logradouro?.message}</p>
+                                    <label>Número</label>
+                                    <input type="text" {...register('numero')} />
+                                    <p>{errors.numero?.message}</p>
+                                    <label>Bairro</label>
+                                    <input type="text" {...register('bairro')} />
+                                    <p>{errors.bairro?.message}</p>
+                                    <label>Cidade</label>
+                                    <input type="text" {...register('cidade')} />
+                                    <p>{errors.cidade?.message}</p>
+                                    <label>Estado</label>
+                                    <input type="text" {...register('estado')} />
+                                    <p>{errors.estado?.message}</p>
+                                </div>
                             )}
                         </div>
-                        <div>
-                            {(section === 1 || section === 2) && (
-                                <button type="button" onClick={nextSection}>Avançar seção</button>
-                            )}
+                        <div className={styles.prev_next_buttons}>
+                            <div>
+                                {(section === 2 || section === 3) && (
+                                    <button type="button" onClick={prevSection}>Seção anterior</button>
+                                )}
+                            </div>
+                            <div>
+                                {(section === 1 || section === 2) && (
+                                    <button type="button" onClick={nextSection}>Avançar seção</button>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                    {(section === 3) && (
-                        
-                        <button type="submit">Enviar Solicitação</button>
-                    )}
-                </form>
-            </div>
+                        {(section === 3) && (
+
+                            <button type="submit">Enviar Solicitação</button>
+                        )}
+                    </form>
+                </div>
+            )}
+            {message && 
+            <Modal
+                isOpen={true}
+                onClose={() => setMessage(null)}
+                message={message}
+            />
+            }
         </div>
     );
 }

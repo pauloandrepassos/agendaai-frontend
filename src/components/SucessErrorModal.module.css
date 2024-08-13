@@ -19,6 +19,9 @@
     gap: 30px;
     align-items: center;
     justify-content: center;
+    max-width: 500px;
+    text-align: justify;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .modal_content p {
