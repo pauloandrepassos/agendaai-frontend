@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import styles from './LancheModal.module.css';
-import { apiUrl } from '@/config/api';
+import { apiRailway, apiUrl } from '@/config/api';
 
 export default function LancheModal({ lanche, onClose }) {
     const [quantidade, setQuantidade] = useState(1);
@@ -23,7 +23,7 @@ export default function LancheModal({ lanche, onClose }) {
             const token = localStorage.getItem('token');
             const idLanchonete = lanche.idLanchonete;
 
-            const response = await axios.post(`${apiUrl}/cesto/adicionar`, {
+            const response = await axios.post(`${apiRailway}/cesto/adicionar`, {
                 idLanchonete,
                 idLanche: lanche.id,
                 quantidade
