@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+
+
 .authpage {
     height: 100vh;
     display: flex;
@@ -23,8 +26,8 @@
 
 .section1 {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
     width: 40%;
 }
 
@@ -53,6 +56,18 @@
     align-items: center;
 }
 
+.circle2 {
+    background: linear-gradient(to right, #FA680F, #FA240F);
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    width: 110%;
+    height: 110%;
+    margin-top: -60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .cardCadastro{
     display: flex;
@@ -67,10 +82,15 @@
     width: 300px;
 }
 
-.cardCadastro h1 {
+.cardCadastro h1, .section1 h1 {
     font-family: 'Lobster', cursive;
     color: #FA240F;
     font-size: 30px;
+}
+
+.section1 h1 {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .formCadastro {
@@ -127,6 +147,20 @@
 
 .submitButton:hover {
     background: #FA240F;
+}
+
+.mensagemDeErro {
+    color: #FA240F;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.link {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.link p {
+    font-size: 15px;
 }
 
 @media(max-width: 850px) {
