@@ -59,3 +59,15 @@
 .userInfo p strong {
     color: #333;
 }
+
+@media (max-width: 600px ) {
+    .userProfile {
+        flex-direction: column;
+    }
+    .userProfile h1 {
+        text-align: center;
+    }
+    .userImageContainer {
+        margin: 0;
+    }
+}
