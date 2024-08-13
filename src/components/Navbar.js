@@ -1,37 +1,59 @@
 "use client"
 import Link from "next/link";
 import Image from "next/image";
-import styles from './Navbar.module.css'
+import styles from './Navbar.module.css';
 
-import logo from '/public/logo-agendaai.png'
+import logo from '/public/logo-agendaai.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { apiUrl } from "@/config/api";
 
 library.add(faSignOutAlt, faUser);
 
 export default function Navbar() {
 
-    const [token, setToken] = useState(null)
-    const router = useRouter()
+    const [token, setToken] = useState(null);
+    const [user, setUser] = useState(null);
+    const router = useRouter();
 
     const handleLogout = () => {
-        localStorage.removeItem("token")
-        router.push("/inicio")
+        localStorage.removeItem("token");
+        router.push("/inicio");
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-            const storedToken = localStorage.getItem('token')
+        const fetchUserData = async () => {
+            const storedToken = localStorage.getItem('token');
             if (storedToken) {
-                setToken(storedToken)
+                setToken(storedToken);
+
+                // Fetch user data
+                try {
+                    const response = await fetch(`${apiUrl}/user`, {
+                        method: 'GET',
+                        headers: {
+                            'token': `${storedToken}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const userData = await response.json();
+                        setUser(userData);
+                    } else {
+                        console.error('Erro ao buscar dados do usuário.');
+                    }
+                } catch (error) {
+                    console.error('Erro na requisição:', error);
+                }
             }
         }
-        fetchData()
-    }, [token])
+        fetchUserData();
+    }, [token]);
 
     return (
         <nav className={styles.navbar}>
@@ -47,11 +69,25 @@ export default function Navbar() {
                                 <FontAwesomeIcon icon={faShoppingBasket} />
                             </Link>
                         </li>
-                        <li className={styles.item}>
-                            <Link href='/perfil' passHref>
-                                <FontAwesomeIcon icon="user" />
-                            </Link>
-                        </li>
+                        {user?.imagem ? (
+                            <li className={`${styles.item}`}>
+                                <Link href={`/perfil`}>
+                                    <Image
+                                        src={user.imagem}
+                                        alt="User Image"
+                                        width={45}
+                                        height={45}
+                                        className={styles.userImage}
+                                    />
+                                </Link>
+                            </li>
+                        ) : (
+                            <li className={styles.item}>
+                                <Link href='/perfil' passHref>
+                                    <FontAwesomeIcon icon="user" />
+                                </Link>
+                            </li>
+                        )}
                         <li className={styles.item}>
                             <button onClick={handleLogout} className={styles.logoutButton}>
                                 <FontAwesomeIcon icon="sign-out-alt" />

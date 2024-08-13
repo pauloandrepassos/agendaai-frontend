@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     background: linear-gradient(to right, #FA680F, #FA240F);
-    padding: 1em;
+    height: 80px;
     width: 100%;
     border-bottom: 3px solid #ffffff;
 }
@@ -44,7 +44,7 @@
 
 .item a:hover,
 .item button:hover {
-    color: #D8FFDB;
+    color: #eeff00;
     text-decoration: underline;
     transform: scale(1.2);
 }
@@ -65,6 +65,11 @@
 .logo img {
     width: 60px;
     height: auto;
+}
+
+.userImage {
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 @media (max-width: 500px) {

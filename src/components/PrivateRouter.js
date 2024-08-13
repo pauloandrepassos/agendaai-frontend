@@ -28,7 +28,7 @@ const PrivateRouter = ({ children, tipoUsuario, idUsuario }) => {
                 setOpenModal(true)
             } else {
                 const decodedToken = decodeToken(storedToken)
-                if (decodedToken.papel !== tipoUsuario) {
+                if (tipoUsuario && decodedToken.papel !== tipoUsuario) {
                     setErro(`Acesso negado! ${decodedToken.papel}`)
                     setOpenModal(true)
                 } else {
