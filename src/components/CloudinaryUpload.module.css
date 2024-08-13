@@ -11,6 +11,61 @@
     width: 100%;
 }
 
+.userImage img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.uploadUserImage {
+    background-color: #FA240F;
+    /* Ajuste para a cor principal do sistema */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.uploadUserImage:hover {
+    background-color: #FA240F;
+}
+
+.editOptions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    gap: 10px;
+}
+
+.cancelButton,
+.saveButton {
+    background-color: #FA240F;
+    /* Ajuste para a cor principal do sistema */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cancelButton {
+    background-color: grey;
+}
+
+.saveButton {
+    background-color: #FA240F;
+}
+
+
 .image img {
     max-width: 100%;
     height: auto;
