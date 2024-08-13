@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 
 export default function CestoDeComprasPage() {
+    const [loading, setLoading] = useState(null)
     const [cesto, setCesto] = useState(null)
     const [erro, setErro] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal de remoção
@@ -109,6 +110,7 @@ export default function CestoDeComprasPage() {
     }
 
     const handlePedidoConfirmado = async () => {
+        setLoading(true)
         try {
             const token = localStorage.getItem('token')
             await axios.post(`${apiUrl}/pedido`, {
@@ -140,67 +142,73 @@ export default function CestoDeComprasPage() {
 
     return (
         <PrivateRouter tipoUsuario={'cliente'}>
-            <div className={styles.container}>
-                <Navbar />
-                {cesto ? (
-                    <div className={styles.content}>
-                        <h1>Cesto de Compras</h1>
-                        <h2>Lanchonete: {cesto.lanchoneteNome}</h2>
-                        <ul>
-                            {cesto.lanches.map((lanche) => (
-                                <li key={lanche.idLanche} className={styles.lancheItem}>
-                                    <button className={styles.removeButton} onClick={() => removerItem(lanche.idLanche)}>
-                                        <FontAwesomeIcon icon={faTrash} />
-                                    </button>
-                                    <img src={lanche.imagem} alt={lanche.nome} className={styles.lancheImagem} />
-                                    <div>
-                                        <h3>{lanche.nome}</h3>
-                                        <p>Quantidade: {lanche.quantidade}</p>
-                                        <p>Preço: <strong>R$ {lanche.preco.toFixed(2)}</strong></p>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                        <h2>Preço total: <strong>R$ {calcularPrecoTotal()}</strong></h2>
-                        <div className={styles.actions}>
-                            <button onClick={() => router.push(`/lanchonete/${cesto.lanchoneteId}`)} className={styles.actionButton}>Adicionar mais itens</button>
-                            <button onClick={handleCancelarPedido} className={styles.actionButton}>Cancelar pedido</button>
-                            <button onClick={handleConfirmarPedido} className={styles.actionButton}>Confirmar pedido</button>
-                        </div>
-                    </div>
-                ) : (
-                    <div className={styles.content}>
-                        <div className={styles.emptyCesto}>
-                            <p>Não há lanches no seu cesto de compras.</p>
-                            <button onClick={() => router.push(`/home`)} className={styles.actionButton}>Adicionar lanches</button>
-                        </div>
-                    </div>
-                )}
+            {loading ? (
+                <Loading />
+            ) : (
+                <div className={styles.container}>
+                    <Navbar />
+                    {cesto ? (
 
-                {modalVisible && (
-                    <div className={styles.modalOverlay}>
-                        <div className={styles.modal}>
-                            <p>Deseja remover esse lanche do cesto de compras?</p>
-                            <div className={styles.modalActions}>
-                                <button onClick={handleRemoverConfirmado} className={styles.confirmButton}>Confirmar</button>
-                                <button onClick={handleCancelarRemocao} className={styles.cancelButton}>Cancelar</button>
+                        <div className={styles.content}>
+                            <h1>Cesto de Compras</h1>
+                            <h2>Lanchonete: {cesto.lanchoneteNome}</h2>
+                            <ul>
+                                {cesto.lanches.map((lanche) => (
+                                    <li key={lanche.idLanche} className={styles.lancheItem}>
+                                        <button className={styles.removeButton} onClick={() => removerItem(lanche.idLanche)}>
+                                            <FontAwesomeIcon icon={faTrash} />
+                                        </button>
+                                        <img src={lanche.imagem} alt={lanche.nome} className={styles.lancheImagem} />
+                                        <div>
+                                            <h3>{lanche.nome}</h3>
+                                            <p>Quantidade: {lanche.quantidade}</p>
+                                            <p>Preço: <strong>R$ {lanche.preco.toFixed(2)}</strong></p>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                            <h2>Preço total: <strong>R$ {calcularPrecoTotal()}</strong></h2>
+                            <div className={styles.actions}>
+                                <button onClick={() => router.push(`/lanchonete/${cesto.lanchoneteId}`)} className={styles.actionButton}>Adicionar mais itens</button>
+                                <button onClick={handleCancelarPedido} className={styles.actionButton}>Cancelar pedido</button>
+                                <button onClick={handleConfirmarPedido} className={styles.actionButton}>Confirmar pedido</button>
                             </div>
                         </div>
-                    </div>
-                )}
-
-                {pedidoModalVisible && (
-                    <div className={styles.modalOverlay}>
-                        <div className={styles.modal}>
-                            <p>Deseja confirmar o pedido?</p>
-                            <div className={styles.modalActions}>
-                                <button onClick={handlePedidoConfirmado} className={styles.confirmButton}>Confirmar</button>
-                                <button onClick={handleCancelarPedidoConfirmacao} className={styles.cancelButton}>Cancelar</button>
+                    ) : (
+                        <div className={styles.content}>
+                            <div className={styles.emptyCesto}>
+                                <p>Não há lanches no seu cesto de compras.</p>
+                                <button onClick={() => router.push(`/home`)} className={styles.actionButton}>Adicionar lanches</button>
                             </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+
+                    {modalVisible && (
+                        <div className={styles.modalOverlay}>
+                            <div className={styles.modal}>
+                                <p>Deseja remover esse lanche do cesto de compras?</p>
+                                <div className={styles.modalActions}>
+                                    <button onClick={handleRemoverConfirmado} className={styles.confirmButton}>Confirmar</button>
+                                    <button onClick={handleCancelarRemocao} className={styles.cancelButton}>Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {pedidoModalVisible && (
+                        <div className={styles.modalOverlay}>
+                            <div className={styles.modal}>
+                                <p>Deseja confirmar o pedido?</p>
+                                <div className={styles.modalActions}>
+                                    <button onClick={handlePedidoConfirmado} className={styles.confirmButton}>Confirmar</button>
+                                    <button onClick={handleCancelarPedidoConfirmacao} className={styles.cancelButton}>Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
         </PrivateRouter>
     )
 }
