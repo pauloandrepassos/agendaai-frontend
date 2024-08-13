@@ -39,6 +39,20 @@
     background-color: #FA240F;
 }
 
+.noUserImage {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 80px;
+    color: rgba(0, 0, 0, 0.3);
+
+}
+
 .editOptions {
     display: flex;
     justify-content: space-between;

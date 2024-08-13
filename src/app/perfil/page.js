@@ -54,11 +54,6 @@ export default function UserProfilePage() {
             {user ? (
               <div className={styles.userProfile}>
                 <div className={styles.userImageContainer}>
-                  {!user.imagem && (
-                    <div className={styles.userImage}>
-                      <FontAwesomeIcon icon={faUser} />
-                    </div>
-                  )}
                   <CloudinaryUploadUserImage
                     onURLChange={handleImageChange}
                     defaultImage={user.imagem}
