@@ -125,7 +125,7 @@ export default function CestoDeComprasPage() {
             })
 
             setPedidoModalVisible(false)  // Fecha a modal
-            router.push('/pedido-confirmado')  // Redireciona para uma página de confirmação do pedido
+            router.push('/pedidos')  // Redireciona para uma página de confirmação do pedido
         } catch (error) {
             setErro(error.response ? error.response.data.error : 'Erro ao confirmar o pedido')
         }

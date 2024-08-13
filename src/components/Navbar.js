@@ -6,7 +6,7 @@ import styles from './Navbar.module.css';
 import logo from '/public/logo-agendaai.png';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faFile, faFileAlt, faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -64,6 +64,11 @@ export default function Navbar() {
                 </Link>
                 {token &&
                     <ul className={styles.list}>
+                        <li className={styles.item}>
+                            <Link href='/pedidos' passHref>
+                                <FontAwesomeIcon icon={faFileAlt} />
+                            </Link>
+                        </li>
                         <li className={styles.item}>
                             <Link href='/cesto-de-compras' passHref>
                                 <FontAwesomeIcon icon={faShoppingBasket} />
