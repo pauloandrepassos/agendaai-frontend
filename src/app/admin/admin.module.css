@@ -1,16 +1,17 @@
-
-.adminContainer {
-    background-color: #f8f8f8;
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FFF7E1;
     min-height: 100vh;
 }
 
 .dashboard {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    width: 100%;
     max-width: 1200px;
-    margin: auto;
+    height: 100%;
+    background-color: #FDF1CF;
+    padding: 2em;
 }
 
 .title {
@@ -66,6 +67,7 @@
 }
 
 .stat {
+    border: 1px solid #ddd;
     background-color: #f0f0f0;
     border-radius: 8px;
     padding: 20px;
@@ -73,6 +75,14 @@
     width: 22%;
     display: flex;
     gap: 10px;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.stat:hover {
+    box-shadow: 3px 3px 2px #656053;
+    border: 1px solid #FA240F;
 }
 
 .statNumber {
