@@ -1,27 +1,30 @@
 "use client"
-import axios from 'axios';
-import { useState } from 'react';
-import styles from './LancheModal.module.css';
-import { apiRailway, apiUrl } from '@/config/api';
+import axios from 'axios'
+import { useState } from 'react'
+import styles from './LancheModal.module.css'
+import { apiRailway } from '@/config/api'
 
-export default function LancheModal({ lanche, onClose }) {
-    const [quantidade, setQuantidade] = useState(1);
-    const [adicionando, setAdicionando] = useState(false); // Estado para gerenciar o texto do botão
+export default function LancheModal({ lanche, onClose, showToastMessage }) {
+    const [quantidade, setQuantidade] = useState(1)
+    const [adicionando, setAdicionando] = useState(false)
+    const [timeoutId, setTimeoutId] = useState(null)
 
     const incrementarQuantidade = () => {
-        setQuantidade(prev => prev + 1);
-    };
+        setQuantidade(prev => prev + 1)
+    }
 
     const decrementarQuantidade = () => {
-        setQuantidade(prev => (prev > 1 ? prev - 1 : 1));
-    };
+        setQuantidade(prev => (prev > 1 ? prev - 1 : 1))
+    }
 
     const handleAdd = async () => {
-        setAdicionando(true); // Muda o estado para "adicionando"
+        if (adicionando) return // Impede múltiplos cliques
+
+        setAdicionando(true)
 
         try {
-            const token = localStorage.getItem('token');
-            const idLanchonete = lanche.idLanchonete;
+            const token = localStorage.getItem('token')
+            const idLanchonete = lanche.idLanchonete
 
             const response = await axios.post(`${apiRailway}/cesto/adicionar`, {
                 idLanchonete,
@@ -32,22 +35,24 @@ export default function LancheModal({ lanche, onClose }) {
                     'Content-Type': 'application/json',
                     'token': token
                 }
-            });
+            })
 
             if (response.status === 200) {
-                console.log('Lanche adicionado ao cesto:', response.data);
+                showToastMessage(`${lanche.nome} adicionado ao cesto com sucesso!`, 'success')
             } else {
-                console.error('Erro ao adicionar lanche ao cesto:', response.data);
+                showToastMessage('Erro ao adicionar lanche ao cesto.', 'error')
             }
         } catch (error) {
-            console.error('Erro na requisição:', error.message);
+            showToastMessage('Erro na requisição: ' + error.message, 'error')
         }
 
-        setTimeout(() => {
-            setAdicionando(false); // Reseta o estado do botão
-            onClose(); // Fecha a modal após o tempo definido
-        }); // Aguarda 2 segundos antes de fechar a modal
-    };
+        const id = setTimeout(() => {
+            setAdicionando(false)
+            onClose()
+        })
+
+        setTimeoutId(id) // Armazena o ID do timeout
+    }
 
     return (
         <div className={styles.overlay}>
@@ -62,16 +67,16 @@ export default function LancheModal({ lanche, onClose }) {
                         <p>{lanche.descricao}</p>
                         <p><strong>Preço: R$ {lanche.preco.toFixed(2)}</strong> </p>
                         <div className={styles.quantityControl}>
-                            <button onClick={decrementarQuantidade} className={styles.quantityButton}>-</button>
+                            <button onClick={decrementarQuantidade} className={styles.quantityButton} disabled={adicionando}>-</button>
                             <span className={styles.quantity}>{quantidade}</span>
-                            <button onClick={incrementarQuantidade} className={styles.quantityButton}>+</button>
+                            <button onClick={incrementarQuantidade} className={styles.quantityButton} disabled={adicionando}>+</button>
                         </div>
-                        <button className={styles.botaoAdicionar} onClick={handleAdd}>
+                        <button className={styles.botaoAdicionar} onClick={handleAdd} disabled={adicionando}>
                             {adicionando ? 'Adicionando lanche ao cesto...' : 'Adicionar'}
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    );
+    )
 }
