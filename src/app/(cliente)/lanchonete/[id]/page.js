@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays, faClock, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import CardLanche from "@/components/CardLanche";
 import LancheModal from "@/components/LancheModal";
+import Toast from "@/components/Toast";
 
 export default function LanchontePage() {
     const [lanchonete, setLanchonete] = useState(null);
@@ -19,9 +20,20 @@ export default function LanchontePage() {
     const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
     const [horarioSelecionado, setHorarioSelecionado] = useState("Todos");
     const [lancheSelecionado, setLancheSelecionado] = useState(null); // Estado para o lanche selecionado
+    const [showToast, setShowToast] = useState(false); // Estado para controlar a exibição do toast
+    const [toastMessage, setToastMessage] = useState(''); // Estado para a mensagem do toast
+    const [toastType, setToastType] = useState('success'); // Estado para o tipo do toast (success, error, etc.)
+
     const { id } = useParams();
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    const showToastMessage = (message, type = 'success') => {
+        setToastMessage(message);
+        setToastType(type);
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000); // Exibe o toast por 3 segundos
+    };
 
     useEffect(() => {
         const fetchLanchonete = async () => {
@@ -111,6 +123,8 @@ export default function LanchontePage() {
         <PrivateRouter tipoUsuario={'cliente'}>
             <div className={styles.container}>
                 <Navbar />
+
+                {showToast && <Toast message={toastMessage} type={toastType} />}
                 {lanchonete ? (
                     <div className={styles.content}>
                         <div className={styles.painelLanchonete}>
@@ -191,7 +205,7 @@ export default function LanchontePage() {
                         </div>
 
                         {lancheSelecionado && (
-                            <LancheModal lanche={lancheSelecionado} onClose={closeModal} />
+                            <LancheModal lanche={lancheSelecionado} onClose={closeModal} showToastMessage={showToastMessage}/>
                         )}
 
                     </div>
