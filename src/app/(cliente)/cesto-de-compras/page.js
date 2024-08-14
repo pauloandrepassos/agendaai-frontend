@@ -9,6 +9,7 @@ import Loading from "@/components/Loading"
 import { useRouter } from "next/navigation"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
+import ConfirmCancelModal from "@/components/ConfirmCancelModal"
 
 export default function CestoDeComprasPage() {
     const [loading, setLoading] = useState(null)
@@ -16,6 +17,7 @@ export default function CestoDeComprasPage() {
     const [erro, setErro] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal de remoção
     const [pedidoModalVisible, setPedidoModalVisible] = useState(false)  // Controla a visibilidade da modal de confirmação do pedido
+    const [modalCancelarPedidoVisible, setModalCancelarPedidoVisible] = useState(false)
     const [lancheSelecionado, setLancheSelecionado] = useState(null) // Controla o lanche que será removido
     const router = useRouter()
     const [token, setToken] = useState(null)
@@ -133,11 +135,33 @@ export default function CestoDeComprasPage() {
         }
     }
 
-    const handleCancelarPedidoConfirmacao = () => {
+    const handleCancelarConfirmacaoPedido = () => {
         setPedidoModalVisible(false)
     }
 
     const handleCancelarPedido = () => {
+        setModalCancelarPedidoVisible(true)
+    }
+
+    const handleCancelarPedidoOk = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            await axios.delete(`${apiUrl}/cesto`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            })
+    
+            setCesto(null)
+            router.push(`/home`)
+        } catch (error) {
+            setErro(error.response ? error.response.data.error : 'Erro ao cancelar pedido')
+        }
+    }
+
+    const hancleCancelarCancelaPedido = () => {
+        setModalCancelarPedidoVisible(false)
     }
 
     return (
@@ -183,29 +207,26 @@ export default function CestoDeComprasPage() {
                         </div>
                     )}
 
-                    {modalVisible && (
-                        <div className={styles.modalOverlay}>
-                            <div className={styles.modal}>
-                                <p>Deseja remover esse lanche do cesto de compras?</p>
-                                <div className={styles.modalActions}>
-                                    <button onClick={handleRemoverConfirmado} className={styles.confirmButton}>Confirmar</button>
-                                    <button onClick={handleCancelarRemocao} className={styles.cancelButton}>Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    <ConfirmCancelModal
+                        visible={modalVisible}
+                        message="Deseja remover esse lanche do cesto de compras?"
+                        onConfirm={handleRemoverConfirmado}
+                        onCancel={handleCancelarRemocao}
+                    />
 
-                    {pedidoModalVisible && (
-                        <div className={styles.modalOverlay}>
-                            <div className={styles.modal}>
-                                <p>Deseja confirmar o pedido?</p>
-                                <div className={styles.modalActions}>
-                                    <button onClick={handlePedidoConfirmado} className={styles.confirmButton}>Confirmar</button>
-                                    <button onClick={handleCancelarPedidoConfirmacao} className={styles.cancelButton}>Cancelar</button>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    <ConfirmCancelModal
+                        visible={pedidoModalVisible}
+                        message="Deseja confirmar o pedido?"
+                        onConfirm={handlePedidoConfirmado}
+                        onCancel={handleCancelarConfirmacaoPedido}
+                    />
+
+                    <ConfirmCancelModal
+                        visible={modalCancelarPedidoVisible}
+                        message="Deseja cancelar esse pedido?"
+                        onConfirm={handleCancelarPedidoOk}
+                        onCancel={hancleCancelarCancelaPedido}
+                    />
                 </div>
             )}
 
