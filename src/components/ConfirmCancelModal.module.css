@@ -34,11 +34,11 @@
 }
 
 .confirmButton {
-    background-color: #FA240F;
+    background-color: #19660f;
     color: white;
 }
 
 .cancelButton {
-    background-color: #ddd;
-    color: #333;
+    background-color: #FA240F;
+    color: white;
 }
