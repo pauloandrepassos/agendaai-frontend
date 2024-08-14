@@ -3,14 +3,17 @@ import PrivateRouter from "@/components/PrivateRouter";
 import styles from './agendamentos.module.css'
 import Navbar from "@/components/Navbar";
 import { useEffect, useRef, useState } from "react";
-import { apiUrl } from "@/config/api";
+import { apiRailway, apiUrl } from "@/config/api";
 import axios from "axios";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
+import ConfirmCancelModal from "@/components/ConfirmCancelModal";
 
 export default function LanchoneteAgendamentosPage() {
     const [pedidos, setPedidos] = useState([]);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedPedido, setSelectedPedido] = useState(null);
     const hasFetched = useRef(false); // Usando useRef para rastrear se a requisição já foi feita
 
     useEffect(() => {
@@ -36,6 +39,33 @@ export default function LanchoneteAgendamentosPage() {
 
         fetchPedidos();
     }, []);
+
+
+    const handleConfirmRetirada = async () => {
+        if (!selectedPedido) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            await axios.patch(`${apiRailway}/pedido/${selectedPedido}/confirmar-retirada`, {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'token': token
+                }
+            });
+
+            // Atualizar o estado dos pedidos para refletir a mudança no status
+            setPedidos((prevPedidos) =>
+                prevPedidos.map((pedido) =>
+                    pedido.id === selectedPedido ? { ...pedido, status: 'retirado' } : pedido
+                )
+            );
+        } catch (error) {
+            console.error('Erro ao confirmar a retirada do pedido:', error);
+        } finally {
+            setShowModal(false);
+            setSelectedPedido(null);
+        }
+    };
 
     return (
         <PrivateRouter tipoUsuario={"gerente"}>
@@ -88,12 +118,32 @@ export default function LanchoneteAgendamentosPage() {
                                     <div className={styles.total}>
                                         <h4>Total do Pedido: R${pedido.total.toFixed(2)}</h4>
                                     </div>
+                                    {pedido.status !== 'retirado' && (
+                                        <button
+                                            className={styles.confirmButton}
+                                            onClick={() => {
+                                                setSelectedPedido(pedido.id);
+                                                setShowModal(true);
+                                            }}
+                                        >
+                                            Confirmar Retirada
+                                        </button>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     )}
                 </div>
             </div>
+            <ConfirmCancelModal
+                visible={showModal}
+                message="Você confirma a retirada deste pedido?"
+                onConfirm={handleConfirmRetirada}
+                onCancel={() => {
+                    setShowModal(false);
+                    setSelectedPedido(null);
+                }}
+            />
         </PrivateRouter>
     )
 }

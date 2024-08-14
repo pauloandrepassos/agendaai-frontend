@@ -10,15 +10,19 @@ import { useRouter } from "next/navigation"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import ConfirmCancelModal from "@/components/ConfirmCancelModal"
+import Toast from "@/components/Toast"
 
-export default function CestoDeComprasPage() {
+export default function CestoDeComprasPage({ elementoTeste }) {
     const [loading, setLoading] = useState(null)
     const [cesto, setCesto] = useState(null)
     const [erro, setErro] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal de remoção
     const [pedidoModalVisible, setPedidoModalVisible] = useState(false)  // Controla a visibilidade da modal de confirmação do pedido
     const [modalCancelarPedidoVisible, setModalCancelarPedidoVisible] = useState(false)
-    const [lancheSelecionado, setLancheSelecionado] = useState(null) // Controla o lanche que será removido
+    const [lancheSelecionado, setLancheSelecionado] = useState(null)
+    const [showToast, setShowToast] = useState(false)
+    const [toastMessage, setToastMessage] = useState("")
+    const [toastType, setToastType] = useState("")
     const router = useRouter()
     const [token, setToken] = useState(null)
 
@@ -37,6 +41,23 @@ export default function CestoDeComprasPage() {
                 const message = JSON.parse(event.data)
                 if (message.type === 'cestoAtualizado') {
                     setCesto(message.cesto)
+                    setToastMessage("Lanche adicionado no cesto!")
+                    setToastType("success")
+                    setShowToast(true)
+
+                    // Oculta o toast após 5 segundos
+                    setTimeout(() => {
+                        setShowToast(false)
+                    }, 5000)
+                } else if (message.type === 'pedidoRetirado') {
+                    setToastMessage("Seu pedido foi retirado!")
+                    setToastType("success")
+                    setShowToast(true)
+
+                    // Oculta o toast após 5 segundos
+                    setTimeout(() => {
+                        setShowToast(false)
+                    }, 5000)
                 }
             }
 
@@ -227,6 +248,8 @@ export default function CestoDeComprasPage() {
                         onConfirm={handleCancelarPedidoOk}
                         onCancel={hancleCancelarCancelaPedido}
                     />
+                    {showToast && <Toast message={toastMessage} type={toastType} />}
+                
                 </div>
             )}
 
