@@ -47,7 +47,6 @@ export default function Dashboard() {
     return (
         <PrivateRouter tipoUsuario={"gerente"}>
             <div className={styles.container}>
-                <Navbar />
                 {lanchonete ? (
                     <div className={styles.content}>
                         <div className={styles.painelLanchonete}>

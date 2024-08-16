@@ -34,7 +34,6 @@ export default function PedidosPage() {
     return (
         <PrivateRouter tipoUsuario={'cliente'}>
             <div className={styles.container}>
-                <Navbar />
                 {loading ? (
                     <Loading />
                 ) : (

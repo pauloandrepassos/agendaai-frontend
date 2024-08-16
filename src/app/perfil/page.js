@@ -49,7 +49,6 @@ export default function UserProfilePage() {
     return (
       <PrivateRouter>
         <div className={styles.container}>
-          <Navbar />
           <div className={styles.content}>
             {user ? (
               <div className={styles.userProfile}>

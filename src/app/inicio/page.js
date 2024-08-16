@@ -5,7 +5,6 @@ import styes from './inicio.module.css'
 export default function Inicio() {
     return (
         <div className={styes.inicial_page}>
-            <Navbar />
             <div className={styes.section1}>
                 <div className={styes.center}>
                     <h1>Agenda Aí</h1>

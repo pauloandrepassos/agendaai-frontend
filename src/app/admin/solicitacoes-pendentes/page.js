@@ -34,7 +34,6 @@ export default function SolicitacoesPendentes() {
 
     return (
         <PrivateRouter tipoUsuario={'admin'} className={styles.container}>
-            <Navbar />
             <div className={styles.content}>
                 <h1 className={styles.title}>Solicitações Pendentes</h1>
                 {loading ? (

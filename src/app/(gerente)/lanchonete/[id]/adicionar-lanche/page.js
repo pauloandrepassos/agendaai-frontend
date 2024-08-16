@@ -52,7 +52,6 @@ export default function AdicionarLanche() {
     return (
         <PrivateRouter tipoUsuario={'gerente'}>
             <div className={styles.container}>
-                <Navbar />
                 <div className={styles.content}>
                     <h1>Adicionar Lanche</h1>
                     {loading ? (

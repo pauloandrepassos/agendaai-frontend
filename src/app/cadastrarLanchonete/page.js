@@ -101,7 +101,6 @@ export default function CadastroLanchonete() {
 
     return (
         <div className={styles.CadastroLanchonetePage}>
-            <Navbar />
             {loading ? (
                 <Loading />
             ) : (

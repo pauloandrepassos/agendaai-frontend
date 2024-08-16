@@ -35,6 +35,7 @@ export default function Login() {
             password: data.password
         }).then((response) => {
             localStorage.setItem("token", response.data.token)
+            window.dispatchEvent(new Event('storage'))
 
             if(response.data.papel === 'cliente') {
                 router.push('/home')
@@ -72,7 +73,6 @@ export default function Login() {
 
     return (
         <div className={styles.authpage}>
-            <Navbar />
             {loading ? (
                 <Loading />
             ) : (

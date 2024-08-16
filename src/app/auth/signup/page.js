@@ -72,7 +72,6 @@ export default function Signup() {
 
     return (
         <div className={styles.authpage}>
-            <Navbar />
             {loading ? (
                 <Loading />
             ) : (

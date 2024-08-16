@@ -155,8 +155,6 @@ export default function LanchontePage() {
     return (
         <PrivateRouter tipoUsuario={'cliente'}>
             <div className={styles.container}>
-                <Navbar />
-
                 {showToast && <Toast message={toastMessage} type={toastType} />}
                 {lanchonete ? (
                     <div className={styles.content}>

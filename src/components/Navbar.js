@@ -2,11 +2,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from './Navbar.module.css';
-
 import logo from '/public/logo-agendaai.png';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFile, faFileAlt, faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faFileAlt, faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -18,10 +16,12 @@ export default function Navbar() {
 
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [papel, setPapel] = useState(null)
     const router = useRouter();
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        window.dispatchEvent(new Event('storage')); // Dispara o evento para atualizar a navbar
         router.push("/inicio");
     }
 
@@ -31,7 +31,6 @@ export default function Navbar() {
             if (storedToken) {
                 setToken(storedToken);
 
-                // Fetch user data
                 try {
                     const response = await fetch(`${apiUrl}/user`, {
                         method: 'GET',
@@ -44,16 +43,31 @@ export default function Navbar() {
                     if (response.ok) {
                         const userData = await response.json();
                         setUser(userData);
+                        setPapel(userData.papel)
                     } else {
                         console.error('Erro ao buscar dados do usuário.');
                     }
                 } catch (error) {
                     console.error('Erro na requisição:', error);
                 }
+            } else {
+                setToken(null);
+                setUser(null);
             }
         }
+
         fetchUserData();
-    }, [token]);
+
+        const handleStorageChange = () => {
+            fetchUserData();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
 
     return (
         <nav className={styles.navbar}>
@@ -64,16 +78,34 @@ export default function Navbar() {
                 </Link>
                 {token &&
                     <ul className={styles.list}>
-                        <li className={styles.item}>
-                            <Link href='/pedidos' passHref>
-                                <FontAwesomeIcon icon={faFileAlt} />
-                            </Link>
-                        </li>
-                        <li className={styles.item}>
-                            <Link href='/cesto-de-compras' passHref>
-                                <FontAwesomeIcon icon={faShoppingBasket} />
-                            </Link>
-                        </li>
+                        {/* itens de usuario gerente */}
+                        {papel == 'gerente' &&
+                            <li className={styles.item}>
+                                <Link href='/agendamentos' passHref>
+                                    <FontAwesomeIcon icon={faFileAlt} />
+                                </Link>
+                            </li>
+                        }
+
+                        
+                        {/* itens de usuario cliente */}
+                        {papel == 'cliente' &&
+                            <li className={styles.item}>
+                                <Link href='/pedidos' passHref>
+                                    <FontAwesomeIcon icon={faFileAlt} />
+                                </Link>
+                            </li>
+                        }
+                        {papel == 'cliente' &&
+                            <li className={styles.item}>
+                                <Link href='/cesto-de-compras' passHref>
+                                    <FontAwesomeIcon icon={faShoppingBasket} />
+                                </Link>
+                            </li>
+                        }
+
+
+                        {/* itens de todos usuarios */}
                         {user?.imagem ? (
                             <li className={`${styles.item}`}>
                                 <Link href={`/perfil`}>

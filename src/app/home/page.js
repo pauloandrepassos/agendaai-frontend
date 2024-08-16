@@ -65,7 +65,6 @@ export default function Home() {
     return (
         <PrivateRouter tipoUsuario={'cliente'}>
             <div className={styles.container}>
-                <Navbar />
                 <div className={styles.content}>
                     <div className={styles.filters}>
                         <div className={styles.searchContainer}>

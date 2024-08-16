@@ -37,6 +37,7 @@ function CloudinaryUploadUserImage({ token, onURLChange, defaultImage, width, he
 
                 if (response.ok) {
                     const updatedUser = await response.json();
+                    window.dispatchEvent(new Event('storage'))
                     setIsEditing(false);
                     if (onURLChange) onURLChange(updatedUser.user.imagem);
                 } else {

@@ -15,7 +15,6 @@ export default function Admin() {
     return (
         <PrivateRouter tipoUsuario={'admin'} className={styles.adminContainer}>
             <div className={styles.container}>
-                <Navbar />
                 <div className={styles.dashboard}>
                     <section className={styles.section}>
                         <h2 className={styles.sectionTitle}>Atividades Recentes</h2>

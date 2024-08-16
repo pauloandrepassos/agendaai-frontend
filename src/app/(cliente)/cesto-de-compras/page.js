@@ -14,6 +14,7 @@ import Toast from "@/components/Toast"
 
 export default function CestoDeComprasPage({ elementoTeste }) {
     const [loading, setLoading] = useState(null)
+    const [buscaloading, setBuscaLoading] = useState(null)
     const [cesto, setCesto] = useState(null)
     const [erro, setErro] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal de remoção
@@ -191,7 +192,6 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                 <Loading />
             ) : (
                 <div className={styles.container}>
-                    <Navbar />
                     {cesto ? (
 
                         <div className={styles.content}>

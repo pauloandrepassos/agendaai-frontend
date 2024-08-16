@@ -56,7 +56,6 @@ export default function Solicitacao({ params }) {
 
     return (
         <PrivateRouter tipoUsuario={'admin'} className={styles.container}>
-            <Navbar />
             <div className={styles.content}>
                 {loading ? (
                     <p>Carregando...</p>

@@ -33,7 +33,6 @@ export default function Lanche() {
     return (
         <PrivateRouter tipoUsuario={'gerente'}>
             <div className={styles.container}>
-                <Navbar />
                 <div className={styles.content}>
                     <div className={styles.filters}>
                         <div className={styles.searchContainer}>

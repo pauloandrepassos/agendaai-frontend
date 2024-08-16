@@ -38,7 +38,6 @@ export default function UsuariosPage() {
     return (
         <PrivateRouter tipoUsuario={`admin`}>
             <div className={styles.container}>
-                <Navbar />
                 <div className={styles.content}>
                     <h1>Lista de Usuários</h1>
                     {usuarios.map(user => (

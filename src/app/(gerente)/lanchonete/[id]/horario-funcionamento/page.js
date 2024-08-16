@@ -143,7 +143,6 @@ export default function AdicionarHorario() {
     return (
         <PrivateRouter tipoUsuario={'gerente'}>
             <div className={styles.container}>
-                <Navbar />
                 {loading ? (
                     <Loading />
                 ) : (
