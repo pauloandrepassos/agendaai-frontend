@@ -21,6 +21,7 @@ const PrivateRouter = ({ children, tipoUsuario, idUsuario }) => {
             const statusToken = isTokenValid(storedToken)
             if (!statusToken.isValid) {
                 if (statusToken.status === 'expirado') {
+                    window.dispatchEvent(new Event('storage'))
                     setErro('Acesso expirado. Faça login novamente.')
                 } else {
                     setErro('Faça login para acessar essa página')
@@ -40,6 +41,7 @@ const PrivateRouter = ({ children, tipoUsuario, idUsuario }) => {
 
     const closeModal = () => {
         if (erro === "Acesso negado!") {
+            window.dispatchEvent(new Event('storage'))
             router.push('/')
         } else {
             router.push("/auth/login");

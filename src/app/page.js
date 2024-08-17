@@ -30,17 +30,21 @@ export default function Home() {
                 router.push("/home");
                 break;
               default:
+                window.dispatchEvent(new Event('storage'))
                 router.push("/inicio");
                 break;
             }
           }
         } else if (status === "expirado") {
           localStorage.removeItem('token')
+          window.dispatchEvent(new Event('storage'))
           router.push("/auth/login");
         } else {
+          window.dispatchEvent(new Event('storage'))
           router.push("/inicio");
         }
       } else {
+        window.dispatchEvent(new Event('storage'))
         router.push("/inicio");
       }
     };
