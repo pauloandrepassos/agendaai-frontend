@@ -6,7 +6,12 @@
   
   html, body, #root {
     /*background: linear-gradient(to right, #FAF0EC, #FFF7E1);*/
-    height: 100%;
+    min-height: 100%;
     width: 100%;
     background-color: #FFF7E1;
   }
+
+  body {
+    padding-bottom: 80px; /* Altura da bottonNavbar */
+    margin: 0;
+}
