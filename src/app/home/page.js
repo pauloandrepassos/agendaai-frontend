@@ -87,54 +87,6 @@ export default function Home() {
                                 </div>
                             </Link>
                         ))}
-                        {lanchonetes.map(lanchonete => (
-                            <Link href={`/lanchonete/${lanchonete.id}`} key={lanchonete.id} className={styles.card}>
-                                <div className={styles.cardImage}>
-                                    <img src={lanchonete.imagem} alt={lanchonete.nome}/>
-                                </div>
-                                <div className={styles.divInfo}>
-                                    <h3>{lanchonete.nome}</h3>
-                                    <p>{lanchonete.endereco.bairro}, {lanchonete.endereco.cidade} - {lanchonete.endereco.estado}</p>
-                                    <p>...</p>
-                                </div>
-                            </Link>
-                        ))}
-                        {lanchonetes.map(lanchonete => (
-                            <Link href={`/lanchonete/${lanchonete.id}`} key={lanchonete.id} className={styles.card}>
-                                <div className={styles.cardImage}>
-                                    <img src={lanchonete.imagem} alt={lanchonete.nome}/>
-                                </div>
-                                <div className={styles.divInfo}>
-                                    <h3>{lanchonete.nome}</h3>
-                                    <p>{lanchonete.endereco.bairro}, {lanchonete.endereco.cidade} - {lanchonete.endereco.estado}</p>
-                                    <p>...</p>
-                                </div>
-                            </Link>
-                        ))}
-                        {lanchonetes.map(lanchonete => (
-                            <Link href={`/lanchonete/${lanchonete.id}`} key={lanchonete.id} className={styles.card}>
-                                <div className={styles.cardImage}>
-                                    <img src={lanchonete.imagem} alt={lanchonete.nome}/>
-                                </div>
-                                <div className={styles.divInfo}>
-                                    <h3>{lanchonete.nome}</h3>
-                                    <p>{lanchonete.endereco.bairro}, {lanchonete.endereco.cidade} - {lanchonete.endereco.estado}</p>
-                                    <p>...</p>
-                                </div>
-                            </Link>
-                        ))}
-                        {lanchonetes.map(lanchonete => (
-                            <Link href={`/lanchonete/${lanchonete.id}`} key={lanchonete.id} className={styles.card}>
-                                <div className={styles.cardImage}>
-                                    <img src={lanchonete.imagem} alt={lanchonete.nome}/>
-                                </div>
-                                <div className={styles.divInfo}>
-                                    <h3>{lanchonete.nome}</h3>
-                                    <p>{lanchonete.endereco.bairro}, {lanchonete.endereco.cidade} - {lanchonete.endereco.estado}</p>
-                                    <p>...</p>
-                                </div>
-                            </Link>
-                        ))}
                     </div>
                 </div>
             </div>

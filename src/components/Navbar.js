@@ -4,7 +4,7 @@ import Image from "next/image";
 import styles from './Navbar.module.css';
 import logo from '/public/logo-agendaai.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileAlt, faShoppingBasket, faSignOutAlt, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faFileAlt, faHamburger, faHome, faShoppingBasket, faSignOutAlt, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -70,29 +70,76 @@ export default function Navbar() {
     }, []);
 
     return (
-        <nav className={styles.navbar}>
-            <div className={styles.container}>
-                <Link className={styles.logo} href='/' passHref>
-                    <Image src={logo} alt="logo_agendaai" />
-                    <h1>Agenda aí</h1>
-                </Link>
-                {token &&
-                    <ul className={styles.list}>
-                        {/* itens de usuario gerente */}
-                        {papel == 'gerente' &&
-                            <li className={styles.item}>
-                                <Link href='/agendamentos' passHref>
-                                    <FontAwesomeIcon icon={faFileAlt} />
-                                </Link>
-                            </li>
-                        }
+        <>
+            <nav className={styles.navbar}>
+                <div className={styles.container}>
+                    <Link className={styles.logo} href='/' passHref>
+                        <Image src={logo} alt="logo_agendaai" />
+                        <h1>Agenda aí</h1>
+                    </Link>
+                    {token &&
+                        <ul className={styles.list}>
+                            {/* itens de usuario gerente */}
+                            {papel == 'gerente' &&
+                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                    <Link href='/agendamentos' passHref>
+                                        <FontAwesomeIcon icon={faFileAlt} />
+                                    </Link>
+                                </li>
+                            }
 
-                        
-                        {/* itens de usuario cliente */}
+                            {/* itens de usuario cliente */}
+                            {papel == 'cliente' &&
+                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                    <Link href='/pedidos' passHref>
+                                        <FontAwesomeIcon icon={faFileAlt} />
+                                    </Link>
+                                </li>
+                            }
+                            {papel == 'cliente' &&
+                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                    <Link href='/cesto-de-compras' passHref>
+                                        <FontAwesomeIcon icon={faShoppingBasket} />
+                                    </Link>
+                                </li>
+                            }
+                            {/* itens de todos usuarios */}
+                            {user?.imagem ? (
+                                <li className={`${`${styles.item} ${styles.ocultar}`}`}>
+                                    <Link href={`/perfil`}>
+                                        <Image
+                                            src={user.imagem}
+                                            alt="User Image"
+                                            width={45}
+                                            height={45}
+                                            className={styles.userImage}
+                                        />
+                                    </Link>
+                                </li>
+                            ) : (
+                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                    <Link href='/perfil' passHref>
+                                        <FontAwesomeIcon icon="user" />
+                                    </Link>
+                                </li>
+                            )}
+                            <li className={styles.item}>
+                                <button onClick={handleLogout} className={styles.logoutButton}>
+                                    <FontAwesomeIcon icon="sign-out-alt" />
+                                </button>
+                            </li>
+                        </ul>
+                    }
+                </div>
+            </nav>
+
+            {token &&
+                <nav className={styles.bottonNavbar}>
+                    <ul className={styles.list}>
                         {papel == 'cliente' &&
                             <li className={styles.item}>
-                                <Link href='/pedidos' passHref>
-                                    <FontAwesomeIcon icon={faFileAlt} />
+                                <Link href='/home' passHref>
+                                    <FontAwesomeIcon icon={faHome} />
                                 </Link>
                             </li>
                         }
@@ -103,17 +150,68 @@ export default function Navbar() {
                                 </Link>
                             </li>
                         }
+                        {papel == 'cliente' &&
+                            <li className={styles.item}>
+                                <Link href='/pedidos' passHref>
+                                    <FontAwesomeIcon icon={faFileAlt} />
+                                </Link>
+                            </li>
+                        }
 
+                        {papel == 'gerente' &&
+                            <li className={styles.item}>
+                                <Link href='/' passHref>
+                                    <FontAwesomeIcon icon={faHome} />
+                                </Link>
+                            </li>
+                        }
 
-                        {/* itens de todos usuarios */}
+                        {papel == 'gerente' &&
+                            <li className={styles.item}>
+                                <Link href='/' passHref>
+                                    <FontAwesomeIcon icon={faHamburger} />
+                                </Link>
+                            </li>
+                        }
+
+                        {papel == 'gerente' &&
+                            <li className={styles.item}>
+                                <Link href='/agendamentos' passHref>
+                                    <FontAwesomeIcon icon={faFileAlt} />
+                                </Link>
+                            </li>
+                        }
+
+                        {papel == 'admin' &&
+                            <li className={styles.item}>
+                                <Link href='/' passHref>
+                                    <FontAwesomeIcon icon={faHome} />
+                                </Link>
+                            </li>
+                        }
+                        {papel == 'admin' &&
+                            <li className={styles.item}>
+                                <Link href='/admin/solicitacoes-pendentes' passHref>
+                                    <FontAwesomeIcon icon={faFileAlt} />
+                                </Link>
+                            </li>
+                        }
+                        {papel == 'admin' &&
+                            <li className={styles.item}>
+                                <Link href='/admin/usuarios' passHref>
+                                    <FontAwesomeIcon icon={faUsers} />
+                                </Link>
+                            </li>
+                        }
+
                         {user?.imagem ? (
                             <li className={`${styles.item}`}>
                                 <Link href={`/perfil`}>
                                     <Image
                                         src={user.imagem}
                                         alt="User Image"
-                                        width={45}
-                                        height={45}
+                                        width={55}
+                                        height={55}
                                         className={styles.userImage}
                                     />
                                 </Link>
@@ -121,18 +219,14 @@ export default function Navbar() {
                         ) : (
                             <li className={styles.item}>
                                 <Link href='/perfil' passHref>
-                                    <FontAwesomeIcon icon="user" />
+                                    <FontAwesomeIcon icon={faUser} />
                                 </Link>
                             </li>
                         )}
-                        <li className={styles.item}>
-                            <button onClick={handleLogout} className={styles.logoutButton}>
-                                <FontAwesomeIcon icon="sign-out-alt" />
-                            </button>
-                        </li>
                     </ul>
-                }
-            </div>
-        </nav>
+                </nav>
+            }
+
+        </>
     )
 }
