@@ -105,11 +105,13 @@ export default function Login() {
                                             />
                                             <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} />
                                         </div>
-                                        <div className={styles.link}>
-                                            <p>Não possui cadastro ainda?</p>
-                                            <Link href={`/auth/signup`}>Cadastre-se aqui</Link>
+                                        <div>
+                                            <button id='buttonLogin' className={styles.submitButton} type='submit'>Entrar</button>
+                                            <div className={styles.link}>
+                                                <p>Não possui conta ainda?</p>
+                                                <Link href={`/auth/signup`}>Cadastre-se aqui</Link>
+                                            </div>
                                         </div>
-                                        <button id='buttonLogin' className={styles.submitButton} type='submit'>Entrar</button>
                                         
                                     </form>
                             </div>

@@ -131,18 +131,19 @@ export default function Signup() {
                                         </div>
                                         {errors.confirmPassword && <p className={styles.mensagemDeErro}>{errors.confirmPassword.message}</p>}
                                     </div>
-                                    
-                                    <div className={styles.link}>
-                                        <p>Já possui uma conta?</p>
-                                        <Link href={`/auth/login`}>Entre aqui</Link>
+                                    <div>
+                                        <button
+                                            id="buttonLogin"
+                                            className={styles.submitButton}
+                                            type="submit"
+                                        >
+                                            Cadastrar
+                                        </button>
+                                        <div className={styles.link}>
+                                            <p>Já possui uma conta?</p>
+                                            <Link href={`/auth/login`}>Entre aqui</Link>
+                                        </div>
                                     </div>
-                                    <button
-                                        id="buttonLogin"
-                                        className={styles.submitButton}
-                                        type="submit"
-                                    >
-                                        Cadastrar
-                                    </button>
                                 </form>
                             </div>
                         </div>
