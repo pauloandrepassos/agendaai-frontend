@@ -2,7 +2,11 @@
 
 
 .authpage {
-    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,6 +37,25 @@
 .section1 img {
     width: auto;
     height: 400px;
+}
+
+.section1 h1 {
+    text-align: center;
+}
+
+.section1 div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.logo {
+    margin: auto;
+}
+
+.logo img {
+    width: 60px;
+    height: auto;
 }
 
 .section2 {
@@ -81,16 +104,16 @@
     width: 300px;
 }
 
+.cardCadastro .logo {
+    display: none;
+}
+
 .cardCadastro h1, .section1 h1 {
     font-family: 'Lobster', cursive;
     color: #FA240F;
     font-size: 30px;
 }
 
-.section1 h1 {
-    text-align: center;
-    margin-top: 20px;
-}
 
 .formCadastro {
     width: 100%;
@@ -175,7 +198,11 @@
     .section2 {
         width: 100%;
     }
-    .circle {
+    .circle, .circle2 {
         border-radius: 0%;
+    }
+
+    .cardCadastro .logo {
+        display: block;
     }
 }

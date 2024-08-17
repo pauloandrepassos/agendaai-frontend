@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { apiUrl } from '@/config/api'
 import Modal from '@/components/SucessErrorModal'
+import logo from '/public/logo-agendaai.png';
 
 
 import imagem from '/public/undraw_login1.png'
@@ -23,7 +24,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState(null)
 
-    const { register, handleSubmit, formState: {errors} } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
 
     })
 
@@ -37,14 +38,14 @@ export default function Login() {
             localStorage.setItem("token", response.data.token)
             window.dispatchEvent(new Event('storage'))
 
-            if(response.data.papel === 'cliente') {
+            if (response.data.papel === 'cliente') {
                 router.push('/home')
             } else if (response.data.papel === 'admin') {
                 router.push('/admin')
             } else if (response.data.papel === 'gerente') {
                 router.push('/dashboard')
             }
-             else {
+            else {
                 router.push('/')
             }
         }).catch((error) => {
@@ -53,7 +54,7 @@ export default function Login() {
                 const status = error.response.status
                 if (status === 404) {
                     setMessage('Usuário não encontrado')
-                } else if(status === 401) {
+                } else if (status === 401) {
                     setMessage(`Email ou senha incorretos`)
                     //error.response.data.error
                 } else {
@@ -78,53 +79,61 @@ export default function Login() {
             ) : (
                 <section className={styles.cadastro}>
                     <div className={styles.section1}>
-                        <h1>Bem vindo de volta</h1>
-                        <Image src={imagem}/>
+                        <div>
+                            <Link className={styles.logo} href='/' passHref>
+                                <Image src={logo} alt="logo_agendaai" />
+                            </Link>
+                            <h1>Bem vindo de volta</h1>
+                        </div>
+                        <Image src={imagem} />
                     </div>
                     <div className={styles.section2}>
                         <div className={styles.circle}>
                             <div className={styles.cardCadastro}>
+                                <Link className={styles.logo} href='/' passHref>
+                                    <Image src={logo} alt="logo_agendaai" />
+                                </Link>
                                 <h1>Login</h1>
                                 <form onSubmit={handleSubmit(onSubmit)} className={styles.formCadastro}>
-                                <div className={styles.inputDiv}>
-                                            <input
-                                                id="login"
-                                                type="email"
-                                                placeholder="Email"
-                                                required
-                                                {...register("email")}
-                                            />
+                                    <div className={styles.inputDiv}>
+                                        <input
+                                            id="login"
+                                            type="email"
+                                            placeholder="Email"
+                                            required
+                                            {...register("email")}
+                                        />
+                                    </div>
+                                    <div className={styles.inputDiv}>
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            id="password"
+                                            placeholder="Senha"
+                                            required
+                                            {...register('password')}
+                                        />
+                                        <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} />
+                                    </div>
+                                    <div>
+                                        <button id='buttonLogin' className={styles.submitButton} type='submit'>Entrar</button>
+                                        <div className={styles.link}>
+                                            <p>Não possui conta ainda?</p>
+                                            <Link href={`/auth/signup`}>Cadastre-se aqui</Link>
                                         </div>
-                                        <div className={styles.inputDiv}>
-                                            <input
-                                                type={showPassword ? "text" : "password"}
-                                                id="password"
-                                                placeholder="Senha"
-                                                required
-                                                {...register('password')}
-                                            />
-                                            <FontAwesomeIcon className={styles.icon} icon={showPassword ? faEyeSlash : faEye} onClick={togglePasswordVisibility} />
-                                        </div>
-                                        <div>
-                                            <button id='buttonLogin' className={styles.submitButton} type='submit'>Entrar</button>
-                                            <div className={styles.link}>
-                                                <p>Não possui conta ainda?</p>
-                                                <Link href={`/auth/signup`}>Cadastre-se aqui</Link>
-                                            </div>
-                                        </div>
-                                        
-                                    </form>
+                                    </div>
+
+                                </form>
                             </div>
                         </div>
                     </div>
                 </section>
             )}
-            {message && 
-            <Modal
-                isOpen={true}
-                onClose={() => setMessage(null)}
-                message={message}
-            />
+            {message &&
+                <Modal
+                    isOpen={true}
+                    onClose={() => setMessage(null)}
+                    message={message}
+                />
             }
         </div>
     )

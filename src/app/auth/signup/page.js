@@ -16,6 +16,7 @@ import Loading from "@/components/Loading";
 import Link from "next/link";
 import imagem from '/public/undraw_my_app_re_gxtj 1.png'
 import Image from "next/image";
+import logo from '/public/logo-agendaai.png';
 
 const schema = yup.object().shape({
     nome: yup.string().min(3, 'O nome de usuário deve ter pelo menos 3 dígitos').required('O nome deve vser preenchido'),
@@ -79,6 +80,9 @@ export default function Signup() {
                     <div className={styles.section2}>
                         <div className={styles.circle2}>
                             <div className={styles.cardCadastro}>
+                                <Link className={styles.logo} href='/' passHref>
+                                    <Image src={logo} alt="logo_agendaai" />
+                                </Link>
                                 <h1>Cadastro</h1>
                                 <form onSubmit={handleSubmit(onSubmit)} className={styles.formCadastro}>
                                     <div>
@@ -149,8 +153,13 @@ export default function Signup() {
                         </div>
                     </div>
                     <div className={styles.section1}>
-                        <h1>A um passo do seu agendamento</h1>
-                        <Image src={imagem}/>
+                        <div>
+                            <Link className={styles.logo} href='/' passHref>
+                                <Image src={logo} alt="logo_agendaai" />
+                            </Link>
+                            <h1>A um passo do seu agendamento</h1>
+                        </div>
+                        <Image src={imagem} />
                     </div>
                 </section>
             )}
