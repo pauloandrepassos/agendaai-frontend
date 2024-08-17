@@ -211,6 +211,7 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                                         </div>
                                     </li>
                                 ))}
+                                
                             </ul>
                             <h2>Preço total: <strong>R$ {calcularPrecoTotal()}</strong></h2>
                             <div className={styles.actions}>
