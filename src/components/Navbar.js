@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import styles from './Navbar.module.css';
@@ -6,7 +6,7 @@ import logo from '/public/logo-agendaai.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileAlt, faHamburger, faHome, faShoppingBasket, faSignOutAlt, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation"; // Adicione usePathname aqui
 import { useEffect, useState } from "react";
 import { apiUrl } from "@/config/api";
 
@@ -16,14 +16,15 @@ export default function Navbar() {
 
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
-    const [papel, setPapel] = useState(null)
+    const [papel, setPapel] = useState(null);
     const router = useRouter();
+    const pathname = usePathname(); // Obtenha a rota atual
 
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.dispatchEvent(new Event('storage')); // Dispara o evento para atualizar a navbar
         router.push("/inicio");
-    }
+    };
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -43,7 +44,7 @@ export default function Navbar() {
                     if (response.ok) {
                         const userData = await response.json();
                         setUser(userData);
-                        setPapel(userData.papel)
+                        setPapel(userData.papel);
                     } else {
                         console.error('Erro ao buscar dados do usuário.');
                     }
@@ -54,7 +55,7 @@ export default function Navbar() {
                 setToken(null);
                 setUser(null);
             }
-        }
+        };
 
         fetchUserData();
 
@@ -69,6 +70,8 @@ export default function Navbar() {
         };
     }, []);
 
+    const isActive = (route) => route === pathname; // Função para verificar se a rota está ativa
+
     return (
         <>
             <nav className={styles.navbar}>
@@ -79,33 +82,29 @@ export default function Navbar() {
                     </Link>
                     {token &&
                         <ul className={styles.list}>
-                            {/* itens de usuario gerente */}
                             {papel == 'gerente' &&
-                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                <li className={`${styles.item} ${styles.ocultar} ${isActive('/agendamentos') ? styles.active : styles.noActive}`}>
                                     <Link href='/agendamentos' passHref>
                                         <FontAwesomeIcon icon={faFileAlt} />
                                     </Link>
                                 </li>
                             }
-
-                            {/* itens de usuario cliente */}
                             {papel == 'cliente' &&
-                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                <li className={`${styles.item} ${styles.ocultar} ${isActive('/pedidos') ? styles.active : styles.noActive}`}>
                                     <Link href='/pedidos' passHref>
                                         <FontAwesomeIcon icon={faFileAlt} />
                                     </Link>
                                 </li>
                             }
                             {papel == 'cliente' &&
-                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                <li className={`${styles.item} ${styles.ocultar} ${isActive('/cesto-de-compras') ? styles.active : styles.noActive}`}>
                                     <Link href='/cesto-de-compras' passHref>
                                         <FontAwesomeIcon icon={faShoppingBasket} />
                                     </Link>
                                 </li>
                             }
-                            {/* itens de todos usuarios */}
                             {user?.imagem ? (
-                                <li className={`${`${styles.item} ${styles.ocultar}`}`}>
+                                <li className={`${styles.item} ${styles.ocultar} ${isActive('/perfil') ? styles.active : styles.noActive}`}>
                                     <Link href={`/perfil`}>
                                         <Image
                                             src={user.imagem}
@@ -117,7 +116,7 @@ export default function Navbar() {
                                     </Link>
                                 </li>
                             ) : (
-                                <li className={`${styles.item} ${styles.ocultar}`}>
+                                <li className={`${styles.item} ${styles.ocultar} ${isActive('/perfil') ? styles.active : styles.noActive}`}>
                                     <Link href='/perfil' passHref>
                                         <FontAwesomeIcon icon="user" />
                                     </Link>
@@ -137,21 +136,21 @@ export default function Navbar() {
                 <nav className={styles.bottonNavbar}>
                     <ul className={styles.list}>
                         {papel == 'cliente' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/home') ? styles.active : styles.noActive}`}>
                                 <Link href='/home' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>
                             </li>
                         }
                         {papel == 'cliente' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/cesto-de-compras') ? styles.active : styles.noActive}`}>
                                 <Link href='/cesto-de-compras' passHref>
                                     <FontAwesomeIcon icon={faShoppingBasket} />
                                 </Link>
                             </li>
                         }
                         {papel == 'cliente' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/pedidos') ? styles.active : styles.noActive}`}>
                                 <Link href='/pedidos' passHref>
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </Link>
@@ -159,23 +158,21 @@ export default function Navbar() {
                         }
 
                         {papel == 'gerente' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/') ? styles.active : styles.noActive}`}>
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>
                             </li>
                         }
-
                         {papel == 'gerente' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/') ? styles.active : styles.noActive}`}>
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHamburger} />
                                 </Link>
                             </li>
                         }
-
                         {papel == 'gerente' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/agendamentos') ? styles.active : styles.noActive}`}>
                                 <Link href='/agendamentos' passHref>
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </Link>
@@ -183,21 +180,21 @@ export default function Navbar() {
                         }
 
                         {papel == 'admin' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/') ? styles.active : styles.noActive}`}>
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>
                             </li>
                         }
                         {papel == 'admin' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/admin/solicitacoes-pendentes') ? styles.active : styles.noActive}`}>
                                 <Link href='/admin/solicitacoes-pendentes' passHref>
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </Link>
                             </li>
                         }
                         {papel == 'admin' &&
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/admin/usuarios') ? styles.active : styles.noActive}`}>
                                 <Link href='/admin/usuarios' passHref>
                                     <FontAwesomeIcon icon={faUsers} />
                                 </Link>
@@ -205,7 +202,7 @@ export default function Navbar() {
                         }
 
                         {user?.imagem ? (
-                            <li className={`${styles.item}`}>
+                            <li className={`${styles.item} ${isActive('/perfil') ? styles.active : styles.noActive}`}>
                                 <Link href={`/perfil`}>
                                     <Image
                                         src={user.imagem}
@@ -217,7 +214,7 @@ export default function Navbar() {
                                 </Link>
                             </li>
                         ) : (
-                            <li className={styles.item}>
+                            <li className={`${styles.item} ${isActive('/perfil') ? styles.active : styles.noActive}`}>
                                 <Link href='/perfil' passHref>
                                     <FontAwesomeIcon icon={faUser} />
                                 </Link>
@@ -226,7 +223,6 @@ export default function Navbar() {
                     </ul>
                 </nav>
             }
-
         </>
-    )
+    );
 }

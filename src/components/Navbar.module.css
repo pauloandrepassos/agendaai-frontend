@@ -34,7 +34,6 @@
 
 .navbar .item a,
 .navbar .item button {
-    color: #fff;
     text-decoration: none;
     font-size: 22px;
     background: none;
@@ -42,11 +41,23 @@
     cursor: pointer;
 }
 
+.navbar .item button {
+    color: #fff;
+}
+
 .navbar .item a:hover,
 .navbar .item button:hover {
     color: #eeff00;
     text-decoration: underline;
     transform: scale(1.2);
+}
+
+.active a {
+    color: #eeff00;
+}
+
+.noActive a {
+    color: #fff;
 }
 
 .logo {
@@ -122,7 +133,6 @@
     }
     
     .bottonNavbar .item a {
-        color: #fff;
         text-decoration: none;
         font-size: 40px;
         background: none;
@@ -131,11 +141,14 @@
         margin: auto;
         display: flex;
     }
+
+    .active {
+        border-bottom: 3px solid #eeff00;
+    }
     
     .bottonNavbar .item a:hover,
     .bottonNavbar .item button:hover {
         color: #eeff00;
         text-decoration: underline;
-        transform: scale(1.2);
     }
 }
