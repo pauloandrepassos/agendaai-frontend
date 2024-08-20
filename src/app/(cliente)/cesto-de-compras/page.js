@@ -14,11 +14,11 @@ import Toast from "@/components/Toast"
 
 export default function CestoDeComprasPage({ elementoTeste }) {
     const [loading, setLoading] = useState(null)
-    const [buscaloading, setBuscaLoading] = useState(null)
+    const [buscaloading, setBuscaLoading] = useState(true) // Inicializa como true para indicar que a busca está em andamento
     const [cesto, setCesto] = useState(null)
     const [erro, setErro] = useState(null)
-    const [modalVisible, setModalVisible] = useState(false)  // Controla a visibilidade da modal de remoção
-    const [pedidoModalVisible, setPedidoModalVisible] = useState(false)  // Controla a visibilidade da modal de confirmação do pedido
+    const [modalVisible, setModalVisible] = useState(false)
+    const [pedidoModalVisible, setPedidoModalVisible] = useState(false)
     const [modalCancelarPedidoVisible, setModalCancelarPedidoVisible] = useState(false)
     const [lancheSelecionado, setLancheSelecionado] = useState(null)
     const [showToast, setShowToast] = useState(false)
@@ -46,7 +46,6 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                     setToastType("success")
                     setShowToast(true)
 
-                    // Oculta o toast após 5 segundos
                     setTimeout(() => {
                         setShowToast(false)
                     }, 5000)
@@ -55,14 +54,12 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                     setToastType("success")
                     setShowToast(true)
 
-                    // Oculta o toast após 5 segundos
                     setTimeout(() => {
                         setShowToast(false)
                     }, 5000)
                 }
             }
 
-            // Fechar a conexão WebSocket quando o componente for desmontado
             return () => {
                 ws.close()
             }
@@ -82,6 +79,8 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                 setCesto(response.data)
             } catch (error) {
                 setErro(error.response ? error.response.data.error : 'Erro ao buscar cesto')
+            } finally {
+                setBuscaLoading(false) // Busca finalizada
             }
         }
         fetchCesto()
@@ -98,7 +97,7 @@ export default function CestoDeComprasPage({ elementoTeste }) {
 
     const removerItem = (idLanche) => {
         setLancheSelecionado(idLanche)
-        setModalVisible(true)  // Exibe a modal de confirmação de remoção
+        setModalVisible(true)
     }
 
     const handleRemoverConfirmado = async () => {
@@ -111,14 +110,13 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                 }
             })
 
-            // Remove o lanche da lista localmente
             setCesto(prevCesto => ({
                 ...prevCesto,
                 lanches: prevCesto.lanches.filter(lanche => lanche.idLanche !== lancheSelecionado)
             }))
 
-            setModalVisible(false)  // Fecha a modal
-            setLancheSelecionado(null)  // Reseta o lanche selecionado
+            setModalVisible(false)
+            setLancheSelecionado(null)
         } catch (error) {
             setErro(error.response ? error.response.data.error : 'Erro ao remover lanche')
         }
@@ -130,7 +128,7 @@ export default function CestoDeComprasPage({ elementoTeste }) {
     }
 
     const handleConfirmarPedido = () => {
-        setPedidoModalVisible(true)  // Exibe a modal de confirmação do pedido
+        setPedidoModalVisible(true)
     }
 
     const handlePedidoConfirmado = async () => {
@@ -150,8 +148,8 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                 }
             })
 
-            setPedidoModalVisible(false)  // Fecha a modal
-            router.push('/pedidos')  // Redireciona para uma página de confirmação do pedido
+            setPedidoModalVisible(false)
+            router.push('/pedidos')
         } catch (error) {
             setErro(error.response ? error.response.data.error : 'Erro ao confirmar o pedido')
         }
@@ -174,7 +172,7 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                     'token': token
                 }
             })
-    
+
             setCesto(null)
             router.push(`/home`)
         } catch (error) {
@@ -188,12 +186,11 @@ export default function CestoDeComprasPage({ elementoTeste }) {
 
     return (
         <PrivateRouter tipoUsuario={'cliente'}>
-            {loading ? (
+            {buscaloading ? (
                 <Loading />
             ) : (
                 <div className={styles.container}>
-                    {cesto ? (
-
+                    {cesto && cesto.lanches.length > 0 ? (
                         <div className={styles.content}>
                             <h1>Cesto de Compras</h1>
                             <h2>Lanchonete: {cesto.lanchoneteNome}</h2>
@@ -211,20 +208,20 @@ export default function CestoDeComprasPage({ elementoTeste }) {
                                         </div>
                                     </li>
                                 ))}
-                                
                             </ul>
                             <h2>Preço total: <strong>R$ {calcularPrecoTotal()}</strong></h2>
                             <div className={styles.actions}>
-                                <button onClick={() => router.push(`/lanchonete/${cesto.lanchoneteId}`)} className={styles.actionButton}>Adicionar mais itens</button>
-                                <button onClick={handleCancelarPedido} className={styles.actionButton}>Cancelar pedido</button>
-                                <button onClick={handleConfirmarPedido} className={styles.actionButton}>Confirmar pedido</button>
+                                <button onClick={() => router.push(`/lanchonete/${cesto.lanchoneteId}`)} className={`${styles.actionButton} ${styles.addMoreItems}`}>Adicionar mais itens</button>
+                                <button onClick={handleCancelarPedido} className={`${styles.actionButton} ${styles.cancelOrder}`}>Cancelar pedido</button>
+                                <button onClick={handleConfirmarPedido} className={`${styles.actionButton} ${styles.confirmOrder}`}>Confirmar pedido</button>
                             </div>
+
                         </div>
                     ) : (
                         <div className={styles.content}>
                             <div className={styles.emptyCesto}>
                                 <p>Não há lanches no seu cesto de compras.</p>
-                                <button onClick={() => router.push(`/home`)} className={styles.actionButton}>Adicionar lanches</button>
+                                <button onClick={() => router.push(`/home`)} className={`${styles.actionButton} ${styles.addMoreItems}`}>Adicionar lanches</button>
                             </div>
                         </div>
                     )}
@@ -245,15 +242,14 @@ export default function CestoDeComprasPage({ elementoTeste }) {
 
                     <ConfirmCancelModal
                         visible={modalCancelarPedidoVisible}
-                        message="Deseja cancelar esse pedido?"
+                        message="Tem certeza que deseja cancelar o pedido?"
                         onConfirm={handleCancelarPedidoOk}
                         onCancel={hancleCancelarCancelaPedido}
                     />
-                    {showToast && <Toast message={toastMessage} type={toastType} />}
-                
+
+                    {showToast && <Toast type={toastType} message={toastMessage} />}
                 </div>
             )}
-
         </PrivateRouter>
     )
 }

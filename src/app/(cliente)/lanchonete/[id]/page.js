@@ -16,6 +16,7 @@ import Toast from "@/components/Toast";
 export default function LanchontePage() {
     const [lanchonete, setLanchonete] = useState(null);
     const [lanches, setLanches] = useState([]);
+    const [isLoadingLanches, setIsLoadingLanches] = useState(true);
     const [erro, setErro] = useState(null);
     const [tipoSelecionado, setTipoSelecionado] = useState("Todos");
     const [horarioSelecionado, setHorarioSelecionado] = useState("Todos");
@@ -111,6 +112,7 @@ export default function LanchontePage() {
 
                 const data = await response.json();
                 setLanches(data);
+                setIsLoadingLanches(false);
             } catch (error) {
                 console.error(error.message);
             }
@@ -197,53 +199,57 @@ export default function LanchontePage() {
                             </div>
                         </div>
 
-                        <div className={styles.menuOpcoes}>
-                            <select value={tipoSelecionado} onChange={handleSelectTipo} className={styles.select}>
-                                <option value="Todos">Todos</option>
-                                <option value="Salgado">Salgado</option>
-                                <option value="Doce">Doce</option>
-                                <option value="Bolo">Bolo</option>
-                                <option value="Bebida">Bebida</option>
-                                <option value="Outro">Outros</option>
-                            </select>
+                        {!isLoadingLanches && (
+                            <>
+                                <div className={styles.menuOpcoes}>
+                                    <select value={tipoSelecionado} onChange={handleSelectTipo} className={styles.select}>
+                                        <option value="Todos">Todos</option>
+                                        <option value="Salgado">Salgado</option>
+                                        <option value="Doce">Doce</option>
+                                        <option value="Bolo">Bolo</option>
+                                        <option value="Bebida">Bebida</option>
+                                        <option value="Outro">Outros</option>
+                                    </select>
 
-                            <select value={horarioSelecionado} onChange={handleSelectHorario} className={styles.select}>
-                                <option value="Todos">Todos os horários</option>
-                                <option value="Manhã">Manhã</option>
-                                <option value="Tarde">Tarde</option>
-                                <option value="Noite">Noite</option>
-                            </select>
-                        </div>
+                                    <select value={horarioSelecionado} onChange={handleSelectHorario} className={styles.select}>
+                                        <option value="Todos">Todos os horários</option>
+                                        <option value="Manhã">Manhã</option>
+                                        <option value="Tarde">Tarde</option>
+                                        <option value="Noite">Noite</option>
+                                    </select>
+                                </div>
 
-                        <h3>Lanches Disponíveis</h3>
+                                <h3>Lanches Disponíveis</h3>
 
-                        <div className={styles.lanchesContainer}>
-                            {lanchesFiltrados.length > 0 ? (
-                                lanchesFiltrados.map((lanche) => (
-                                    <CardLanche
-                                        key={lanche.id}
-                                        id={lanche.id}
-                                        nome={lanche.nome}
-                                        imagem={lanche.imagem}
-                                        preco={lanche.preco}
-                                        url={`/lanchonete/${id}?lanche=${lanche.id}`}
-                                        onClick={() => handleCardClick(lanche.id)}
-                                    />
-                                ))
-                            ) : (
-                                <p>Nenhum lanche disponível.</p>
-                            )}
-                        </div>
+                                <div className={styles.lanchesContainer}>
+                                    {lanchesFiltrados.length > 0 ? (
+                                        lanchesFiltrados.map((lanche) => (
+                                            <CardLanche
+                                                key={lanche.id}
+                                                id={lanche.id}
+                                                nome={lanche.nome}
+                                                imagem={lanche.imagem}
+                                                preco={lanche.preco}
+                                                url={`/lanchonete/${id}?lanche=${lanche.id}`}
+                                                onClick={() => handleCardClick(lanche.id)}
+                                            />
+                                        ))
+                                    ) : (
+                                        <p>Nenhum lanche disponível.</p>
+                                    )}
+                                </div>
+                            </>
+                        )}
 
                         {lancheSelecionado && (
-                            <LancheModal lanche={lancheSelecionado} onClose={closeModal} showToastMessage={showToastMessage}/>
+                            <LancheModal lanche={lancheSelecionado} onClose={closeModal} showToastMessage={showToastMessage} />
                         )}
 
                     </div>
                 ) : (
                     <Loading />
                 )}
-                
+
                 {showToast && <Toast message={toastMessage} type={toastType} />}
             </div>
         </PrivateRouter>

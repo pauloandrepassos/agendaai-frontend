@@ -11,7 +11,6 @@
     max-width: 1200px;
     background-color: #FDF1CF;
     padding: 2em;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
@@ -108,7 +107,6 @@
 
 .actionButton {
     padding: 0.75em;
-    background-color: #FA680F;
     color: white;
     border: none;
     border-radius: 10px;
@@ -117,9 +115,33 @@
     text-align: center;
 }
 
-.actionButton:hover {
-    background-color: #FA240F;
+/* Cor para "Adicionar mais itens" */
+.addMoreItems {
+    background-color: #007BFF; /* Verde */
 }
+
+.addMoreItems:hover {
+    background-color: #0056b3;
+}
+
+/* Cor para "Cancelar pedido" */
+.cancelOrder {
+    background-color: #DC3545;  /* Vermelho */
+}
+
+.cancelOrder:hover {
+    background-color: #C82333;
+}
+
+/* Cor para "Confirmar pedido" */
+.confirmOrder {
+    background-color: #28A745;  /* Azul */
+}
+
+.confirmOrder:hover {
+    background-color: #218838;
+}
+
 
 .modalOverlay {
     position: fixed;
