@@ -30,13 +30,22 @@
     background-color: #FFF;
 }
 
+.content h1 {
+    font-size: 25px;
+}
+
 .pedido h2 {
     margin: 0 0 0.5em 0;
-    font-size: 1.5em;
+    font-size: 20px;
 }
 
 .pedido h3 {
     margin-top: 12px;
+    font-size: 16px;
+}
+
+.pedido p {
+    font-size: 14px;
 }
 
 .itens {
