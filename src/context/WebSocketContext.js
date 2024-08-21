@@ -1,15 +1,19 @@
 'use client';
 
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { wsApiUrl } from '@/config/api';
-import React, { useEffect, useState } from 'react';
-import Toast from '@/components/Toast'; 
-import { CestoProvider, useCesto } from '@/context/CestoContext'; // Importa o contexto
 
-export default function ClienteLayout({ children }) {
+const WebSocketContext = createContext();
+
+export function useWebSocket() {
+    return useContext(WebSocketContext);
+}
+
+export function WebSocketProvider({ children }) {
+    const [cesto, setCesto] = useState(null);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState("");
     const [toastType, setToastType] = useState("");
-    const { setCesto } = useCesto(); // Usar o contexto para atualizar o cesto
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -18,17 +22,17 @@ export default function ClienteLayout({ children }) {
 
             ws.onmessage = (event) => {
                 const message = JSON.parse(event.data);
-                if (message.type === 'pedidoRetirado') {
-                    setToastMessage("Seu pedido foi retirado!");
+                if (message.type === 'cestoAtualizado') {
+                    setCesto(message.cesto);
+                    setToastMessage("Lanche adicionado no cesto!");
                     setToastType("success");
                     setShowToast(true);
 
                     setTimeout(() => {
                         setShowToast(false);
                     }, 5000);
-                } else if (message.type === 'cestoAtualizado') {
-                    setCesto(message.cesto); // Atualiza o cesto de compras
-                    setToastMessage("Lanche adicionado no cesto!");
+                } else if (message.type === 'pedidoRetirado') {
+                    setToastMessage("Seu pedido foi retirado!");
                     setToastType("success");
                     setShowToast(true);
 
@@ -42,12 +46,11 @@ export default function ClienteLayout({ children }) {
                 ws.close();
             };
         }
-    }, [setCesto]);
+    }, []);
 
     return (
-            <div>
-                {children}
-                {showToast && <Toast type={toastType} message={toastMessage} />}
-            </div>
+        <WebSocketContext.Provider value={{ cesto, showToast, toastMessage, toastType }}>
+            {children}
+        </WebSocketContext.Provider>
     );
 }

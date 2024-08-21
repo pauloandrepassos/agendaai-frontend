@@ -158,7 +158,7 @@ export default function Navbar() {
                         }
 
                         {papel == 'gerente' &&
-                            <li className={`${styles.item} ${isActive('/') ? styles.active : styles.noActive}`}>
+                            <li className={`${styles.item} ${isActive('/dashboard') ? styles.active : styles.noActive}`}>
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>

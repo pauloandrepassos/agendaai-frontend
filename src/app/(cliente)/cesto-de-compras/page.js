@@ -11,11 +11,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import ConfirmCancelModal from "@/components/ConfirmCancelModal"
 import Toast from "@/components/Toast"
+import { useCesto } from "@/context/CestoContext"
 
-export default function CestoDeComprasPage({ elementoTeste }) {
+export default function CestoDeComprasPage() {
     const [loading, setLoading] = useState(null)
     const [buscaloading, setBuscaLoading] = useState(true) // Inicializa como true para indicar que a busca está em andamento
-    const [cesto, setCesto] = useState(null)
+    const {cesto, setCesto} = useCesto()
     const [erro, setErro] = useState(null)
     const [modalVisible, setModalVisible] = useState(false)
     const [pedidoModalVisible, setPedidoModalVisible] = useState(false)
@@ -26,45 +27,6 @@ export default function CestoDeComprasPage({ elementoTeste }) {
     const [toastType, setToastType] = useState("")
     const router = useRouter()
     const [token, setToken] = useState(null)
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedToken = localStorage.getItem('token')
-            setToken(storedToken)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (token) {
-            const ws = new WebSocket(`${wsApiUrl}?token=${token}`)
-
-            ws.onmessage = (event) => {
-                const message = JSON.parse(event.data)
-                if (message.type === 'cestoAtualizado') {
-                    setCesto(message.cesto)
-                    setToastMessage("Lanche adicionado no cesto!")
-                    setToastType("success")
-                    setShowToast(true)
-
-                    setTimeout(() => {
-                        setShowToast(false)
-                    }, 5000)
-                } else if (message.type === 'pedidoRetirado') {
-                    setToastMessage("Seu pedido foi retirado!")
-                    setToastType("success")
-                    setShowToast(true)
-
-                    setTimeout(() => {
-                        setShowToast(false)
-                    }, 5000)
-                }
-            }
-
-            return () => {
-                ws.close()
-            }
-        }
-    }, [token])
 
     useEffect(() => {
         const fetchCesto = async () => {
@@ -84,7 +46,7 @@ export default function CestoDeComprasPage({ elementoTeste }) {
             }
         }
         fetchCesto()
-    }, [])
+    }, [setCesto])
 
     const calcularPrecoTotal = () => {
         if (cesto && cesto.lanches) {

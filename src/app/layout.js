@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { CestoProvider } from "@/context/CestoContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,8 +18,10 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>
-        <Navbar />
-        {children}
+        <CestoProvider>
+          <Navbar />
+          {children}
+        </CestoProvider>
       </body>
     </html>
   );

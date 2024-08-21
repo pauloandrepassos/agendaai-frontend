@@ -28,39 +28,6 @@ export default function LanchontePage() {
     const { id } = useParams();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const [token, setToken] = useState(null)
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const storedToken = localStorage.getItem('token')
-            setToken(storedToken)
-        }
-    }, [])
-
-    useEffect(() => {
-        if (token) {
-            const ws = new WebSocket(`${wsApiUrl}?token=${token}`)
-
-            ws.onmessage = (event) => {
-                const message = JSON.parse(event.data)
-                if (message.type === 'pedidoRetirado') {
-                    setToastMessage("Seu pedido foi retirado!")
-                    setToastType("success")
-                    setShowToast(true)
-
-                    // Oculta o toast após 5 segundos
-                    setTimeout(() => {
-                        setShowToast(false)
-                    }, 5000)
-                }
-            }
-
-            // Fechar a conexão WebSocket quando o componente for desmontado
-            return () => {
-                ws.close()
-            }
-        }
-    }, [token])
 
     const showToastMessage = (message, type = 'success') => {
         setToastMessage(message);
