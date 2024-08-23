@@ -53,7 +53,6 @@ export default function PedidosPage() {
                                                     <img src={item.imagem} alt={item.nome} className={styles.itemImagem} />
                                                     <div className={styles.itemDetalhes}>
                                                         <h3>{item.nome}</h3>
-                                                        <p>{item.descricao}</p>
                                                         <p>Quantidade: {item.quantidade}</p>
                                                         <p>Preço Unitário: R${item.precoUnitario.toFixed(2)}</p>
                                                     </div>
