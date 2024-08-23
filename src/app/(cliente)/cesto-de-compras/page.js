@@ -8,7 +8,7 @@ import { apiUrl, wsApiUrl } from "@/config/api"
 import Loading from "@/components/Loading"
 import { useRouter } from "next/navigation"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons"
 import ConfirmCancelModal from "@/components/ConfirmCancelModal"
 import Toast from "@/components/Toast"
 import { useCesto } from "@/context/CestoContext"
@@ -60,6 +60,9 @@ export default function CestoDeComprasPage() {
     const removerItem = (idLanche) => {
         setLancheSelecionado(idLanche)
         setModalVisible(true)
+    }
+
+    const editarItem = (idLanche) => {
     }
 
     const handleRemoverConfirmado = async () => {
@@ -156,17 +159,24 @@ export default function CestoDeComprasPage() {
                         <div className={styles.content}>
                             <h1>Cesto de Compras</h1>
                             <h2>Lanchonete: {cesto.lanchoneteNome}</h2>
-                            <ul>
+                            <ul className={styles.cesto}>
                                 {cesto.lanches.map((lanche) => (
                                     <li key={lanche.idLanche} className={styles.lancheItem}>
-                                        <button className={styles.removeButton} onClick={() => removerItem(lanche.idLanche)}>
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        </button>
                                         <img src={lanche.imagem} alt={lanche.nome} className={styles.lancheImagem} />
-                                        <div>
+                                        <div className={styles.info}>
                                             <h3>{lanche.nome}</h3>
                                             <p>Quantidade: {lanche.quantidade}</p>
                                             <p>Preço: <strong>R$ {lanche.preco.toFixed(2)}</strong></p>
+                                        </div>
+                                        <div className={styles.lancheItemActions}>
+                                            <button className={styles.removeButton} onClick={() => removerItem(lanche.idLanche)}>
+                                                <p>Remover</p>
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            </button>
+                                            <button className={styles.editButton} onClick={() => editarItem(lanche.idLanche)}>
+                                                <p>Editar</p>
+                                                <FontAwesomeIcon icon={faEdit} />
+                                            </button>
                                         </div>
                                     </li>
                                 ))}

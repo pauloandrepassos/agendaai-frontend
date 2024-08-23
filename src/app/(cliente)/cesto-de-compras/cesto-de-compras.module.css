@@ -29,6 +29,14 @@
     text-align: center;
 }
 
+.cesto {
+    background-color: #FFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
+}
 
 .emptyCesto {
     text-align: center;
@@ -44,40 +52,21 @@
 
 .content ul {
     list-style-type: none;
-    padding: 0;
 }
 
 .lancheItem {
     display: flex;
     align-items: center;
-    background-color: #FFF;
-    margin-bottom: 1em;
     padding: 1em;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease;
-    border: 1px solid #ddd;
     position: relative;
+    border-bottom: 1px solid #ddd;
 }
 
-.removeButton {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    background: #FA240F;
+.lancheItem:last-child {
     border: none;
-    font-size: 20px;
-    cursor: pointer;
-    color: #FFF;
-    padding: 8px;
-    border-radius: 5px;
-
 }
 
-.lancheItem:hover {
-    box-shadow: 3px 3px 2px #656053;
-    border: 1px solid #FA240F;
-}
 
 .lancheImagem {
     width: 80px;
@@ -85,6 +74,10 @@
     border-radius: 8px;
     margin-right: 1em;
     object-fit: cover;
+}
+
+.lancheItem .info {
+    width: 100%;
 }
 
 .lancheItem h3 {
@@ -97,6 +90,42 @@
     margin: 0.2em 0;
     font-size: 1.2em;
     color: #777;
+}
+
+.lancheItemActions {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.lancheItemActions button {
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #FFF;
+    padding: 8px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.lancheItemActions button p {
+    color: #FFF;
+    font-size: 15px;
+}
+
+.removeButton {
+    background: #FA240F;
+}
+
+.editButton {
+    background-color: grey;
 }
 
 .actions {
@@ -117,7 +146,8 @@
 
 /* Cor para "Adicionar mais itens" */
 .addMoreItems {
-    background-color: #007BFF; /* Verde */
+    background-color: #007BFF;
+    /* Verde */
 }
 
 .addMoreItems:hover {
@@ -126,7 +156,8 @@
 
 /* Cor para "Cancelar pedido" */
 .cancelOrder {
-    background-color: #DC3545;  /* Vermelho */
+    background-color: #DC3545;
+    /* Vermelho */
 }
 
 .cancelOrder:hover {
@@ -135,7 +166,8 @@
 
 /* Cor para "Confirmar pedido" */
 .confirmOrder {
-    background-color: #28A745;  /* Azul */
+    background-color: #28A745;
+    /* Azul */
 }
 
 .confirmOrder:hover {
@@ -170,7 +202,8 @@
     margin-top: 20px;
 }
 
-.confirmButton, .cancelButton {
+.confirmButton,
+.cancelButton {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -201,8 +234,13 @@
     .lancheItem p {
         font-size: 1em;
     }
+
     .actions {
         flex-direction: column;
         gap: 16px;
+    }
+
+    .lancheItemActions button p {
+        display: none;
     }
 }
