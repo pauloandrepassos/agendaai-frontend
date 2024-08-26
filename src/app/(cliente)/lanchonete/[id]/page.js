@@ -32,7 +32,9 @@ export default function LanchontePage() {
         setToastMessage(message);
         setToastType(type);
         setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000); // Exibe o toast por 3 segundos
+
+        const duration = type === 'error' ? 5000 : 3000;
+        setTimeout(() => setShowToast(false), duration);
     };
 
     useEffect(() => {

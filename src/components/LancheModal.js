@@ -43,7 +43,11 @@ export default function LancheModal({ lanche, onClose, showToastMessage }) {
                 showToastMessage('Erro ao adicionar lanche ao cesto.', 'error')
             }
         } catch (error) {
-            showToastMessage('Erro na requisição: ' + error.message, 'error')
+            if (error.response && error.response.data && error.response.data.error === 'Não é possível adicionar itens de uma lanchonete diferente no mesmo cesto.') {
+                showToastMessage('Não é possível adicionar itens de uma lanchonete diferente no mesmo cesto. Verifique seu cesto de compras.', 'error')
+            } else {
+                showToastMessage('Erro na requisição: ' + error.message, 'error')
+            }
         }
 
         const id = setTimeout(() => {
