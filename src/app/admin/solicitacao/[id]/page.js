@@ -1,6 +1,5 @@
 // pages/admin/solicitacao/[id].js
 "use client"
-import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { apiUrl } from '@/config/api';
 import styles from './solicitacao.module.css';

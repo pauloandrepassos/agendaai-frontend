@@ -1,6 +1,4 @@
 "use client"
-
-import Navbar from "@/components/Navbar";
 import styles from '../auth.module.css'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'

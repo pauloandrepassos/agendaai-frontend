@@ -1,7 +1,6 @@
 "use client"
 import PrivateRouter from "@/components/PrivateRouter";
 import styles from './agendamentos.module.css'
-import Navbar from "@/components/Navbar";
 import { useEffect, useRef, useState } from "react";
 import { apiRailway, apiUrl } from "@/config/api";
 import axios from "axios";

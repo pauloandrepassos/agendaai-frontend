@@ -2,7 +2,6 @@
 // pages/admin/pending-approvals.js
 import { useEffect, useState } from 'react';
 import styles from './solicitacoes-pendentes.module.css';
-import Navbar from "@/components/Navbar";
 import { apiUrl } from '@/config/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';

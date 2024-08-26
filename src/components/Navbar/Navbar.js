@@ -140,6 +140,7 @@ export default function Navbar() {
                                 <Link href='/home' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>
+                                <p>INÍCIO</p>
                             </li>
                         }
                         {papel == 'cliente' &&
@@ -147,6 +148,7 @@ export default function Navbar() {
                                 <Link href='/cesto-de-compras' passHref>
                                     <FontAwesomeIcon icon={faShoppingBasket} />
                                 </Link>
+                                <p>CESTO</p>
                             </li>
                         }
                         {papel == 'cliente' &&
@@ -154,6 +156,7 @@ export default function Navbar() {
                                 <Link href='/pedidos' passHref>
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </Link>
+                                <p>PEDIDOS</p>
                             </li>
                         }
 
@@ -162,6 +165,7 @@ export default function Navbar() {
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>
+                                <p>INÍCIO</p>
                             </li>
                         }
                         {papel == 'gerente' &&
@@ -169,6 +173,7 @@ export default function Navbar() {
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHamburger} />
                                 </Link>
+                                <p>LANCHES</p>
                             </li>
                         }
                         {papel == 'gerente' &&
@@ -176,6 +181,7 @@ export default function Navbar() {
                                 <Link href='/agendamentos' passHref>
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </Link>
+                                <p>AGENDAMENTOS</p>
                             </li>
                         }
 
@@ -184,6 +190,7 @@ export default function Navbar() {
                                 <Link href='/' passHref>
                                     <FontAwesomeIcon icon={faHome} />
                                 </Link>
+                                <p>INÍCIO</p>
                             </li>
                         }
                         {papel == 'admin' &&
@@ -191,6 +198,7 @@ export default function Navbar() {
                                 <Link href='/admin/solicitacoes-pendentes' passHref>
                                     <FontAwesomeIcon icon={faFileAlt} />
                                 </Link>
+                                <p>SOLICITAÇÕES</p>
                             </li>
                         }
                         {papel == 'admin' &&
@@ -198,6 +206,7 @@ export default function Navbar() {
                                 <Link href='/admin/usuarios' passHref>
                                     <FontAwesomeIcon icon={faUsers} />
                                 </Link>
+                                <p>USUÁRIOS</p>
                             </li>
                         }
 
@@ -207,17 +216,19 @@ export default function Navbar() {
                                     <Image
                                         src={user.imagem}
                                         alt="User Image"
-                                        width={55}
-                                        height={55}
+                                        width={45}
+                                        height={45}
                                         className={styles.userImage}
                                     />
                                 </Link>
+                                <p>PERFIL</p>
                             </li>
                         ) : (
                             <li className={`${styles.item} ${isActive('/perfil') ? styles.active : styles.noActive}`}>
                                 <Link href='/perfil' passHref>
                                     <FontAwesomeIcon icon={faUser} />
                                 </Link>
+                                <p>PERFIL</p>
                             </li>
                         )}
                     </ul>

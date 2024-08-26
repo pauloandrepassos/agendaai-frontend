@@ -1,7 +1,6 @@
 "use client";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
-import Navbar from "@/components/Navbar";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState, useEffect } from "react";

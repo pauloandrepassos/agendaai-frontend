@@ -1,5 +1,4 @@
 "use client";
-import Navbar from "@/components/Navbar";
 import PrivateRouter from "@/components/PrivateRouter";
 import { useEffect, useState } from "react";
 import styles from './lanchonete.module.css';

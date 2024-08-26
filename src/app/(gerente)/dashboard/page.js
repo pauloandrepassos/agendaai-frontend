@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState } from 'react';
 import styles from './dashboard.module.css';
-import Navbar from "@/components/Navbar";
 import PrivateRouter from '@/components/PrivateRouter';
 import Image from 'next/image';
 import Link from "next/link";

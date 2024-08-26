@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import PrivateRouter from "@/components/PrivateRouter";
 import styles from './lanche.module.css';
-import Navbar from "@/components/Navbar";
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { apiUrl } from '@/config/api';

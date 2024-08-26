@@ -2,7 +2,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Navbar from "@/components/Navbar";
 import styles from "./horario-funcionamento.module.css";
 import { apiUrl } from "@/config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

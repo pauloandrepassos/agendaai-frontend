@@ -1,7 +1,6 @@
 "use client"
 import PrivateRouter from "@/components/PrivateRouter"
 import styles from './cesto-de-compras.module.css'
-import Navbar from "@/components/Navbar"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import { apiUrl, wsApiUrl } from "@/config/api"

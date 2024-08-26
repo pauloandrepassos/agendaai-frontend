@@ -1,6 +1,5 @@
 "use client"
 
-import Navbar from '@/components/Navbar'
 import styles from '../auth.module.css'
 import { useState } from 'react'
 import Loading from '@/components/Loading'

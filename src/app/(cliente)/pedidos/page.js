@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react'
 import PrivateRouter from "@/components/PrivateRouter"
 import styles from './pedidos.module.css'
-import Navbar from "@/components/Navbar"
 import axios from 'axios'
 import { apiUrl } from '@/config/api'
 import Loading from '@/components/Loading'

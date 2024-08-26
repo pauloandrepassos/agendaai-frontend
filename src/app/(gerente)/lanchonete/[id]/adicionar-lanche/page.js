@@ -3,7 +3,6 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import PrivateRouter from "@/components/PrivateRouter";
-import Navbar from "@/components/Navbar";
 import CloudinaryUpload from "@/components/CloudinaryUpload";
 import styles from './adicionar-lanche.module.css';
 import { apiUrl } from "@/config/api";

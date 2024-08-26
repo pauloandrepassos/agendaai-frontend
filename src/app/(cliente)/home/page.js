@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
 import PrivateRouter from "@/components/PrivateRouter";
 import axios from "axios";
 import styles from './home.module.css';

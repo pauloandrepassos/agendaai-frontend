@@ -1,7 +1,6 @@
 "use client"
 import PrivateRouter from "@/components/PrivateRouter";
 import styles from './usuarios.module.css';
-import Navbar from "@/components/Navbar";
 import { useEffect, useState } from "react";
 import { apiUrl } from "@/config/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
