@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './admin.module.css';
-import Navbar from "@/components/Navbar";
 import PrivateRouter from '@/components/PrivateRouter';
 import Link from 'next/link';
 import { apiUrl } from '@/config/api';
