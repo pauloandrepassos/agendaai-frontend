@@ -15,6 +15,7 @@ export default function LanchoneteAgendamentosPage() {
     const [showModal, setShowModal] = useState(false);
     const [selectedPedido, setSelectedPedido] = useState(null);
     const [loading, setLoading] = useState(false)
+    const [ loadingMessage, setLoadingMessage ] = useState(null)
     const hasFetched = useRef(false);
 
     useEffect(() => {
@@ -46,6 +47,7 @@ export default function LanchoneteAgendamentosPage() {
         if (!selectedPedido) return;
         setShowModal(false);
         setLoading(true)
+        setLoadingMessage('Confirmando retirada do pedido...')
 
         try {
             const token = localStorage.getItem('token');
@@ -73,7 +75,7 @@ export default function LanchoneteAgendamentosPage() {
     return (
         <PrivateRouter tipoUsuario={"gerente"}>
             {loading ? (
-                <Loading />
+                <Loading message={loadingMessage && loadingMessage}/>
             ) : (
                 <div className={styles.container}>
                 <div className={styles.content}>
