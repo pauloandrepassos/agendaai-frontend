@@ -8,19 +8,21 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import ConfirmCancelModal from "@/components/ConfirmCancelModal";
+import Loading from "@/components/Loading";
 
 export default function LanchoneteAgendamentosPage() {
     const [pedidos, setPedidos] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedPedido, setSelectedPedido] = useState(null);
-    const hasFetched = useRef(false); // Usando useRef para rastrear se a requisição já foi feita
+    const [loading, setLoading] = useState(false)
+    const hasFetched = useRef(false);
 
     useEffect(() => {
         const fetchPedidos = async () => {
-            if (hasFetched.current) return; // Se a requisição já foi feita, retorna imediatamente
+            if (hasFetched.current) return;
 
             try {
-                const token = localStorage.getItem('token'); // Obtenha o token do localStorage ou de onde estiver armazenado
+                const token = localStorage.getItem('token');
 
                 const response = await axios.get(`${apiUrl}/lanchonete-pedidos`, {
                     headers: {
@@ -42,6 +44,8 @@ export default function LanchoneteAgendamentosPage() {
 
     const handleConfirmRetirada = async () => {
         if (!selectedPedido) return;
+        setShowModal(false);
+        setLoading(true)
 
         try {
             const token = localStorage.getItem('token');
@@ -61,14 +65,17 @@ export default function LanchoneteAgendamentosPage() {
         } catch (error) {
             console.error('Erro ao confirmar a retirada do pedido:', error);
         } finally {
-            setShowModal(false);
             setSelectedPedido(null);
+            setLoading(false)
         }
     };
 
     return (
         <PrivateRouter tipoUsuario={"gerente"}>
-            <div className={styles.container}>
+            {loading ? (
+                <Loading />
+            ) : (
+                <div className={styles.container}>
                 <div className={styles.content}>
                     <h1>Agendamentos:</h1>
                     {pedidos && (
@@ -133,6 +140,7 @@ export default function LanchoneteAgendamentosPage() {
                     )}
                 </div>
             </div>
+            )}
             <ConfirmCancelModal
                 visible={showModal}
                 message="Você confirma a retirada deste pedido?"
