@@ -33,7 +33,7 @@ export default function LanchontePage() {
         setToastType(type);
         setShowToast(true);
 
-        const duration = type === 'error' ? 5000 : 3000;
+        const duration = type === 'error' ? 5000 : 5000;
         setTimeout(() => setShowToast(false), duration);
     };
 
@@ -218,7 +218,7 @@ export default function LanchontePage() {
                     <Loading />
                 )}
 
-                {showToast && <Toast message={toastMessage} type={toastType} />}
+                {showToast && <Toast message={toastMessage} type={toastType} link={`/cesto-de-compras`}/>}
             </div>
         </PrivateRouter>
     );

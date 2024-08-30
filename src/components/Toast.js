@@ -1,9 +1,13 @@
+import Link from 'next/link';
 import styles from './Toast.module.css';
 
-const Toast = ({ message, type }) => {
+const Toast = ({ message, type, link }) => {
   return (
     <div className={`${styles.toast} ${styles[type]}`}>
-      {message}
+      <p>{message}</p>
+      {link && (
+        <Link className={styles.link} href={link}>Ver cesto</Link>
+      )}
     </div>
   );
 };
