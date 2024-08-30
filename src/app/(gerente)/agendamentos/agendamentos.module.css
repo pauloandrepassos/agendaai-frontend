@@ -23,7 +23,7 @@
 }
 
 .pedido {
-    background-color: #FFF7E1;
+    background-color: #FFF;
     display: flex;
     flex-direction: column;
     padding: 1em;
@@ -33,13 +33,13 @@
 
 .row {
     display: flex;
+    flex-direction: column;
     gap: 20px;
 }
 
 .userInfo {
     display: flex;
     align-items: center;
-    flex-direction: column;
     text-align: center;
     gap: 1em;
 }
@@ -50,8 +50,8 @@
 }
 
 .noUserImage {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);

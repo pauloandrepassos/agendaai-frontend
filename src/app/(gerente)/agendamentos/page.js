@@ -90,8 +90,8 @@ export default function LanchoneteAgendamentosPage() {
                                                 <Image
                                                     src={pedido.imagemUsuario}
                                                     alt="User image"
-                                                    width={100}
-                                                    height={100}
+                                                    width={60}
+                                                    height={60}
                                                     className={styles.userImage}
                                                 />
                                             ) : (
@@ -109,12 +109,13 @@ export default function LanchoneteAgendamentosPage() {
                                                 <div key={item.id} className={styles.item}>
                                                     <Image
                                                         src={item.imagem}
-                                                        width={60}
-                                                        height={60}className={styles.itemImage}
+                                                        width={70}
+                                                        height={70}className={styles.itemImage}
                                                     />
                                                     <div>
                                                         <h4>{item.nome}</h4>
                                                         <p>Quantidade: {item.quantidade}</p>
+                                                        <p>Preço unitário: R${item.precoUnitario.toFixed(2)}</p>
                                                         <p>Total: R${item.total.toFixed(2)}</p>
                                                     </div>
                                                 </div>
