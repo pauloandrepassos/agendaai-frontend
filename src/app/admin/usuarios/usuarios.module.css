@@ -11,22 +11,62 @@
     height: 100%;
     background-color: #FDF1CF;
     padding: 2em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.content h1 {
+    text-align: center;
+}
+
+.sortOptions {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5em;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.sortOptions label {
+    margin-right: 10px;
+    font-size: 1.1em;
+    color: #333;
+}
+
+.sortOptions select {
+    padding: 0.5em 1em;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    background-color: #FFF7E1;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+    font-family: inherit;
+}
+
+
+
+.usersList {
+    background-color: #FFF;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 5px 10px;
+    margin-bottom: 10px;
 }
 
 .userProfile {
     display: flex;
     align-items: center;
-    background-color: #FFF7E1;
-    border-radius: 8px;
-    padding: 1.5em;
-    margin-bottom: 1.5em;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-    border: 1px solid #ddd;
+    padding: 0.5em;
+    transition: transform 0.2s ease;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #ddd;
+}
+.userProfile:last-child {
+    border-bottom: 1px solid transparent;
 }
 
 .userProfile:hover {
-    box-shadow: 3px 3px 2px #656053;
     border: 1px solid #FA240F;
 }
 
@@ -35,15 +75,15 @@
 }
 
 .userImage {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 60px;
+    font-size: 40px;
     color: rgba(0, 0, 0, 0.3);
     background-color: #F0F0F0;
 }
@@ -64,8 +104,9 @@
 }
 
 .userInfo h1 {
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
+    text-align: start;
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
     color: #333;
 }
 
