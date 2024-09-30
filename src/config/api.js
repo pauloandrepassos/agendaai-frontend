@@ -8,5 +8,4 @@ export const wsApiUrl = "wss://agendaai-api.up.railway.app";
 
 // URL da API (Railway)
 //export const apiRailway = "http://localhost:3001";
-export const apiRailway = "https://agendaai-api.up.railway.app";
 export const apiRailway = "https://api-agendaai.vercel.app"; //"https://agendaai-api.up.railway.app";
