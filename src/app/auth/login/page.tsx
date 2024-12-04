@@ -57,7 +57,8 @@ export default function Login() {
             className="min-h-screen flex items-center justify-center bg-cover bg-center"
             style={{ backgroundImage: "url('/background.jpg')" }}
         >
-            <div className="bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-md">
+            <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-md">
+                <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
                 <h1 className={`text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}>Login</h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
                     <Input
@@ -72,14 +73,14 @@ export default function Login() {
                         type="password"
                         {...register("password")}
                     />
-                    <div className="flex gap-1 text-sm font-bold">
+                    <div className="flex gap-1 text-sm font-bold pl-3">
                         <p>Esqueceu a sua senha?</p>
                         <a href="/"><p className="text-[#FF0000]">Clique aqui</p></a>
                     </div>
                     <SubmitButton text="Entrar" isLoading={loading} />
                     <div className="text-center text-sm font-bold">
                         <p>Não possui conta ainda?</p>
-                        <a href="/"><p className="text-[#FF0000]">Cadastre-se aqui</p></a>
+                        <a href="/auth/register"><p className="text-[#FF0000]">Cadastre-se aqui</p></a>
                     </div>
                 </form>
                 {message && <p className="mt-4 text-red-500">{message}</p>}
