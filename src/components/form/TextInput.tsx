@@ -1,29 +1,36 @@
-import React from 'react';
+import React from "react";
 
 interface InputProps {
-    label: string
-    placeholder: string
-    type?: string
-    value?: string
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+    label: string;
+    placeholder: string;
+    type?: string;
+    value?: string;
+    error?: string; // Propriedade para mensagem de erro
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(({ label, placeholder, type = 'text', value, ...rest }: InputProps, ref) => {
-    return (
-        <div className="flex flex-col space-y-2">
-            <label className="text-sm font-medium">{label}</label>
-            <input
-                ref={ref}
-                type={type}
-                value={value}
-                placeholder={placeholder}
-                className="h-12 p-3 focus:outline-none focus:ring-2 focus:ring-[#FA240F] rounded-full shadow-[4px_4px_0_0_#FA240F]"
-                {...rest}
-            />
-        </div>
-    )
-})
+const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    ({ label, placeholder, type = "text", value, error, ...rest }: InputProps, ref) => {
+        return (
+            <div className="flex flex-col space-y-2">
+                <label className="text-sm font-medium pl-3">{label}</label>
+                <input
+                    ref={ref}
+                    type={type}
+                    value={value}
+                    placeholder={placeholder}
+                    className={`h-12 p-3 rounded-full shadow-[4px_4px_0_0_#FA240F] focus:outline-none focus:ring-2 ${error
+                            ? "focus:ring-red-500 border border-red-500"
+                            : "focus:ring-[#FA240F]"
+                        }`}
+                    {...rest}
+                />
+                <p className="text-sm text-red-500 pl-3">{error && <strong>{error}</strong>}</p>
+            </div>
+        );
+    }
+);
 
-Input.displayName = 'Input' 
+Input.displayName = "Input";
 
-export default Input
+export default Input;
