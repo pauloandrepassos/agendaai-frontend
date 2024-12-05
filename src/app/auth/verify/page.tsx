@@ -5,12 +5,12 @@ import Loading from "@/components/form/LoadingSpinner"
 import Modal from "@/components/Modal"
 import axios from "axios"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 
-export default function Verify() {
+function VerifyContent() {
     const router = useRouter()
     const searchParams = useSearchParams()
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useState<boolean>(true)
     const [message, setMessage] = useState<string | null>(null)
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
@@ -19,7 +19,7 @@ export default function Verify() {
         const email = searchParams.get("email")
 
         if (!token || !email) {
-            router.push('/auth/login')
+            router.push("/auth/login")
             return
         }
 
@@ -36,21 +36,40 @@ export default function Verify() {
                 if (error.response && error.response.data.message) {
                     setMessage(error.response.data.message)
                 } else {
-                    setMessage(`Erro ao verificar o usuário. Tente novamente. ${token} | ${email}`)
+                    setMessage(`Erro ao verificar o usuário. Tente novamente.`)
                 }
             })
     }, [searchParams, router])
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loading />
+            </div>
+        )
+    }
+
     return (
-        <div className="flex items-center justify-center h-screen">
-            <Loading />
-            <Modal
-                title={message || "Erro ao verificar email..."}
-                isVisible={isModalVisible}
-                onClose={() => {
-                    router.push("/auth/login")
-                }}
-            />
-        </div>
+        <Modal
+            title={message || "Erro ao verificar email..."}
+            isVisible={isModalVisible}
+            onClose={() => {
+                router.push("/auth/login")
+            }}
+        />
+    )
+}
+
+export default function Verify() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex items-center justify-center h-screen">
+                    <Loading />
+                </div>
+            }
+        >
+            <VerifyContent />
+        </Suspense>
     )
 }
