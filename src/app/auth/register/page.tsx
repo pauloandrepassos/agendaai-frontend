@@ -113,16 +113,6 @@ export default function Login() {
             className="min-h-screen flex items-center justify-center bg-cover bg-center"
             style={{ backgroundImage: "url('/background.jpg')" }}
         >
-            <Modal
-                title="Cadastro Enviado com Sucesso"
-                message="Para finalizar o seu cadastro, verifique seu email e acesse o link enviado."
-                isVisible={isModalVisible}
-                onClose={() => {
-                    setIsModalVisible(false)
-                    //router.push("/auth/login")
-                }}
-
-            />
             <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-3xl">
                 <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
                 <h1
@@ -131,6 +121,16 @@ export default function Login() {
                     Cadastro
                 </h1>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                    <Modal
+                        title="Cadastro Enviado com Sucesso"
+                        message="Para finalizar o seu cadastro, verifique seu email e acesse o link enviado."
+                        isVisible={isModalVisible}
+                        onClose={() => {
+                            setIsModalVisible(false)
+                            //router.push("/auth/login")
+                        }}
+
+                    />
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <Input
                             label="Nome"
