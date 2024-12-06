@@ -1,5 +1,5 @@
 "use client"
-import { apiUrl } from "@/app/config/api";
+import { apiUrl } from "@/config/api";
 import SubmitButton from "@/components/form/SubmitButton";
 import Input from "@/components/form/TextInput";
 import axios from "axios";

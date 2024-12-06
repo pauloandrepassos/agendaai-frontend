@@ -1,6 +1,6 @@
 "use client"
 
-import { apiUrl } from "@/app/config/api"
+import { apiUrl } from "@/config/api"
 import Loading from "@/components/form/LoadingSpinner"
 import Modal from "@/components/Modal"
 import axios from "axios"
