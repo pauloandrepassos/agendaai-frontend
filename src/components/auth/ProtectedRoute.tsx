@@ -1,27 +1,25 @@
-"use client";
-import { useAuth } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Modal from "../Modal";
-import { error } from "console";
+"use client"
+import { useAuth } from "@/hooks/useAuth"
+import { useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import Modal from "../Modal"
+import { error } from "console"
 
 interface ProtectedRouteProps {
-    allowedTypes: string[];
-    children: React.ReactNode;
+    allowedTypes: string[]
+    children: React.ReactNode
 }
 
 export default function ProtectedRoute({ allowedTypes, children }: ProtectedRouteProps) {
-    const router = useRouter();
-    const { isAuthenticated, userType, error } = useAuth();
-    const [isClient, setIsClient] = useState(false);
+    const router = useRouter()
+    const { isAuthenticated, userType, error } = useAuth()
+    const [isClient, setIsClient] = useState(false)
 
-    // Define o estado como true após o componente ser montado no cliente.
     useEffect(() => {
-        setIsClient(true);
-    }, []);
+        setIsClient(true)
+    }, [])
 
-    // Retorna nulo durante a renderização no servidor.
-    if (!isClient) return null;
+    if (!isClient) return null
 
     if (!isAuthenticated) {
         if (error === "token_expired") {
@@ -51,9 +49,9 @@ export default function ProtectedRoute({ allowedTypes, children }: ProtectedRout
     }
 
     if (!userType || !allowedTypes.includes(userType)) {
-        router.push("/");
-        return null;
+        router.push("/")
+        return null
     }
 
-    return <>{children}</>;
+    return <>{children}</>
 }
