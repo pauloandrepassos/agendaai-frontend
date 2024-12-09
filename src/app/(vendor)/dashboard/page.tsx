@@ -58,7 +58,7 @@ export default function VendorDashboard() {
     <div className="max-w-7xl mx-auto p-6">
       {establishment && (
         <section className="bg-[#FFFFF0] shadow-[4px_4px_0_0_#FA240F] rounded-2xl overflow-hidden mb-5">
-          <div className="relative">
+          <div>
             <img
               src={establishment.background_image}
               alt={`${establishment.name} Background`}
@@ -67,7 +67,7 @@ export default function VendorDashboard() {
             <img
               src={establishment.logo}
               alt={`${establishment.name} Logo`}
-              className="h-[80px] rounded-full absolute bottom-[-40px] left-[5%] sm:left-[10%]"
+              className="h-[80px] rounded-full mt-[-40px] ml-[5%] sm:ml-[10%]"
             />
           </div>
           <h1
