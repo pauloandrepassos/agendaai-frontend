@@ -1,18 +1,37 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { useState } from "react";
+import { faBell, faHome, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function Navbar() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+    const router = useRouter()
 
     const toggleMenu = () => {
-        setIsMenuOpen((prev) => !prev);
-    };
+        setIsMenuOpen((prev) => !prev)
+    }
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen((prev) => !prev)
+    }
+
+    const closeDropdown = () => {
+        setIsDropdownOpen(false)
+    }
+
+    const logout = () => {
+        localStorage.removeItem("token")
+        router.push('auth/login')
+    }
 
     return (
         <nav className="bg-[#FF0000] p-4">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
+                {/* Logo e botão para dispositivos móveis */}
                 <div className="flex items-center">
                     <button
                         onClick={toggleMenu}
@@ -39,11 +58,31 @@ export default function Navbar() {
                 </div>
 
                 {/* Menu para dispositivos móveis */}
-                <div className="block lg:hidden">
-                </div>
+                <div className="block lg:hidden"></div>
 
-                {/* Menu para dispositivos maiores */}
-                <div className="hidden lg:flex space-x-6">
+                <div className="relative flex items-center">
+                    <button
+                        onClick={toggleDropdown}
+                        className="text-[#FF0000] text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-white sm:hover:bg-yellow-400 focus:outline-none"
+                    >
+                        <FontAwesomeIcon icon={faUser} />
+                    </button>
+                    {isDropdownOpen && (
+                        <div className="absolute right-0 mt-[170px] w-48 bg-white shadow-lg rounded-md overflow-hidden z-50" onMouseLeave={closeDropdown}>
+                            <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <FontAwesomeIcon className="mr-3" icon={faUser} />
+                                Perfil
+                            </Link>
+                            <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <FontAwesomeIcon className="mr-3" icon={faBell} />
+                                Notificações
+                            </Link>
+                            <button onClick={logout} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                <FontAwesomeIcon className="mr-3" icon={faSignOut} />
+                                Sair
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -73,5 +112,5 @@ export default function Navbar() {
                 </div>
             </div>
         </nav>
-    );
+    )
 }
