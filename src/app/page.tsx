@@ -15,6 +15,8 @@ export default function Start() {
     if (isAuthenticated) {
       if (userType === "client") {
         router.push("/home")
+      } else if (userType === "vendor") {
+        router.push("/dashboard")
       }
     } else {
       router.push("/start")
