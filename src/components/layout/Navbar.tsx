@@ -29,8 +29,8 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="bg-[#FF0000] p-4">
-            <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <nav className="bg-[#FF0000]">
+            <div className="max-w-7xl mx-auto flex items-center justify-between p-3">
                 {/* Logo e botão para dispositivos móveis */}
                 <div className="flex items-center">
                     <button

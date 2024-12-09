@@ -55,14 +55,14 @@ export default function VendorDashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-3">
       {establishment && (
         <section className="bg-[#FFFFF0] shadow-[4px_4px_0_0_#FA240F] rounded-2xl overflow-hidden mb-5">
           <div>
             <img
               src={establishment.background_image}
               alt={`${establishment.name} Background`}
-              className="max-h-[150px] w-full object-cover"
+              className="max-h-[100px] sm:max-h-[150px] w-full object-cover"
             />
             <img
               src={establishment.logo}
@@ -71,7 +71,7 @@ export default function VendorDashboard() {
             />
           </div>
           <h1
-            className={`text-4xl text-[#FF0000] text-center font-bold my-4 ${lobster.className}`}
+            className={`text-4xl text-[#FF0000] text-center font-bold mb-4 mt-[-20px] ${lobster.className}`}
           >
             {establishment.name}
           </h1>
