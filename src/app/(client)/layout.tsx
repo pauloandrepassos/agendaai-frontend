@@ -1,14 +1,15 @@
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import Navbar from "@/components/layout/Navbar";
 
 export default function ClientLayout({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) {
-    return (
-        <div>
-            <Navbar />
-            {children}
-        </div>
-    )
-  }
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <ProtectedRoute allowedTypes={['client']}>
+      <Navbar />
+      {children}
+    </ProtectedRoute>
+  )
+}
