@@ -5,6 +5,9 @@ import Summary from "@/components/establishment/Summary"
 import { Lobster } from "next/font/google"
 import { apiUrl } from "@/config/api"
 import Loading from "@/components/form/LoadingSpinner"
+import RedirectLink from "@/components/form/RedirectLink"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBurger, faCalendar, faCalendarAlt, faChartLine, faClipboardList } from "@fortawesome/free-solid-svg-icons"
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" })
 
@@ -47,7 +50,11 @@ export default function VendorDashboard() {
   }, [])
 
   if (loading) {
-    return <Loading />
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    )
   }
 
   if (error) {
@@ -57,7 +64,7 @@ export default function VendorDashboard() {
   return (
     <div className="max-w-7xl mx-auto p-3">
       {establishment && (
-        <section className="bg-[#FFFFF0] shadow-[4px_4px_0_0_#FA240F] rounded-2xl overflow-hidden mb-5">
+        <section className="bg-[#FFFFF0] shadow-[2px_3px_2px_0_#FF0000] rounded-2xl overflow-hidden mb-5">
           <div>
             <img
               src={establishment.background_image}
@@ -78,7 +85,29 @@ export default function VendorDashboard() {
         </section>
       )}
 
+      <section className="mb-5">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+          <RedirectLink href="/">
+            <FontAwesomeIcon icon={faBurger} className="text-2xl" />
+            <span>Produtos</span>
+          </RedirectLink>
+          <RedirectLink href="/">
+            <FontAwesomeIcon icon={faCalendarAlt} className="text-2xl" />
+            <span>Cardápio</span>
+          </RedirectLink>
+          <RedirectLink href="/">
+            <FontAwesomeIcon icon={faClipboardList} className="text-2xl" />
+            <span>Agendamentos</span>
+          </RedirectLink>
+          <RedirectLink href="/">
+            <FontAwesomeIcon icon={faChartLine} className="text-2xl" />
+            <span>Relatórios</span>
+          </RedirectLink>
+        </div>
+      </section>
+
       <Summary />
+
     </div>
   )
 }
