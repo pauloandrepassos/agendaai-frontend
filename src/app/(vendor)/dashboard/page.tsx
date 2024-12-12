@@ -8,6 +8,7 @@ import Loading from "@/components/form/LoadingSpinner"
 import RedirectLink from "@/components/form/RedirectLink"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faBurger, faCalendar, faCalendarAlt, faChartLine, faClipboardList } from "@fortawesome/free-solid-svg-icons"
+import ContentCard from "@/components/layout/ContentCard"
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" })
 
@@ -64,7 +65,7 @@ export default function VendorDashboard() {
   return (
     <div className="max-w-7xl mx-auto p-3">
       {establishment && (
-        <section className="bg-[#FFFFF0] shadow-[2px_3px_2px_0_#FF0000] rounded-2xl overflow-hidden mb-5">
+        <ContentCard className="overflow-hidden mb-5">
           <div>
             <img
               src={establishment.background_image}
@@ -82,7 +83,7 @@ export default function VendorDashboard() {
           >
             {establishment.name}
           </h1>
-        </section>
+        </ContentCard>
       )}
 
       <section className="mb-5">
