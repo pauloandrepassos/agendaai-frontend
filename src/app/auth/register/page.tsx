@@ -109,83 +109,78 @@ export default function Login() {
 
 
     return (
-        <div
-            className="min-h-screen flex items-center justify-center bg-cover bg-center"
-            style={{ backgroundImage: "url('/background.jpg')" }}
-        >
-            <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-3xl">
-                <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
-                <h1
-                    className={`text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}
-                >
-                    Cadastro
-                </h1>
-                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-                    <Modal
-                        title="Cadastro Enviado com Sucesso"
-                        message="Para finalizar o seu cadastro, verifique seu email e acesse o link enviado."
-                        isVisible={isModalVisible}
-                        onClose={() => {
-                            setIsModalVisible(false)
-                            //router.push("/auth/login")
-                        }}
+        <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-3xl">
+            <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
+            <h1
+                className={`text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}
+            >
+                Cadastro
+            </h1>
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                <Modal
+                    title="Cadastro Enviado com Sucesso"
+                    message="Para finalizar o seu cadastro, verifique seu email e acesse o link enviado."
+                    isVisible={isModalVisible}
+                    onClose={() => {
+                        setIsModalVisible(false)
+                        //router.push("/auth/login")
+                    }}
 
+                />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <Input
+                        label="Nome"
+                        placeholder="Digite seu nome"
+                        type="text"
+                        {...register("name")}
+                        error={errors.name?.message}
                     />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <Input
-                            label="Nome"
-                            placeholder="Digite seu nome"
-                            type="text"
-                            {...register("name")}
-                            error={errors.name?.message}
-                        />
-                        <Input
-                            label="Email"
-                            placeholder="Digite seu email"
-                            type="email"
-                            {...register("email")}
-                            error={errors.email?.message}
-                        />
-                        <Input
-                            label="CPF"
-                            placeholder="Digite seu CPF"
-                            type="text"
-                            {...register("cpf")}
-                            onChange={handleCPFChange}
-                            error={errors.cpf?.message}
-                        />
-                        <Input
-                            label="Telefone"
-                            placeholder="Digite seu telefone"
-                            type="text"
-                            {...register("phone")}
-                            error={errors.phone?.message}
-                        />
-                        <Input
-                            label="Senha"
-                            placeholder="Digite sua senha"
-                            type="password"
-                            {...register("password")}
-                            error={errors.password?.message}
-                        />
-                        <Input
-                            label="Confirmar senha"
-                            placeholder="Digite sua senha novamente"
-                            type="password"
-                            {...register("confirmPassword")}
-                            error={errors.confirmPassword?.message}
-                        />
-                    </div>
-                    <SubmitButton text="Entrar" isLoading={loading} />
-                    <div className="text-center text-sm font-bold gap-1 pl">
-                        <p>Já possui conta?</p>
-                        <a href="/auth/login">
-                            <p className="text-[#FF0000]">Entre aqui</p>
-                        </a>
-                    </div>
-                </form>
-                {message && <p className="mt-4 text-red-500">{message}</p>}
-            </div>
+                    <Input
+                        label="Email"
+                        placeholder="Digite seu email"
+                        type="email"
+                        {...register("email")}
+                        error={errors.email?.message}
+                    />
+                    <Input
+                        label="CPF"
+                        placeholder="Digite seu CPF"
+                        type="text"
+                        {...register("cpf")}
+                        onChange={handleCPFChange}
+                        error={errors.cpf?.message}
+                    />
+                    <Input
+                        label="Telefone"
+                        placeholder="Digite seu telefone"
+                        type="text"
+                        {...register("phone")}
+                        error={errors.phone?.message}
+                    />
+                    <Input
+                        label="Senha"
+                        placeholder="Digite sua senha"
+                        type="password"
+                        {...register("password")}
+                        error={errors.password?.message}
+                    />
+                    <Input
+                        label="Confirmar senha"
+                        placeholder="Digite sua senha novamente"
+                        type="password"
+                        {...register("confirmPassword")}
+                        error={errors.confirmPassword?.message}
+                    />
+                </div>
+                <SubmitButton text="Entrar" isLoading={loading} />
+                <div className="text-center text-sm font-bold gap-1 pl">
+                    <p>Já possui conta?</p>
+                    <a href="/auth/login">
+                        <p className="text-[#FF0000]">Entre aqui</p>
+                    </a>
+                </div>
+            </form>
+            {message && <p className="mt-4 text-red-500">{message}</p>}
         </div>
     );
 }
