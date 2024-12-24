@@ -13,7 +13,7 @@ export default function RedirectLink({ href, className, children }: RedirectLink
     return (
       <Link
         href={href}
-        className={`bg-[#FFFFF0] shadow-[2px_2px_2px_0_#FF0000] border-2 border-[#FF0000] hover:bg-[#FF0000] hover:text-white rounded-lg py-3 px-4 flex gap-2 ${className || ""}`}
+        className={`bg-[#FFFFF0] shadow-[2px_2px_2px_0_#FF0000] border-2 border-[#FF0000] hover:bg-[#FF0000] hover:text-white rounded-lg py-1 px-4 flex gap-2 ${className || ""}`}
       >
         {children}
       </Link>

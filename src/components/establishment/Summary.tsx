@@ -3,9 +3,13 @@ import ContentCard from "../layout/ContentCard";
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" })
 
-export default function Summary() {
+interface SummaryProps {
+    className?: string
+}
+
+export default function Summary({className}:SummaryProps) {
     return (
-        <section className="mb-10">
+        <section className={`${className}`}>
             <h2 className={`text-2xl text-center font-semibold text-gray-800 mb-4 ${lobster.className}`}>Resumo do Dia</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
