@@ -10,7 +10,7 @@ interface ContentCardProps {
 export default function ContentCard({ className, children }: ContentCardProps) {
     return (
         <div
-            className={`bg-[#FFFFF0] shadow-[2px_3px_2px_0_#FF5800] rounded-2xl ${className || ""}`}
+            className={`bg-[#FFFFF0] shadow-[2px_3px_0_0_#FF5800] rounded-2xl ${className || ""}`}
         >
             {children}
         </div>

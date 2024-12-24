@@ -13,19 +13,19 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ label, placeholder, type = "text", value, error, ...rest }: InputProps, ref) => {
         return (
             <div className="flex flex-col space-y-2">
-                <label className="text-sm font-medium pl-3">{label}</label>
+                <label className="text-sm font-medium">{label}</label>
                 <input
                     ref={ref}
                     type={type}
                     value={value}
                     placeholder={placeholder}
-                    className={`h-12 p-3 rounded-full shadow-[4px_4px_0_0_#FA240F] focus:outline-none focus:ring-2 ${error
+                    className={`h-12 p-3 rounded-xl shadow-[2px_3px_0_0_#FF5800] focus:outline-none focus:ring-2 ${error
                             ? "focus:ring-red-500 border border-red-500"
                             : "focus:ring-[#FA240F]"
                         }`}
                     {...rest}
                 />
-                <p className="text-sm text-red-500 pl-3">{error && <strong>{error}</strong>}</p>
+                <p className="text-sm text-red-500">{error && <strong>{error}</strong>}</p>
             </div>
         );
     }

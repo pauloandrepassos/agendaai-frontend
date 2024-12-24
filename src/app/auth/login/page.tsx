@@ -69,7 +69,7 @@ export default function Login() {
                     type="password"
                     {...register("password")}
                 />
-                <div className="flex gap-1 text-sm font-bold pl-3">
+                <div className="flex gap-1 text-sm font-bold">
                     <p>Esqueceu a sua senha?</p>
                     <a href="/auth/forgot-password"><p className="text-[#FF0000]">Clique aqui</p></a>
                 </div>
