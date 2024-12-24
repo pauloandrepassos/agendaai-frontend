@@ -7,16 +7,29 @@ import { apiUrl } from "@/config/api"
 import Loading from "@/components/form/LoadingSpinner"
 import RedirectLink from "@/components/form/RedirectLink"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBurger, faCalendar, faCalendarAlt, faChartLine, faClipboardList } from "@fortawesome/free-solid-svg-icons"
+import { faBurger, faCalendar, faCalendarAlt, faChartLine, faClipboardList, faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import ContentCard from "@/components/layout/ContentCard"
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" })
+
+interface Address {
+  id: number;
+  zip_code: string;
+  state: string;
+  city: string;
+  neighborhood: string;
+  street: string;
+  number: string;
+  complement: string;
+  reference_point: string;
+}
 
 interface Establishment {
   id: number
   name: string
   logo: string
   background_image: string
+  address: Address
 }
 
 export default function VendorDashboard() {
@@ -56,59 +69,78 @@ export default function VendorDashboard() {
         <Loading />
       </div>
     )
+  } else if (establishment) {
+    return (
+      <div className="max-w-7xl mx-auto p-3">
+        <div className="">
+          <ContentCard className="overflow-hidden mb-5">
+            <div>
+              <img
+                src={establishment.background_image}
+                alt={`${establishment.name} Background`}
+                className="max-h-[100px] sm:max-h-[150px] w-full object-cover"
+              />
+              <img
+                src={establishment.logo}
+                alt={`${establishment.name} Logo`}
+                className="h-[80px] rounded-full mt-[-40px] ml-[5%] sm:ml-[10%]"
+              />
+            </div>
+            <h1
+              className={`text-4xl text-[#FF0000] text-center font-bold mt-[-20px]`}
+            >
+              {establishment.name}
+            </h1>
+            <div className="grid grid-cols-2 my-4">
+              <div className="text-center flex items-center justify-center gap-2">
+                <FontAwesomeIcon icon={faLocationDot} />
+                <div>
+                  <p>
+                    {establishment.address.street}, {establishment.address.number}
+                  </p>
+                  <p>
+                    {establishment.address.neighborhood}, {establishment.address.city} - {establishment.address.state}
+                  </p>
+                  <p>CEP: {establishment.address.zip_code}</p>
+                </div>
+              </div>
+              <div>
+                <p>Descrição:</p>
+                <p>Um espaço acolhedor com opções de lanches variados, bebidas refrescantes e um ambiente perfeito para relaxar ou se reunir com amigos</p>
+              </div>
+            </div>
+          </ContentCard>
+        </div>
+
+        <section className="mb-5">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            <RedirectLink href="/product">
+              <FontAwesomeIcon icon={faBurger} className="text-2xl" />
+              <span>Produtos</span>
+            </RedirectLink>
+            <RedirectLink href="/">
+              <FontAwesomeIcon icon={faCalendarAlt} className="text-2xl" />
+              <span>Cardápio</span>
+            </RedirectLink>
+            <RedirectLink href="/">
+              <FontAwesomeIcon icon={faClipboardList} className="text-2xl" />
+              <span>Agendamentos</span>
+            </RedirectLink>
+            <RedirectLink href="/">
+              <FontAwesomeIcon icon={faChartLine} className="text-2xl" />
+              <span>Relatórios</span>
+            </RedirectLink>
+          </div>
+        </section>
+
+        <Summary />
+
+      </div>
+
+    )
   }
 
   if (error) {
     return <div className="text-center mt-10 text-red-500">{error}</div>
   }
-
-  return (
-    <div className="max-w-7xl mx-auto p-3">
-      {establishment && (
-        <ContentCard className="overflow-hidden mb-5">
-          <div>
-            <img
-              src={establishment.background_image}
-              alt={`${establishment.name} Background`}
-              className="max-h-[100px] sm:max-h-[150px] w-full object-cover"
-            />
-            <img
-              src={establishment.logo}
-              alt={`${establishment.name} Logo`}
-              className="h-[80px] rounded-full mt-[-40px] ml-[5%] sm:ml-[10%]"
-            />
-          </div>
-          <h1
-            className={`text-4xl text-[#FF0000] text-center font-bold mb-4 mt-[-20px] ${lobster.className}`}
-          >
-            {establishment.name}
-          </h1>
-        </ContentCard>
-      )}
-
-      <section className="mb-5">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-          <RedirectLink href="/">
-            <FontAwesomeIcon icon={faBurger} className="text-2xl" />
-            <span>Produtos</span>
-          </RedirectLink>
-          <RedirectLink href="/">
-            <FontAwesomeIcon icon={faCalendarAlt} className="text-2xl" />
-            <span>Cardápio</span>
-          </RedirectLink>
-          <RedirectLink href="/">
-            <FontAwesomeIcon icon={faClipboardList} className="text-2xl" />
-            <span>Agendamentos</span>
-          </RedirectLink>
-          <RedirectLink href="/">
-            <FontAwesomeIcon icon={faChartLine} className="text-2xl" />
-            <span>Relatórios</span>
-          </RedirectLink>
-        </div>
-      </section>
-
-      <Summary />
-
-    </div>
-  )
 }
