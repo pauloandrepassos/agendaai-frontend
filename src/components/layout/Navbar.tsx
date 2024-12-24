@@ -87,7 +87,7 @@ export default function Navbar() {
             </div>
 
             {/* Menu lateral para dispositivos móveis */}
-            <div className={`fixed inset-0 bg-black bg-opacity-50 lg:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleMenu}>
+            <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 lg:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleMenu}>
                 <div className={`fixed left-0 top-0 w-2/3 h-full bg-[#FF0000] p-4 transition-transform duration-300 ${isMenuOpen ? "transform translate-x-0" : "transform -translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
                     <div className="flex justify-end">
                         <button className="text-white text-2xl mb-8" onClick={toggleMenu}>

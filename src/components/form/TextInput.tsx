@@ -7,18 +7,21 @@ interface InputProps {
     value?: string;
     error?: string; // Propriedade para mensagem de erro
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    className?: string
+    disabled?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ label, placeholder, type = "text", value, error, ...rest }: InputProps, ref) => {
+    ({ label, placeholder, type = "text", value, error, className, disabled, ...rest }: InputProps, ref) => {
         return (
-            <div className="flex flex-col space-y-2">
+            <div className={`flex flex-col space-y-2 ${className}`}>
                 <label className="text-sm font-medium">{label}</label>
                 <input
                     ref={ref}
                     type={type}
                     value={value}
                     placeholder={placeholder}
+                    disabled={disabled}
                     className={`h-12 p-3 rounded-xl shadow-[2px_3px_0_0_#FF5800] focus:outline-none focus:ring-2 ${error
                             ? "focus:ring-red-500 border border-red-500"
                             : "focus:ring-[#FA240F]"
