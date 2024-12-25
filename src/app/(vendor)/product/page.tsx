@@ -18,6 +18,7 @@ interface Product {
     image: string
     description: string
     price: number
+    category: string
 }
 
 export default function Products() {
@@ -80,7 +81,7 @@ export default function Products() {
                     isVisible={isModalVisible}
                     onClose={() => setIsModalVisible(false)}
                     mode={modalMode}
-                    //initialData={currentProduct}
+                    initialData={currentProduct}
                     onSave={() => {
                         // Refetch products
                     }}
@@ -92,15 +93,31 @@ export default function Products() {
                 ) : (
                     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
                         {products.map((product) => (
+                            <div
+                            key={product.id}
+                            className="cursor-pointer"
+                            onClick={() => {
+                                setModalMode("edit");
+                                setCurrentProduct(product);
+                                setIsModalVisible(true);
+                            }}
+                        >
                             <ContentCard className="overflow-hidden text-center">
-                                <img src={product.image} alt={`Imagem de um ${product.name}`} className="w-full h-24 object-cover" />
+                                <img
+                                    src={product.image}
+                                    alt={`Imagem de um ${product.name}`}
+                                    className="w-full h-24 object-cover"
+                                />
                                 <h1>{product.name}</h1>
                                 <p>R$ {product.price}</p>
                             </ContentCard>
+                        </div>
+                        
                         ))}
                     </div>
                 )}
             </div>
+
         </div>
     )
 }

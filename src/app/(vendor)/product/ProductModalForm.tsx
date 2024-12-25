@@ -28,7 +28,7 @@ interface Product {
     description: string
     price: number
     category: string
-    image?: FileList | null
+    image?: string | FileList | null
 }
 
 const validationSchema = yup.object().shape({
