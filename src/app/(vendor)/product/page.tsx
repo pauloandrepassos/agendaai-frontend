@@ -97,7 +97,7 @@ export default function Products() {
                             key={product.id}
                             className="cursor-pointer"
                             onClick={() => {
-                                setModalMode("edit");
+                                setModalMode("view");
                                 setCurrentProduct(product);
                                 setIsModalVisible(true);
                             }}
