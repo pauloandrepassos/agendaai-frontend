@@ -106,8 +106,18 @@ export default function Products() {
                 }}
                 mode={modalMode}
                 initialData={currentProduct}
-                onSave={() => {
-                    // Refetch products
+                onSave={async () => {
+                    try {
+                        const response = await fetch(`${apiUrl}/products/by-vendor`, {
+                            headers: {
+                                token: `${localStorage.getItem("token")}`,
+                            },
+                        });
+                        const data = await response.json();
+                        setProducts(data)
+                    } catch (error) {
+                        console.error("Erro ao atualizar os produtos:", error);
+                    }
                 }}
             />
             <div className="">
@@ -130,14 +140,16 @@ export default function Products() {
                                             setIsModalVisible(true);
                                         }}
                                     >
-                                        <ContentCard className="overflow-hidden text-center">
+                                        <ContentCard className="overflow-hidden">
                                             <img
                                                 src={product.image}
                                                 alt={`Imagem de um ${product.name}`}
                                                 className="w-full h-24 object-cover"
                                             />
-                                            <h1>{product.name}</h1>
-                                            <p>R$ {product.price}</p>
+                                            <div className="p-2">
+                                                <h1 className="text-lg">{product.name}</h1>
+                                                <p className="text-end font-bold">R$ {product.price}</p>
+                                            </div>
                                         </ContentCard>
                                     </div>
                                 ))}

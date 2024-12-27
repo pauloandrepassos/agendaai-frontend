@@ -20,6 +20,7 @@ interface ProductFormModalProps {
     mode: "add" | "edit" | "view";
     initialData?: Product | null;
     onSave?: () => void;
+    closeAllModals?: () => void;
 }
 
 interface Product {
@@ -114,7 +115,7 @@ export default function ProductFormModal({
             setLoading(false);
             onSave?.();
             setIsModalVisible(true);
-            if(mode === 'edit') {
+            if (mode === 'edit') {
                 setMessage("Produto editado com sucesso!");
             } else if (mode === 'add') {
                 setMessage("Produto criado com sucesso!");
@@ -134,12 +135,19 @@ export default function ProductFormModal({
             setValue("price", initialData.price);
             setValue("category", initialData.category);
             setValue("image", initialData.image || null);
+        } else {
+            setValue("id", undefined);
+            setValue("name", "");
+            setValue("description", "");
+            setValue("price", 0);
+            setValue("category", "");
+            setValue("image", null);
         }
     }, [initialData, setValue])
 
-    const closeModal = async () => {
-        onclose
+    const closeModal = () => {
         setIsModalVisible(false)
+        onClose()
     }
 
     if (!isVisible) return null;
@@ -149,7 +157,8 @@ export default function ProductFormModal({
             <Modal
                 title={message || ""}
                 isVisible={isModalVisible}
-                onClose={mode === "add" ? onClose : closeModal}
+                onClose={closeModal}
+                onGlobalClose={closeModal}
             />
             <ContentCard className="p-6 w-11/12 max-w-2xl shadow-lg flex flex-col gap-4">
                 <h2 className="text-xl font-bold text-center">
@@ -232,7 +241,9 @@ export default function ProductFormModal({
                     />
                     <div className="flex justify-end gap-2">
                         <SecondaryButton onClick={onClose}>Cancelar</SecondaryButton>
-                        {mode !== "view" && <SubmitButton text="Salvar" isLoading={loading} />}
+                        {mode !== "view" && (
+                            <SubmitButton text={mode === "edit" ? "Salvar" : "Adicionar"} isLoading={loading} />
+                        )}
                     </div>
                 </form>
             </ContentCard>
