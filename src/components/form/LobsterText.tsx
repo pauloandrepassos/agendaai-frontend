@@ -12,8 +12,8 @@ interface LobsterTextProps {
 
 export default function LobsterText({ children, className = "" }: LobsterTextProps) {
   return (
-    <span className={`${lobster.className} ${className}`}>
-      {children}
-    </span>
+    <div className={`${lobster.className} ${className}`}>
+      <span>{children}</span>
+    </div>
   )
 }

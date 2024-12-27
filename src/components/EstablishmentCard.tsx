@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ContentCard from "./layout/ContentCard";
 
 interface EstablishmentCardProps {
     establishment: {
@@ -18,13 +19,13 @@ interface EstablishmentCardProps {
 
 export default function EstablishmentCard({ establishment }: EstablishmentCardProps) {
     return (
-        <Link href={`/`}>
-            <div className="bg-white rounded-lg overflow-hidden p-4 shadow-[3px_4px_0_0_#FA240F] transform transition duration-300 hover:scale-105">
+        <Link href={`/establishment/${establishment.id}`}>
+            <ContentCard className="overflow-hidden">
                 <div className="flex items-center gap-4">
                     <img
                         src={establishment.logo}
                         alt={`${establishment.name} logo`}
-                        className="w-28 h-28 object-cover rounded-full"
+                        className="w-28 h-28 object-cover"
                     />
                     <div>
                         <h2 className="text-lg text-center font-semibold">{establishment.name}</h2>
@@ -34,7 +35,7 @@ export default function EstablishmentCard({ establishment }: EstablishmentCardPr
                         </p>
                     </div>
                 </div>
-            </div>
+            </ContentCard>
         </Link>
     );
 }

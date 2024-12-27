@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import ProtectedRoute from "@/components/auth/ProtectedRoute"
 import { apiUrl } from "@/config/api"
 import EstablishmentCard from "@/components/EstablishmentCard"
+import SearchBar from "@/components/form/SearchBar"
+import LobsterText from "@/components/form/LobsterText"
+import Loading from "@/components/form/LoadingSpinner"
 
 interface Establishment {
   id: number
@@ -71,7 +74,11 @@ export default function Home() {
   }, [])
 
   if (loading) {
-    return <div className="text-center mt-10">Carregando...</div>
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loading />
+      </div>
+    )
   }
 
   if (error) {
@@ -80,7 +87,10 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-6">Estabelecimentos</h1>
+      <div className="mb-5">
+        <SearchBar placeholder="Pesquisar..."/>
+      </div>
+      <LobsterText className="text-2xl mb-3">Estabelecimentos disponíveis:</LobsterText>
       {establishments.length === 0 ? (
         <p className="text-center">Nenhum estabelecimento encontrado.</p>
       ) : (
