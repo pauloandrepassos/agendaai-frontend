@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import ContentCard from "./ContentCard"
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -68,20 +69,22 @@ export default function Navbar() {
                         <FontAwesomeIcon icon={faUser} />
                     </button>
                     {isDropdownOpen && (
-                        <div className="absolute right-0 mt-[170px] w-48 bg-white shadow-lg rounded-md overflow-hidden z-50" onMouseLeave={closeDropdown}>
-                            <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                <FontAwesomeIcon className="mr-3" icon={faUser} />
-                                Perfil
-                            </Link>
-                            <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                <FontAwesomeIcon className="mr-3" icon={faBell} />
-                                Notificações
-                            </Link>
-                            <button onClick={logout} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                <FontAwesomeIcon className="mr-3" icon={faSignOut} />
-                                Sair
-                            </button>
-                        </div>
+                        <ContentCard className="absolute right-0 mt-[170px] w-48 bg-white overflow-hidden z-50">
+                            <div className="" onMouseLeave={closeDropdown}>
+                                <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <FontAwesomeIcon className="mr-3" icon={faUser} />
+                                    Perfil
+                                </Link>
+                                <Link href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <FontAwesomeIcon className="mr-3" icon={faBell} />
+                                    Notificações
+                                </Link>
+                                <button onClick={logout} className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <FontAwesomeIcon className="mr-3" icon={faSignOut} />
+                                    Sair
+                                </button>
+                            </div>
+                        </ContentCard>
                     )}
                 </div>
             </div>
