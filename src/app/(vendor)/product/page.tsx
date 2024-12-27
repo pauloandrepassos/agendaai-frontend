@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductFormModal from "./ProductModalForm";
+import LobsterText from "@/components/form/LobsterText";
 
 interface Product {
     id: number
@@ -19,6 +20,17 @@ interface Product {
     description: string
     price: number
     category: string
+}
+
+const categoryLabels: Record<string, string> = {
+    savoury: "Salgado",
+    sweet: "Doce",
+    cake: "Bolo",
+    pie: "Torta",
+    drink: "Bebida",
+    meal: "Marmita",
+    breakfast: "Café da Manhã",
+    others: "Outros",
 }
 
 export default function Products() {
@@ -54,6 +66,14 @@ export default function Products() {
         setIsModalVisible(true);
     }
 
+    const groupedProducts = products.reduce((acc, product) => {
+        if (!acc[product.category]) {
+            acc[product.category] = [];
+        }
+        acc[product.category].push(product);
+        return acc;
+    }, {} as Record<string, Product[]>);
+
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -64,7 +84,7 @@ export default function Products() {
 
     return (
         <div className="max-w-7xl mx-auto p-4">
-            <div className="flex items-center gap-6 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] sm:gap-4 items-center mb-5">
                 <SearchBar placeholder="Pesquisar produto..." className="w-full" />
                 <div className="grid grid-cols-2 gap-6">
                     <SecondaryButton className="px-10 flex gap-1 items-center justify-center">
@@ -76,48 +96,54 @@ export default function Products() {
                         Adicionar
                     </PrimaryButton>
                 </div>
-
-                <ProductFormModal
-                    isVisible={isModalVisible}
-                    onClose={() => {
-                        setCurrentProduct(null)
-                        setIsModalVisible(false)
-                    }}
-                    mode={modalMode}
-                    initialData={currentProduct}
-                    onSave={() => {
-                        // Refetch products
-                    }}
-                />
             </div>
+
+            <ProductFormModal
+                isVisible={isModalVisible}
+                onClose={() => {
+                    setCurrentProduct(null)
+                    setIsModalVisible(false)
+                }}
+                mode={modalMode}
+                initialData={currentProduct}
+                onSave={() => {
+                    // Refetch products
+                }}
+            />
             <div className="">
-                {products.length === 0 ? (
+                {Object.keys(groupedProducts).length === 0 ? (
                     <p>Nenhum produto cadastrado</p>
                 ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
-                        {products.map((product) => (
-                            <div
-                            key={product.id}
-                            className="cursor-pointer"
-                            onClick={() => {
-                                setModalMode("edit");
-                                setCurrentProduct(product);
-                                setIsModalVisible(true);
-                            }}
-                        >
-                            <ContentCard className="overflow-hidden text-center">
-                                <img
-                                    src={product.image}
-                                    alt={`Imagem de um ${product.name}`}
-                                    className="w-full h-24 object-cover"
-                                />
-                                <h1>{product.name}</h1>
-                                <p>R$ {product.price}</p>
-                            </ContentCard>
+                    Object.entries(groupedProducts).map(([category, products]) => (
+                        <div key={category} className="mb-8">
+                            <div className="bg-gradient-to-tr from-[#FF5800] to-[#FF0000] p-2 rounded-xl mb-2">
+                                <LobsterText className="text-2xl text-white">{categoryLabels[category] || category}</LobsterText>
+                            </div>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
+                                {products.map((product) => (
+                                    <div
+                                        key={product.id}
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                            setModalMode("edit");
+                                            setCurrentProduct(product);
+                                            setIsModalVisible(true);
+                                        }}
+                                    >
+                                        <ContentCard className="overflow-hidden text-center">
+                                            <img
+                                                src={product.image}
+                                                alt={`Imagem de um ${product.name}`}
+                                                className="w-full h-24 object-cover"
+                                            />
+                                            <h1>{product.name}</h1>
+                                            <p>R$ {product.price}</p>
+                                        </ContentCard>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
-                        
-                        ))}
-                    </div>
+                    ))
                 )}
             </div>
 
