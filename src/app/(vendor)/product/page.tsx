@@ -79,7 +79,10 @@ export default function Products() {
 
                 <ProductFormModal
                     isVisible={isModalVisible}
-                    onClose={() => setIsModalVisible(false)}
+                    onClose={() => {
+                        setCurrentProduct(null)
+                        setIsModalVisible(false)
+                    }}
                     mode={modalMode}
                     initialData={currentProduct}
                     onSave={() => {
@@ -87,7 +90,7 @@ export default function Products() {
                     }}
                 />
             </div>
-            <div className="p-4">
+            <div className="">
                 {products.length === 0 ? (
                     <p>Nenhum produto cadastrado</p>
                 ) : (
@@ -97,7 +100,7 @@ export default function Products() {
                             key={product.id}
                             className="cursor-pointer"
                             onClick={() => {
-                                setModalMode("view");
+                                setModalMode("edit");
                                 setCurrentProduct(product);
                                 setIsModalVisible(true);
                             }}

@@ -77,6 +77,9 @@ export default function ProductFormModal({
 
     const onSubmit = async (data: Product) => {
         const formData = new FormData();
+        if (data.id) {
+            formData.append("id", data.id.toString());
+        }
         formData.append("name", data.name);
         formData.append("description", data.description);
         formData.append("price", data.price.toString());
@@ -90,13 +93,16 @@ export default function ProductFormModal({
 
         try {
             if (mode === "edit") {
+                console.log(initialData)
+                console.log(formData)
                 await axios.put(`${apiUrl}/products/${data.id}`, formData, {
                     headers: {
                         token: `${localStorage.getItem("token")}`,
-                        "Content-Type": "multipart/form-data",
+                        "Content-Type": "application/json",
                     },
                 });
             } else if (mode === "add") {
+                console.log(formData)
                 await axios.post(`${apiUrl}/products`, formData, {
                     headers: {
                         token: `${localStorage.getItem("token")}`,
@@ -108,7 +114,11 @@ export default function ProductFormModal({
             setLoading(false);
             onSave?.();
             setIsModalVisible(true);
-            setMessage("Produto criado com sucesso!");
+            if(mode === 'edit') {
+                setMessage("Produto editado com sucesso!");
+            } else if (mode === 'add') {
+                setMessage("Produto criado com sucesso!");
+            }
         } catch (error) {
             setLoading(false);
             console.error("Erro ao salvar o produto:", error);
@@ -118,13 +128,19 @@ export default function ProductFormModal({
 
     useEffect(() => {
         if (initialData) {
+            setValue("id", initialData.id);
             setValue("name", initialData.name);
             setValue("description", initialData.description);
             setValue("price", initialData.price);
             setValue("category", initialData.category);
             setValue("image", initialData.image || null);
         }
-    }, [initialData, setValue]);    
+    }, [initialData, setValue])
+
+    const closeModal = async () => {
+        onclose
+        setIsModalVisible(false)
+    }
 
     if (!isVisible) return null;
 
@@ -133,15 +149,15 @@ export default function ProductFormModal({
             <Modal
                 title={message || ""}
                 isVisible={isModalVisible}
-                onClose={onClose}
+                onClose={mode === "add" ? onClose : closeModal}
             />
             <ContentCard className="p-6 w-11/12 max-w-2xl shadow-lg flex flex-col gap-4">
                 <h2 className="text-xl font-bold text-center">
                     {mode === "add"
                         ? "Adicionar"
                         : mode === "edit"
-                        ? "Editar"
-                        : "Visualizar"}
+                            ? "Editar"
+                            : "Visualizar"}
                 </h2>
                 <form
                     onSubmit={mode !== "view" ? handleSubmit(onSubmit) : undefined}
