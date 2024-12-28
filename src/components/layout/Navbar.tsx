@@ -31,12 +31,12 @@ export default function Navbar() {
 
     return (
         <nav className="">
-            <div className="max-w-7xl mx-auto flex items-center justify-between p-3">
+            <div className="max-w-7xl mx-auto flex items-center justify-between p-3 border-b-2 border-[#FF5800]">
                 {/* Logo e botão para dispositivos móveis */}
                 <div className="flex items-center">
                     <button
                         onClick={toggleMenu}
-                        className="text-white lg:hidden focus:outline-none"
+                        className="text-[#FF5800] lg:hidden focus:outline-none"
                     >
                         <svg
                             className="w-6 h-6"
@@ -64,7 +64,7 @@ export default function Navbar() {
                 <div className="relative flex items-center">
                     <button
                         onClick={toggleDropdown}
-                        className="text-[#FF0000] text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-white sm:hover:bg-yellow-400 focus:outline-none"
+                        className="text-white text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-[#FF0000] focus:outline-none border border-[#FF5800]"
                     >
                         <FontAwesomeIcon icon={faUser} />
                     </button>
