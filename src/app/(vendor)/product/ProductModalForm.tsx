@@ -13,6 +13,7 @@ import SecondaryButton from "@/components/form/SecondaryButton";
 import ContentCard from "@/components/layout/ContentCard";
 import { apiUrl } from "@/config/api";
 import Modal from "@/components/Modal";
+import PriceInput from "@/components/form/PriceInput";
 
 interface ProductFormModalProps {
     isVisible: boolean;
@@ -40,6 +41,9 @@ const validationSchema = (mode: "add" | "edit" | "view") =>
             .number()
             .typeError("O preço deve ser um número")
             .positive("O preço deve ser maior que zero")
+            .test("decimal-places", "O preço deve ter no máximo duas casas decimais", (value) => {
+                return Number.isInteger((value ?? 0) * 100);
+            })
             .required("O preço é obrigatório"),
         category: yup.string().required("A categoria é obrigatória"),
         image: yup.mixed<FileList | string>().nullable().test(
@@ -70,11 +74,15 @@ export default function ProductFormModal({
         handleSubmit,
         setValue,
         formState: { errors },
+        watch
     } = useForm<Product>({
         resolver: yupResolver(validationSchema(mode)),
         mode: "onChange",
         defaultValues: initialData || {},
     });
+
+
+  const price = watch("price") ?? 0; 
 
     const onSubmit = async (data: Product) => {
         const formData = new FormData();
@@ -222,11 +230,10 @@ export default function ProductFormModal({
                                 error={errors.category?.message}
                                 disabled={mode === "view"}
                             />
-                            <Input
+                            <PriceInput
                                 label="Preço"
-                                placeholder="Digite o preço do produto"
-                                type="number"
-                                {...register("price")}
+                                value={watch("price")}
+                                onChange={(value) => setValue("price", value, { shouldValidate: true })}
                                 error={errors.price?.message}
                                 disabled={mode === "view"}
                             />
