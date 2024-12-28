@@ -13,6 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/resolvers": "^3.9.1",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "axios": "^1.7.7",
     "jwt-decode": "^4.0.0",
     "next": "14.2.17",

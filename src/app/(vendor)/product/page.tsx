@@ -126,7 +126,7 @@ export default function Products() {
                 ) : (
                     Object.entries(groupedProducts).map(([category, products]) => (
                         <div key={category} className="mb-8">
-                            <div className="bg-gradient-to-tr from-[#FF5800] to-[#FF0000] p-2 rounded-xl mb-2">
+                            <div className="bg-gradient-to-tr from-[#FF5800] to-[#FF0000] p-2 rounded-xl mb-4">
                                 <LobsterText className="text-2xl text-white">{categoryLabels[category] || category}</LobsterText>
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
@@ -146,8 +146,8 @@ export default function Products() {
                                                 alt={`Imagem de um ${product.name}`}
                                                 className="w-full h-24 object-cover"
                                             />
-                                            <div className="p-2">
-                                                <h1 className="text-lg">{product.name}</h1>
+                                            <div className="p-2 flex flex-col justify-between h-24">
+                                                <h1 className="text-lg line-clamp-2">{product.name}</h1>
                                                 <p className="text-end font-bold">R$ {product.price}</p>
                                             </div>
                                         </ContentCard>
