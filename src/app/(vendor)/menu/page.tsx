@@ -8,6 +8,7 @@ import { apiUrl } from "@/config/api";
 import ProductCard from "@/components/ProductCard";
 import LobsterText from "@/components/form/LobsterText";
 import ActionButton from "@/components/form/ActionButton";
+import ProductSelectionModal from "@/components/establishment/ProductSelectionModal";
 
 interface MenuItem {
   id: number;
@@ -29,6 +30,7 @@ export default function Menu() {
   const [selectedDay, setSelectedDay] = useState<string>("monday");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -55,6 +57,27 @@ export default function Menu() {
 
     fetchMenu();
   }, []);
+
+  const handleAddItems = async (itemIds: number[]) => {
+    try {
+      setLoading(true)
+      const response = await fetch(`${apiUrl}/menu/add-items`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: `${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ itemIds, day: selectedDay }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao adicionar itens ao cardápio.");
+      }
+      setLoading(false)
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (loading) {
     return (
@@ -92,9 +115,8 @@ export default function Menu() {
           <button
             key={day.value}
             onClick={() => setSelectedDay(day.value)}
-            className={`p-2 rounded-md ${
-              selectedDay === day.value ? "bg-gradient-to-tr from-[#FF5800] to-[#FF0000] text-white" : "bg-[#FFFFF0] shadow-[2px_2px_0_0_#FF0000] border-2 border-[#FF0000]"
-            }`}
+            className={`p-2 rounded-md ${selectedDay === day.value ? "bg-gradient-to-tr from-[#FF5800] to-[#FF0000] text-white" : "bg-[#FFFFF0] shadow-[2px_2px_0_0_#FF0000] border-2 border-[#FF0000]"
+              }`}
           >
             {day.label}
           </button>
@@ -106,29 +128,36 @@ export default function Menu() {
         {menuForSelectedDay ? (
           <div className="p-4">
             <div className="flex justify-between items-center py-3">
-                <LobsterText className="text-2xl font-bold mb-4 capitalize">
-                    {days.find((d) => d.value === selectedDay)?.label}
-                </LobsterText>
-                <h1>79 opções selecionadas</h1>
-                <ActionButton onClick={() => {/*abrir modal */}}>Editar</ActionButton>
+              <LobsterText className="text-2xl font-bold mb-4 capitalize">
+                {days.find((d) => d.value === selectedDay)?.label}
+              </LobsterText>
+              <h1>79 opções selecionadas</h1>
+              <ActionButton onClick={() => { /*setIsModalOpen(true)*/ }}>Editar</ActionButton>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {menuForSelectedDay.menuItems.map((item) => (
                 <ProductCard
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
+                  image={item.image}
+                  name={item.name}
+                  price={item.price}
+                  key={item.id}
                 />
               ))}
             </div>
           </div>
         ) : (
           <div className="flex flex-col gap-4 items-center justify-center h-full">
-              <p className="text-center text-gray-500">Nenhum item encontrado para este dia.</p>
-              <ActionButton onClick={()=>{}}>Adicionar</ActionButton>
+            <p className="text-center text-gray-500">Nenhum item encontrado para este dia.</p>
+            <ActionButton onClick={() => { setIsModalOpen(true) }}>Adicionar</ActionButton>
           </div>
         )}
       </ContentCard>
+
+      <ProductSelectionModal
+        isOpen={isModalOpen}
+        onClose={() => { setIsModalOpen(false) }}
+        onAdd={handleAddItems}
+      />
     </div>
   );
 }
