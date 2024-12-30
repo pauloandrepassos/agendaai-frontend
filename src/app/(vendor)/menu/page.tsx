@@ -125,7 +125,7 @@ export default function Menu() {
 
       {/* Cardápio */}
       <ContentCard>
-        {menuForSelectedDay ? (
+        {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
           <div className="p-4">
             <div className="flex justify-between items-center py-3">
               <LobsterText className="text-2xl font-bold mb-4 capitalize">

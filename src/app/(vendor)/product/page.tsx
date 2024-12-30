@@ -12,26 +12,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductFormModal from "./ProductModalForm";
 import LobsterText from "@/components/form/LobsterText";
-
-interface Product {
-    id: number
-    name: string
-    image: string
-    description: string
-    price: number
-    category: string
-}
-
-const categoryLabels: Record<string, string> = {
-    savoury: "Salgado",
-    sweet: "Doce",
-    cake: "Bolo",
-    pie: "Torta",
-    drink: "Bebida",
-    meal: "Marmita",
-    breakfast: "Café da Manhã",
-    others: "Outros",
-}
+import { Product } from "@/types/product";
+import { categoryLabels } from "@/types/categoryLabels";
 
 export default function Products() {
     const [products, setProducts] = useState<Product[]>([])
