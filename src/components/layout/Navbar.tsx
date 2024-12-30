@@ -30,9 +30,9 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="">
-            <div className="max-w-7xl mx-auto flex items-center justify-between p-3 border-b-2 border-[#FF5800]">
-                {/* Logo e botão para dispositivos móveis */}
+        <nav className="" style={{ boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" }}>
+            <div className="max-w-7xl mx-auto flex items-center justify-between p-3 ">
+                {/* Logo e botão para border-[#FF5800]dispositivos móveis */}
                 <div className="flex items-center">
                     <button
                         onClick={toggleMenu}
