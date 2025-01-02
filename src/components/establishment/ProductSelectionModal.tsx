@@ -16,12 +16,14 @@ interface ProductSelectionModalProps {
     isOpen: boolean
     onClose: () => void
     onAdd: (selectedIds: number[]) => void
+    selectedProductIds: number[]
 }
 
 export default function ProductSelectionModal({
     isOpen,
     onClose,
     onAdd,
+    selectedProductIds
 }: ProductSelectionModalProps) {
     const [products, setProducts] = useState<Product[]>([])
     const [selectedProducts, setSelectedProducts] = useState<number[]>([])
@@ -29,6 +31,8 @@ export default function ProductSelectionModal({
 
     useEffect(() => {
         if (!isOpen) return
+
+        setSelectedProducts(selectedProductIds);
 
         const fetchProducts = async () => {
             setLoading(true)
@@ -51,7 +55,7 @@ export default function ProductSelectionModal({
         }
 
         fetchProducts()
-    }, [isOpen])
+    }, [isOpen, selectedProductIds])
 
     const handleSelect = (id: number) => {
         setSelectedProducts((prev) =>
@@ -88,13 +92,13 @@ export default function ProductSelectionModal({
                                 <PrimaryButton onClick={handleAdd}>Adicionar</PrimaryButton>
                             </div>
                         </div>
-                        <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-200">
+                        <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-200">
                             {Object.keys(groupedProducts).map((category) => (
-                                <div key={category} className="mb-6">
+                                <div key={category} className="mb-2">
                                     <div className="bg-gradient-to-tr from-[#FF5800] to-[#FF0000] p-2 rounded-xl mb-2">
                                         <LobsterText className="text-2xl text-white">{categoryLabels[category] || category}</LobsterText>
                                     </div>
-                                    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-200">
+                                    <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
                                         {groupedProducts[category].map((product) => (
                                             <label key={product.id} className="relative group mb-2">
                                                 <ProductCard

@@ -33,6 +33,11 @@ export default function Menu() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
+    const savedDay = localStorage.getItem("selectedDay");
+    if (savedDay) {
+      setSelectedDay(savedDay);
+    }
+
     const fetchMenu = async () => {
       try {
         const response = await fetch(`${apiUrl}/menu/establishment`, {
@@ -73,11 +78,17 @@ export default function Menu() {
       if (!response.ok) {
         throw new Error("Erro ao adicionar itens ao cardápio.");
       }
-      setLoading(false)
+
+      window.location.reload();
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handleDaySelection = (day: string) => {
+    setSelectedDay(day);
+    localStorage.setItem("selectedDay", day)
+  }
 
   if (loading) {
     return (
@@ -114,7 +125,7 @@ export default function Menu() {
         {days.map((day) => (
           <button
             key={day.value}
-            onClick={() => setSelectedDay(day.value)}
+            onClick={() => handleDaySelection(day.value)}
             className={`p-2 rounded-md ${selectedDay === day.value ? "bg-gradient-to-tr from-[#FF5800] to-[#FF0000] text-white" : "bg-[#FFFFF0] shadow-[2px_2px_0_0_#FF0000] border-2 border-[#FF0000]"
               }`}
           >
@@ -131,8 +142,8 @@ export default function Menu() {
               <LobsterText className="text-2xl font-bold mb-4 capitalize">
                 {days.find((d) => d.value === selectedDay)?.label}
               </LobsterText>
-              <h1>79 opções selecionadas</h1>
-              <ActionButton onClick={() => { /*setIsModalOpen(true)*/ }}>Editar</ActionButton>
+              <h1>{menuForSelectedDay.menuItems.length} opções selecionadas</h1>
+              <ActionButton onClick={() => { setIsModalOpen(true) }}>Editar</ActionButton>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {menuForSelectedDay.menuItems.map((item) => (
@@ -157,6 +168,7 @@ export default function Menu() {
         isOpen={isModalOpen}
         onClose={() => { setIsModalOpen(false) }}
         onAdd={handleAddItems}
+        selectedProductIds={menuForSelectedDay?.menuItems.map((item) => item.id) || []}
       />
     </div>
   );
