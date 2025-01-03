@@ -98,7 +98,7 @@ export default function OperatingHours({ className, establishmentId }: Operating
                     <div className="grid gap-2">
                         {Object.entries(operatingHours).map(([day, hours]) => (
                             <div key={day} className="grid grid-cols-[1fr_3fr] gap-2">
-                                <p className="bg-[#FF0000] text-white text-center rounded-full">
+                                <p className="bg-primary text-white text-center rounded-full">
                                     {dayOfWeekMap[day]}
                                 </p>
                                 <p>

@@ -16,11 +16,11 @@ const Loading: React.FC<LoadingProps> = ({ message }) => {
                 border-l-gray-300
                 border-r-gray-300
                 border-b-gray-300
-                border-t-[#FF0000]
+                border-t-primary
                 animate-spin
                 rounded-full
             '/>
-            {message && <p className="text-lg text-[#FF0000]">{message}</p>}
+            {message && <p className="text-lg text-primary">{message}</p>}
         </div>
     );
 };

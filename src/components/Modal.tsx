@@ -22,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({ title, message, onClose, onGlobalClose, i
                         onClose()
                         onGlobalClose?.()
                     }}
-                    className="bg-[#FA240F] text-white px-4 py-2 rounded hover:bg-[#d0200e] transition m-auto"
+                    className="bg-primary text-white px-4 py-2 rounded hover:bg-hoverprimary transition m-auto"
                 >
                     Fechar
                 </button>

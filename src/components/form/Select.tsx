@@ -19,7 +19,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
                     ref={ref}
                     value={value}
                     disabled={disabled}
-                    className={`h-12 p-3 rounded-xl shadow-[2px_3px_0_0_#FF5800] focus:outline-none focus:ring-2 ${
+                    className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${
                         error
                             ? "focus:ring-red-500 border border-red-500"
                             : "focus:ring-[#FA240F]"

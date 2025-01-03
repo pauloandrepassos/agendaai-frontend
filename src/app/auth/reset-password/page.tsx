@@ -11,6 +11,8 @@ import { useForm } from "react-hook-form"
 import axios from "axios"
 import { apiUrl } from "@/config/api"
 import Loading from "@/components/form/LoadingSpinner"
+import LobsterText from "@/components/form/LobsterText"
+import ContentCard from "@/components/layout/ContentCard"
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" })
 
@@ -79,15 +81,13 @@ function ResetPasswordContent() {
     }
 
     return (
-        <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-md">
+        <ContentCard className="relative bg-background p-8 m-3 rounded-2xl w-full max-w-md">
             <img
                 src="/logo-agendaai.png"
                 alt="Logo"
                 className="absolute top-[-30px] left-10 w-16 h-16 object-contain"
             />
-            <h1 className={`text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}>
-                Redefinir senha
-            </h1>
+            <LobsterText className="text-4xl text-primary text-center font-bold mb-4">Redefinir senha</LobsterText>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Modal
                     title={title || ""}
@@ -104,7 +104,7 @@ function ResetPasswordContent() {
                 />
                 <SubmitButton text="Redefinir" isLoading={loading} />
             </form>
-        </div>
+        </ContentCard>
     )
 }
 

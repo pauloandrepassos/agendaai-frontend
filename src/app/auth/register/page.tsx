@@ -10,6 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Lobster } from "next/font/google";
 import Modal from "@/components/Modal";
+import ContentCard from "@/components/layout/ContentCard";
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" });
 
@@ -109,7 +110,7 @@ export default function Login() {
 
 
     return (
-        <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-3xl">
+        <ContentCard className="relative bg-background p-8 m-3 rounded-2xl w-full max-w-3xl">
             <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
             <h1
                 className={`text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}
@@ -181,6 +182,6 @@ export default function Login() {
                 </div>
             </form>
             {message && <p className="mt-4 text-red-500">{message}</p>}
-        </div>
+        </ContentCard>
     );
 }

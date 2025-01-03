@@ -108,7 +108,7 @@ export default function Products() {
                 ) : (
                     Object.entries(groupedProducts).map(([category, products]) => (
                         <div key={category} className="mb-8">
-                            <div className="bg-gradient-to-tr from-[#FF5800] to-[#FF0000] p-2 rounded-xl mb-4">
+                            <div className="bg-gradient-to-tr from-secondary to-primary p-2 rounded-xl mb-4">
                                 <LobsterText className="text-2xl text-white">{categoryLabels[category] || category}</LobsterText>
                             </div>
                             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">

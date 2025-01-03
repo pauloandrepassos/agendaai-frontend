@@ -126,7 +126,7 @@ export default function Menu() {
           <button
             key={day.value}
             onClick={() => handleDaySelection(day.value)}
-            className={`p-2 rounded-md ${selectedDay === day.value ? "bg-gradient-to-tr from-[#FF5800] to-[#FF0000] text-white" : "bg-[#FFFFF0] shadow-[2px_2px_0_0_#FF0000] border-2 border-[#FF0000]"
+            className={`p-2 rounded-md ${selectedDay === day.value ? "bg-gradient-to-tr from-secondary to-primary text-white" : "bg-elementbg shadow-primary border-2 border-primary"
               }`}
           >
             {day.label}

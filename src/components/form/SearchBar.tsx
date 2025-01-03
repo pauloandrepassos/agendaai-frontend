@@ -34,7 +34,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     onChange={onChange}
                     onKeyDown={handleKeyDown}
                     placeholder={placeholder}
-                    className={`h-12 w-full p-3 pr-12 rounded-xl shadow-[2px_3px_0_0_#FF5800] focus:outline-none focus:ring-2 focus:ring-[#FA240F]`}
+                    className={`h-12 w-full p-3 pr-12 rounded-xl shadow-secondary focus:outline-none focus:ring-2 focus:ring-primary`}
                 />
                 <div className="absolute inset-y-0 right-3 flex items-center text-gray-500">
                     <FontAwesomeIcon icon={faSearch} />

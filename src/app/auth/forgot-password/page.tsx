@@ -10,6 +10,8 @@ import axios from "axios"
 import { apiUrl } from "@/config/api"
 import Modal from "@/components/Modal"
 import { error } from "console"
+import LobsterText from "@/components/form/LobsterText"
+import ContentCard from "@/components/layout/ContentCard"
 
 const lobster = Lobster({ subsets: ['latin'], weight: '400' })
 
@@ -67,9 +69,9 @@ export default function ForgotPassword() {
     }
 
     return (
-        <div className="relative bg-[#FFF8DC] p-8 m-3 rounded-2xl shadow-md w-full max-w-md">
+        <ContentCard className="relative bg-background p-8 m-3 rounded-2xl shadow-md w-full max-w-md">
             <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
-            <h1 className={`text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}>Recuperar senha</h1>
+            <LobsterText className="text-4xl text-primary text-center font-bold mb-4">Recuperar senha</LobsterText>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
                 <Modal
                     title={title || ""}
@@ -79,7 +81,6 @@ export default function ForgotPassword() {
                         setIsModalVisible(false)
                         //router.push("/auth/login")
                     }}
-
                 />
                 <Input
                     label="Digite seu email que enviaremos um link para recuperar sua senha"
@@ -90,9 +91,9 @@ export default function ForgotPassword() {
                 />
                 <SubmitButton text="Enviar" isLoading={loading} />
                 <div className="text-center text-sm font-bold">
-                    <a href="/"><p className="text-[#FF0000]">Cancelar</p></a>
+                    <a href="/auth/login"><p className="text-primary">Cancelar</p></a>
                 </div>
             </form>
-        </div>
+        </ContentCard>
     )
 }

@@ -3,7 +3,7 @@ import React from "react";
 interface PriceInputProps {
   label: string;
   value?: number;
-  error?: string; // Propriedade para exibir mensagem de erro
+  error?: string;
   onChange?: (value: number) => void;
   className?: string;
   disabled?: boolean;
@@ -29,7 +29,6 @@ const PriceInput: React.FC<PriceInputProps> = ({
   };
 
   const formatValue = (value: number) => {
-    // Converte para centavos e exibe como moeda
     const cents = Math.round(value * 100);
     const formatted = (cents / 100).toLocaleString("pt-BR", {
       minimumFractionDigits: 2,
@@ -46,7 +45,7 @@ const PriceInput: React.FC<PriceInputProps> = ({
         value={formatValue(value)}
         onChange={handleInputChange}
         disabled={disabled}
-        className={`h-12 p-3 rounded-xl shadow-[2px_3px_0_0_#FF5800] focus:outline-none focus:ring-2 ${
+        className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${
           error
             ? "focus:ring-red-500 border border-red-500"
             : "focus:ring-[#FA240F]"

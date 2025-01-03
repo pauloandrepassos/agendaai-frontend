@@ -17,7 +17,7 @@ export default function ActionButton({
     return (
         <button
             onClick={onClick}
-            className={`bg-[#FFFFF0] shadow-[2px_2px_0_0_#FF0000] border-2 border-[#FF0000] hover:bg-[#FF0000] hover:text-white rounded-lg py-1 px-4 flex gap-2 ${className || ""}`}
+            className={`bg-[#FFFFF0] shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 ${className || ""}`}
             type="button"
         >
             {children}

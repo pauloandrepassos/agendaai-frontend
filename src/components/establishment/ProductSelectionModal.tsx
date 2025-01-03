@@ -95,7 +95,7 @@ export default function ProductSelectionModal({
                         <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-200">
                             {Object.keys(groupedProducts).map((category) => (
                                 <div key={category} className="mb-2">
-                                    <div className="bg-gradient-to-tr from-[#FF5800] to-[#FF0000] p-2 rounded-xl mb-2">
+                                    <div className="bg-gradient-to-tr from-secondary to-primary p-2 rounded-xl mb-2">
                                         <LobsterText className="text-2xl text-white">{categoryLabels[category] || category}</LobsterText>
                                     </div>
                                     <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">

@@ -24,7 +24,7 @@ export default function EstablishmentHeader({ establishment, showEditButton = fa
           className="h-[80px] rounded-full mt-[-40px] ml-[10%]"
         />
       </div>
-      <h1 className="text-4xl text-[#FF0000] text-center font-bold mt-[-20px]">
+      <h1 className="text-4xl text-primary text-center font-bold mt-[-20px]">
         {establishment.name}
       </h1>
       <div className="grid grid-cols-2 p-3">

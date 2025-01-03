@@ -1,3 +1,4 @@
+import PrimaryButton from "@/components/form/PrimaryButton"
 import { Lobster } from "next/font/google"
 import Link from "next/link"
 
@@ -7,16 +8,14 @@ const lobster = Lobster
 export default function Start() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 h-screen">
-      <div className="flex flex-col items-center justify-center bg-[#FFF8DC] p-8">
+      <div className="flex flex-col items-center justify-center p-8">
         <img src="/logo-agendaai.png" alt="Logo" className="w-20"/>
-        <h1 className={`text-3xl sm:text-4xl text-[#FF0000] text-center font-bold mb-4 ${lobster.className}`}>Bem-vindo ao Agenda Aí</h1>
+        <h1 className={`text-3xl sm:text-4xl text-primary text-center font-bold mb-4 ${lobster.className}`}>Bem-vindo ao Agenda Aí</h1>
         <p className="text-center mb-6">
           Faça login para acessar suas funcionalidades.
         </p>
         <Link href="/auth/login">
-          <button className="bg-[#FF0000] text-white py-2 px-6 rounded-full hover:bg-[#e60000] transition duration-200">
-            Entrar
-          </button>
+          <PrimaryButton>Entrar</PrimaryButton>
         </Link>
       </div>
 

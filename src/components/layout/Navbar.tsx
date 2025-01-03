@@ -32,11 +32,11 @@ export default function Navbar() {
     return (
         <nav className="" style={{ boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" }}>
             <div className="max-w-7xl mx-auto flex items-center justify-between p-3 ">
-                {/* Logo e botão para border-[#FF5800]dispositivos móveis */}
+                {/* Logo e botão para border-secondarydispositivos móveis */}
                 <div className="flex items-center">
                     <button
                         onClick={toggleMenu}
-                        className="text-[#FF5800] lg:hidden focus:outline-none"
+                        className="text-secondary lg:hidden focus:outline-none"
                     >
                         <svg
                             className="w-6 h-6"
@@ -64,7 +64,7 @@ export default function Navbar() {
                 <div className="relative flex items-center">
                     <button
                         onClick={toggleDropdown}
-                        className="text-white text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-[#FF0000] focus:outline-none border border-[#FF5800]"
+                        className="text-white text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-primary focus:outline-none border border-secondary"
                     >
                         <FontAwesomeIcon icon={faUser} />
                     </button>
@@ -91,7 +91,7 @@ export default function Navbar() {
 
             {/* Menu lateral para dispositivos móveis */}
             <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 lg:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleMenu}>
-                <div className={`fixed left-0 top-0 w-2/3 h-full bg-[#FF0000] p-4 transition-transform duration-300 ${isMenuOpen ? "transform translate-x-0" : "transform -translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
+                <div className={`fixed left-0 top-0 w-2/3 h-full bg-primary p-4 transition-transform duration-300 ${isMenuOpen ? "transform translate-x-0" : "transform -translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
                     <div className="flex justify-end">
                         <button className="text-white text-2xl mb-8" onClick={toggleMenu}>
                             <svg
