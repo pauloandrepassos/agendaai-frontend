@@ -9,7 +9,6 @@ import ProductCard from "../ProductCard"
 import PrimaryButton from "../form/PrimaryButton"
 import SecondaryButton from "../form/SecondaryButton"
 import LobsterText from "../form/LobsterText"
-import { Product } from "@/types/product"
 import { categoryLabels } from "@/types/categoryLabels"
 
 interface ProductSelectionModalProps {
@@ -25,7 +24,7 @@ export default function ProductSelectionModal({
     onAdd,
     selectedProductIds
 }: ProductSelectionModalProps) {
-    const [products, setProducts] = useState<Product[]>([])
+    const [products, setProducts] = useState<IProduct[]>([])
     const [selectedProducts, setSelectedProducts] = useState<number[]>([])
     const [loading, setLoading] = useState<boolean>(true)
 
@@ -45,7 +44,7 @@ export default function ProductSelectionModal({
                     throw new Error("Erro ao buscar produtos.")
                 }
 
-                const data: Product[] = await response.json()
+                const data: IProduct[] = await response.json()
                 setProducts(data)
             } catch (err) {
                 console.error(err)
@@ -74,7 +73,7 @@ export default function ProductSelectionModal({
         }
         acc[product.category].push(product);
         return acc;
-    }, {} as Record<string, Product[]>);
+    }, {} as Record<string, IProduct[]>);
 
     if (!isOpen) return null
 
@@ -104,7 +103,7 @@ export default function ProductSelectionModal({
                                                 <ProductCard
                                                     image={product.image}
                                                     name={product.name}
-                                                    price={String(product.price)}
+                                                    price={product.price}
                                                 />
                                                 <input
                                                     type="checkbox"
