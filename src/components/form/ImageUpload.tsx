@@ -21,7 +21,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ label, onChange, error, heigh
     }
 
     return (
-        <div className="flex flex-col space-y-2">
+        <div className="flex flex-col">
             <label className="text-sm font-medium">{label}</label>
             <div
                 className={`relative w-full border-dashed border-2 flex items-center justify-center rounded-lg ${

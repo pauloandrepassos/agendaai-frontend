@@ -14,7 +14,7 @@ interface InputProps {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({ label, placeholder, type = "text", value, error, className, disabled, ...rest }: InputProps, ref) => {
         return (
-            <div className={`flex flex-col space-y-2 ${className}`}>
+            <div className={`flex flex-col ${className}`}>
                 <label className="text-sm font-medium">{label}</label>
                 <input
                     ref={ref}

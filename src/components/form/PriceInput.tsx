@@ -38,7 +38,7 @@ const PriceInput: React.FC<PriceInputProps> = ({
   };
 
   return (
-    <div className={`flex flex-col space-y-2 ${className}`}>
+    <div className={`flex flex-col ${className}`}>
       <label className="text-sm font-medium">{label}</label>
       <input
         type="text"
