@@ -11,23 +11,8 @@ import ActionButton from "@/components/form/ActionButton";
 import ProductSelectionModal from "@/components/establishment/ProductSelectionModal";
 import Select from "@/components/form/Select";
 
-interface MenuItem {
-  id: number;
-  name: string;
-  image: string;
-  price: string;
-  category: string;
-}
-
-interface MenuDay {
-  id: number;
-  establishment_id: number;
-  day: string;
-  menuItems: MenuItem[];
-}
-
 export default function Menu() {
-  const [menu, setMenu] = useState<MenuDay[]>([]);
+  const [menu, setMenu] = useState<IMenuDay[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>("monday");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +36,7 @@ export default function Menu() {
           throw new Error("Erro ao buscar o cardápio.");
         }
 
-        const data: MenuDay[] = await response.json();
+        const data: IMenuDay[] = await response.json();
         setMenu(data);
       } catch (err: any) {
         console.error(err);

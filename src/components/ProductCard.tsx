@@ -3,7 +3,7 @@ import ContentCard from "@/components/layout/ContentCard";
 interface ProductCardProps {
   image: string;
   name: string;
-  price: string;
+  price: number;
 }
 
 export default function ProductCard({ image, name, price }: ProductCardProps) {

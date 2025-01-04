@@ -27,7 +27,7 @@ export default function EstablishmentCard({ establishment }: EstablishmentCardPr
                         alt={`${establishment.name} logo`}
                         className="w-28 h-28 object-cover"
                     />
-                    <div>
+                    <div className="w-full text-center">
                         <h2 className="text-lg text-center font-semibold">{establishment.name}</h2>
                         <p className="text-sm text-gray-600">
                             {establishment.address.street}, {establishment.address.number},{" "}
