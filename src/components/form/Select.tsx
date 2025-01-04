@@ -1,7 +1,7 @@
 import React from "react"
 
 interface SelectProps {
-    label: string
+    label?: string
     options: { value: string; label: string }[]
     error?: string
     value?: string
@@ -19,14 +19,19 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
                     ref={ref}
                     value={value}
                     disabled={disabled}
-                    className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${
-                        error
+                    className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${error
                             ? "focus:ring-red-500 border border-red-500"
                             : "focus:ring-[#FA240F]"
-                    }`}
+                        }`}
                     {...rest}
                 >
-                    <option value="">Selecione uma opção</option>
+                <option
+                  value=""
+                  disabled={value !== ""}
+                  hidden={value !== ""}
+                >
+                  Selecione uma opção
+                </option>
                     {options.map((option) => (
                         <option key={option.value} value={option.value}>
                             {option.label}
