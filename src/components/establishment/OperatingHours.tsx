@@ -1,20 +1,12 @@
 "use client"
-import { useEffect, useState } from "react"
-import RedirectLink from "../form/RedirectLink"
-import ContentCard from "../layout/ContentCard"
-import { apiUrl } from "@/config/api"
+import { useEffect, useState } from "react";
+import ContentCard from "../layout/ContentCard";
+import RedirectLink from "../form/RedirectLink";
 
 interface OperatingHoursProps {
-    className?: string
-    establishmentId: number
-}
-
-interface OperatingHour {
-    id: number
-    day_of_week: string
-    open_time: string | null
-    close_time: string | null
-    is_closed: boolean
+    className?: string;
+    operatingHours: IOperatingHour[];
+    showEditButton?: boolean
 }
 
 const dayOfWeekMap: Record<string, string> = {
@@ -25,16 +17,12 @@ const dayOfWeekMap: Record<string, string> = {
     thursday: "Quinta",
     friday: "Sexta",
     saturday: "Sábado",
-}
+};
 
-export default function OperatingHours({ className, establishmentId }: OperatingHoursProps) {
-    const [operatingHours, setOperatingHours] = useState<Record<string, OperatingHour[]>>({})
-    const [loading, setLoading] = useState<boolean>(true)
-    const [error, setError] = useState<string | null>(null)
+export default function OperatingHours({ className, operatingHours, showEditButton }: OperatingHoursProps) {
     const [currentDate, setCurrentDate] = useState<string>("")
 
     useEffect(() => {
-        // Formatar e definir a data atual
         const today = new Date()
         const formattedDate = today.toLocaleDateString("pt-BR", {
             day: "2-digit",
@@ -42,80 +30,49 @@ export default function OperatingHours({ className, establishmentId }: Operating
             year: "numeric",
         })
         setCurrentDate(formattedDate)
+    }, [operatingHours])
 
-        // Buscar horários de funcionamento
-        const fetchOperatingHours = async () => {
-            try {
-                const response = await fetch(
-                    `${apiUrl}/operating-hours/establishment/${establishmentId}`
-                )
-                if (!response.ok) {
-                    throw new Error("Erro ao buscar horários de funcionamento.")
-                }
-                const data: OperatingHour[] = await response.json()
 
-                // Agrupa os horários por dia da semana
-                const groupedHours = data.reduce<Record<string, OperatingHour[]>>((acc, hour) => {
-                    if (!acc[hour.day_of_week]) {
-                        acc[hour.day_of_week] = []
-                    }
-                    acc[hour.day_of_week].push(hour)
-                    return acc
-                }, {})
-
-                setOperatingHours(groupedHours)
-            } catch (error: any) {
-                console.error(error)
-                setError(error.message || "Erro desconhecido.")
-            } finally {
-                setLoading(false)
-            }
+    const groupedHours = operatingHours.reduce<Record<string, IOperatingHour[]>>((acc, hour) => {
+        if (!acc[hour.day_of_week]) {
+            acc[hour.day_of_week] = [];
         }
-
-        fetchOperatingHours()
-    }, [establishmentId])
-
-    if (error) {
-        return <div className="text-center text-red-500">{error}</div>
-    }
+        acc[hour.day_of_week].push(hour);
+        return acc;
+    }, {});
 
     return (
-        <ContentCard className={`mb-5 p-3 ${className}`}>
-            {loading ? (
-                <div className="text-center">Carregando horários...</div>
+        <ContentCard className={`p-4 ${className}`}>
+            {operatingHours.length === 0 ? (
+                <p>Sem horários disponíveis</p>
             ) : (
-                <div>
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-xl font-bold mb-3">Horários</h2>
-                        <RedirectLink href="/">Editar</RedirectLink>
+                <div className="grid gap-2">
+                    <div className="flex justify-between items-center">
+                        <h2>Horários</h2>
+                        {showEditButton && (
+                            <RedirectLink href="/">Editar</RedirectLink>
+                        )}
                     </div>
-                    <div className="mb-3">
-                        <p>
-                            <span className="font-semibold">DATA ATUAL:</span>{" "}
-                            <span>{currentDate}</span>
-                        </p>
-                    </div>
-                    <div className="grid gap-2">
-                        {Object.entries(operatingHours).map(([day, hours]) => (
-                            <div key={day} className="grid grid-cols-[1fr_3fr] gap-2">
-                                <p className="bg-primary text-white text-center rounded-full">
-                                    {dayOfWeekMap[day]}
-                                </p>
-                                <p>
-                                    {hours.every((hour) => hour.is_closed)
-                                        ? "Fechado"
-                                        : hours
-                                              .map(
-                                                  (hour) =>
-                                                      `${hour.open_time?.slice(0, 5)} - ${hour.close_time?.slice(0, 5)}`
-                                              )
-                                              .join(" | ")}
-                                </p>
+                    {Object.entries(groupedHours).map(([day, hours]) => (
+                        <div key={day} className="grid grid-cols-[1fr_3fr] gap-2">
+                            <span className="bg-primary text-white text-center rounded-full">
+                                {dayOfWeekMap[day]}
+                            </span>
+                            <div className="flex flex-wrap gap-2">
+                                {hours
+                                    .map((hour, index) => (
+                                        <span key={hour.id}>
+                                            {hour.is_closed
+                                                ? "Fechado"
+                                                : `${hour.open_time?.slice(0, 5)} - ${hour.close_time?.slice(0, 5)}`}
+                                            {index < hours.length - 1 && " | "}
+                                        </span>
+                                    ))}
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    ))}
                 </div>
             )}
         </ContentCard>
-    )
+    );
 }

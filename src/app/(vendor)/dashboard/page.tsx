@@ -38,32 +38,46 @@ export default function VendorDashboard() {
   const [establishment, setEstablishment] = useState<Establishment | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+  const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([])
 
   useEffect(() => {
     const fetchEstablishment = async () => {
       try {
-        const response = await fetch(`${apiUrl}/establishments/by-vendor`, {
+        setLoading(true);
+
+        const establishmentResponse = await fetch(`${apiUrl}/establishments/by-vendor`, {
           headers: {
             token: `${localStorage.getItem("token")}`,
           },
-        })
+        });
 
-        if (!response.ok) {
-          throw new Error("Erro ao buscar informações do estabelecimento.")
+        if (!establishmentResponse.ok) {
+          throw new Error("Erro ao buscar informações do estabelecimento.");
         }
 
-        const data = await response.json()
-        setEstablishment(data)
-      } catch (error: any) {
-        console.error(error)
-        setError(error.message || "Erro desconhecido.")
-      } finally {
-        setLoading(false)
-      }
-    }
+        const establishmentData = await establishmentResponse.json();
+        setEstablishment(establishmentData);
 
-    fetchEstablishment()
-  }, [])
+        const operatingHoursResponse = await fetch(
+          `${apiUrl}/operating-hours/establishment/${establishmentData.id}`
+        );
+
+        if (!operatingHoursResponse.ok) {
+          throw new Error("Erro ao buscar horários de funcionamento.");
+        }
+
+        const operatingHoursData = await operatingHoursResponse.json();
+        setOperatingHours(operatingHoursData);
+      } catch (error: any) {
+        console.error(error);
+        setError(error.message || "Erro desconhecido.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEstablishment();
+  }, []);
 
   if (loading) {
     return (
@@ -75,10 +89,10 @@ export default function VendorDashboard() {
     return (
       <div className="max-w-7xl mx-auto p-3">
         <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
-          <EstablishmentHeader establishment={establishment} showEditButton={true}/>
+          <EstablishmentHeader establishment={establishment} showEditButton={true} />
 
           <OperatingHours
-            establishmentId={establishment.id}
+            operatingHours={operatingHours}
             className="order-4 md:order-2 col-span-2 md:col-span-1"
           />
 
