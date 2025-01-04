@@ -12,15 +12,14 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import ProductFormModal from "./ProductModalForm";
 import LobsterText from "@/components/form/LobsterText";
-import { Product } from "@/types/product";
 import { categoryLabels } from "@/types/categoryLabels";
 
 export default function Products() {
-    const [products, setProducts] = useState<Product[]>([])
+    const [products, setProducts] = useState<IProduct[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
     const [modalMode, setModalMode] = useState<"add" | "edit" | "view">("add");
-    const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+    const [currentProduct, setCurrentProduct] = useState<IProduct | null>(null);
     const router = useRouter()
 
     useEffect(() => {
@@ -54,7 +53,7 @@ export default function Products() {
         }
         acc[product.category].push(product);
         return acc;
-    }, {} as Record<string, Product[]>);
+    }, {} as Record<string, IProduct[]>);
 
     if (loading) {
         return (

@@ -1,6 +1,3 @@
-import { IAddress } from "./address"
-import { IUser } from "./user"
-
 interface IEstablishment {
     id: number
     name: string

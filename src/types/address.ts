@@ -1,4 +1,4 @@
-export interface IAddress {
+interface IAddress {
     id: number
     zip_code: string
     state: string
