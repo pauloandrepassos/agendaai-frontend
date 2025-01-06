@@ -86,9 +86,9 @@ export default function ProductSelectionModal({
                     <div>
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-xl font-bold">Selecione Produtos</h2>
-                            <div className="flex justify-end gap-3">
+                            <div className="grid grid-cols-2 gap-3">
                                 <SecondaryButton onClick={onClose}>Cancelar</SecondaryButton>
-                                <PrimaryButton onClick={handleAdd}>Adicionar</PrimaryButton>
+                                <PrimaryButton onClick={handleAdd}>Salvar</PrimaryButton>
                             </div>
                         </div>
                         <div className="max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-red-500 scrollbar-track-gray-200">
