@@ -126,32 +126,41 @@ export default function Menu() {
 
       {/* Cardápio */}
       <ContentCard className="min-h-[300px]">
-        {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
-          <div className="p-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 items-center py-3 gap-4">
-              <div className="order-2 md:order-1">
-                <div className="hidden md:block">
-                  <LobsterText className="text-2xl font-bold mb-4 capitalize">
-                    {days.find((d) => d.value === selectedDay)?.label}
-                  </LobsterText>
-                </div>
-                <div className="block md:hidden">
-                  <Select
-                    options={days}
-                    value={selectedDay}
-                    onChange={(e) => handleDaySelection(e.target.value)}
-                  />
-                </div>
+        <div className="p-4 h-full flex flex-col">
+          <div className="grid grid-cols-2 md:grid-cols-3 items-center py-3 gap-4">
+            <div className="order-2 md:order-1">
+              <div className="hidden md:block">
+                <LobsterText className="text-2xl font-bold mb-4 capitalize">
+                  {days.find((d) => d.value === selectedDay)?.label}
+                </LobsterText>
               </div>
-
-              <h1 className="text-center  order-3 md:order-2 col-span-2 md:col-span-1">{menuForSelectedDay.menuItems.length} opções selecionadas</h1>
-
-              <div className="flex justify-end order-2 md:order-3 h-full">
-                <ActionButton className="flex items-center justify-center w-full max-w-[200px]" onClick={() => setIsModalOpen(true)}>
-                  Editar
-                </ActionButton>
+              <div className="block md:hidden">
+                <Select
+                  options={days}
+                  value={selectedDay}
+                  onChange={(e) => handleDaySelection(e.target.value)}
+                />
               </div>
             </div>
+
+            {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 && (
+              <h1 className="text-center order-3 md:order-2 col-span-2 md:col-span-1">
+              {menuForSelectedDay?.menuItems.length || 0} opções selecionadas
+            </h1>
+            )}
+
+            <div className="flex justify-end order-2 md:order-3 h-full">
+              <ActionButton className="flex items-center justify-center w-full max-w-[200px]" onClick={() => setIsModalOpen(true)}>
+                {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
+                  <>Editar</>
+                ):(
+                  <>Adicionar</>
+                )}
+              </ActionButton>
+            </div>
+          </div>
+
+          {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {menuForSelectedDay.menuItems.map((item) => (
                 <ProductCard
@@ -162,13 +171,14 @@ export default function Menu() {
                 />
               ))}
             </div>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-4 items-center justify-center h-full">
-            <p className="text-center text-gray-500">Nenhum item encontrado para este dia.</p>
-            <ActionButton onClick={() => setIsModalOpen(true)}>Adicionar</ActionButton>
-          </div>
-        )}
+          ) : (
+            <div className="flex flex-col gap-4 items-center justify-center h-full">
+              <p className="text-center text-gray-500">
+                Nenhum item encontrado para este dia. 
+              </p>
+            </div>
+          )}
+        </div>
       </ContentCard>
 
       <ProductSelectionModal
