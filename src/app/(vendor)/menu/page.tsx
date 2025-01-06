@@ -143,11 +143,13 @@ export default function Menu() {
               </div>
             </div>
 
-            {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 && (
-              <h1 className="text-center order-3 md:order-2 col-span-2 md:col-span-1">
-              {menuForSelectedDay?.menuItems.length || 0} opções selecionadas
-            </h1>
-            )}
+            <div className="order-3 md:order-2 col-span-2 md:col-span-1">
+              {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 && (
+                <h1 className="text-center">
+                {menuForSelectedDay?.menuItems.length || 0} opções selecionadas
+              </h1>
+              )}
+            </div>
 
             <div className="flex justify-end order-2 md:order-3 h-full">
               <ActionButton className="flex items-center justify-center w-full max-w-[200px]" onClick={() => setIsModalOpen(true)}>
