@@ -89,7 +89,7 @@ export default function VendorDashboard() {
     return (
       <div className="max-w-7xl mx-auto p-3">
         <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr] gap-6">
-          <EstablishmentHeader establishment={establishment} showEditButton={true} />
+          <EstablishmentHeader className="col-span-2 md:col-span-1" establishment={establishment} showEditButton={true} />
 
           <OperatingHours
             operatingHours={operatingHours}

@@ -5,13 +5,14 @@ import ContentCard from "../layout/ContentCard"
 import { Establishment } from "@/app/(vendor)/dashboard/page"
 
 interface Props {
+  className?: string;
   establishment: Establishment
   showEditButton?: boolean
 }
 
-export default function EstablishmentHeader({ establishment, showEditButton = false }: Props) {
+export default function EstablishmentHeader({ establishment, showEditButton = false, className }: Props) {
   return (
-    <ContentCard className="overflow-hidden">
+    <ContentCard className={`overflow-hidden ${className}`}>
       <div>
         <img
           src={establishment.background_image}
