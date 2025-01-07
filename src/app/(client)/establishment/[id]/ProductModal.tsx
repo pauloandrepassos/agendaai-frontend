@@ -46,6 +46,8 @@ export default function ProductModal({
                 }
             });
             console.log("Item adicionado ao cesto:", response.data);
+            const basketUpdatedEvent = new CustomEvent("basketUpdated");
+            window.dispatchEvent(basketUpdatedEvent);
             onClose();
         } catch (error) {
             console.error("Erro ao adicionar item ao cesto:", error);
@@ -93,7 +95,7 @@ export default function ProductModal({
                             </button>
                         </div>
                     </div>
-                    <div className="grid gap-2 col-span-1 sm:col-span-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 col-span-1 sm:col-span-2">
                         <SecondaryButton onClick={onClose}>Cancelar</SecondaryButton>
                         <PrimaryButton onClick={addToBasket} isLoading={isLoading}>
                             {isLoading ? "Adicionando..." : "Adicionar ao cesto"}
