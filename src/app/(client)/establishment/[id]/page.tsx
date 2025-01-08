@@ -170,8 +170,8 @@ export default function Establishment() {
           </OperatingHoursModal>
         )}
 
-        <ContentCard className="min-h-[300px] mt-4">
-          <div className="p-4">
+        <div className="min-h-[300px] mt-4">
+          <div className="mt-4">
             <Select
               options={days}
               value={selectedDay}
@@ -179,7 +179,7 @@ export default function Establishment() {
             />
           </div>
           {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
-            <div className="p-4">
+            <div className="mt-4">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {menuForSelectedDay.menuItems.map((item) => (
                   <div
@@ -204,7 +204,7 @@ export default function Establishment() {
               <p className="text-center text-gray-500">Nenhum item encontrado para este dia.</p>
             </div>
           )}
-        </ContentCard>
+        </div>
 
         {currentProduct && (
           <ProductModal
