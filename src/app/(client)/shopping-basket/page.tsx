@@ -10,6 +10,7 @@ import SecondaryButton from "@/components/form/SecondaryButton";
 import RedirectLink from "@/components/form/RedirectLink";
 import Link from "next/link";
 import Loading from "@/components/form/LoadingSpinner";
+import ConfirmModal from "@/components/ConfirmModal";
 
 interface ShoppingBasketItem {
     id: number;
@@ -20,9 +21,7 @@ interface ShoppingBasketItem {
 interface ShoppingBasketResponse {
     id: number;
     establishment: IEstablishment;
-    menu: {
-        day: string
-    }
+    menu: IMenuDay
     total_price: string;
     shoppingBasketItems: ShoppingBasketItem[];
 }
@@ -31,10 +30,11 @@ export default function ShoppingBasket() {
     const [basketItems, setBasketItems] = useState<ShoppingBasketItem[]>([]);
     const [totalPrice, setTotalPrice] = useState<string>("0.00");
     const [establishment, setEstablishment] = useState<IEstablishment | null>(null);
-    const [menuDay, setMenuDay] = useState<string>();
+    const [menu, setMenu] = useState<IMenuDay>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [loadingItemId, setLoadingItemId] = useState<number | null>(null); // Estado para rastrear carregamento por item
+    const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
+    const [isConfirmModalVisible, setIsConfirmModalVisible] = useState<boolean>(false);
 
     const fetchShoppingBasket = async () => {
         setLoading(true);
@@ -60,7 +60,7 @@ export default function ShoppingBasket() {
             setBasketItems(data.shoppingBasketItems);
             setTotalPrice(data.total_price);
             setEstablishment(data.establishment);
-            setMenuDay(data.menu.day);
+            setMenu(data.menu);
         } catch (err) {
             setError("Não foi possível carregar o cesto de compras. Tente novamente.");
         } finally {
@@ -68,7 +68,7 @@ export default function ShoppingBasket() {
         }
     };
 
-    const updateItemQuantity = async (itemId: number, productId: number, quantity: number) => {
+    const updateItemQuantity = async (itemId: number, productId: number) => {
         setLoadingItemId(itemId);
         try {
             const response = await fetch(`${apiUrl}/shopping-basket/items`, {
@@ -77,7 +77,7 @@ export default function ShoppingBasket() {
                     "Content-Type": "application/json",
                     token: `${localStorage.getItem("token")}`,
                 },
-                body: JSON.stringify({ productId, quantity }),
+                body: JSON.stringify({ establishmentId: establishment?.id, productId, quantity: 1, menuId: menu?.id }),
             });
 
             if (!response.ok) {
@@ -197,7 +197,7 @@ export default function ShoppingBasket() {
                 </div>
             ) : (
                 <div className="flex flex-col gap-4">
-                    <p>Cesto de compras com itens referente ao cardápio de {translateDay(menuDay || "")}</p>
+                    <p>Cesto de compras com itens referente ao cardápio de {translateDay(menu?.day || "")}</p>
                     {basketItems.map((item) => (
                         <ContentCard
                             className="flex items-center gap-4 overflow-hidden"
@@ -236,8 +236,8 @@ export default function ShoppingBasket() {
                                         className="p-2 rounded-full h-12 w-12"
                                         disabled={loadingItemId === item.id}
                                         onClick={() => {
-                                            updateItemQuantity(item.id, item.product.id, 1);
-                                        }}
+                                            updateItemQuantity(item.id, item.product.id);
+                                        }} //(itemId: number, establishmentId: number, productId: number, quantity: number, menuId: number)
                                     >
                                         {loadingItemId === item.id ? (
                                             <FontAwesomeIcon icon={faSpinner} spin />
@@ -255,14 +255,27 @@ export default function ShoppingBasket() {
                         </h2>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        <SecondaryButton>Cancelar pedido</SecondaryButton>
+                        <SecondaryButton
+                            onClick={() => {
+                                setIsConfirmModalVisible(true)
+                            }}
+                        >
+                            Cancelar pedido
+                        </SecondaryButton>
                         <PrimaryButton>Finalizar pedido</PrimaryButton>
                     </div>
                 </div>
             )}
-            <div className="hidden">
-                <FontAwesomeIcon icon={faSpinner} spin />
-            </div>
+            <ConfirmModal
+                isVisible={isConfirmModalVisible}
+                onClose={() => setIsConfirmModalVisible(false)}
+                title="Cancelar pedido?"
+                textButton="Cancelar pedido"
+                /*onConfirm={() => {
+                    setIsConfirmModalVisible(false);
+                    cancelOrder();
+                }}*/
+            />
         </div>
     );
 }
