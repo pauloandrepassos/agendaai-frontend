@@ -3,17 +3,18 @@ import LobsterText from "@/components/form/LobsterText";
 import PrimaryButton from "@/components/form/PrimaryButton";
 import SecondaryButton from "@/components/form/SecondaryButton";
 import ContentCard from "@/components/layout/ContentCard";
-import { categoryLabels } from "@/types/categoryLabels";
-import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { apiUrl } from "@/config/api";
+import axios from "axios";
 
 interface ProductModalProps {
     isVisible: boolean;
     onClose: () => void;
     product: IProduct;
     establishmentId: number;
+    menuId: number;
+    onError: (title: string, message?: string) => void;
 }
 
 export default function ProductModal({
@@ -21,6 +22,8 @@ export default function ProductModal({
     onClose,
     product,
     establishmentId,
+    menuId,
+    onError
 }: ProductModalProps) {
     const [quantity, setQuantity] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,6 +43,7 @@ export default function ProductModal({
                 establishmentId,
                 productId: product.id,
                 quantity,
+                menuId
             }, {
                 headers: {
                     token: `${localStorage.getItem("token")}`
@@ -49,8 +53,10 @@ export default function ProductModal({
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
             onClose();
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erro ao adicionar item ao cesto:", error);
+            onClose(); // Fecha o modal atual
+            onError("Erro ao adicionar item", error.response?.data?.message || "Erro desconhecido");
         } finally {
             setIsLoading(false);
         }

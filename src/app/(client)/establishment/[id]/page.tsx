@@ -14,6 +14,7 @@ import OperatingHours from "@/components/establishment/OperatingHours";
 import OperatingHoursModal from "@/components/OperatingHoursModal";
 import ProductFormModal from "@/app/(vendor)/product/ProductModalForm";
 import ProductModal from "./ProductModal";
+import Modal from "@/components/Modal";
 
 interface Address {
   id: number;
@@ -44,9 +45,10 @@ export default function Establishment() {
   const [menu, setMenu] = useState<IMenuDay[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>(getDayString());
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([])
+  const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [currentProduct, setCurrentProduct] = useState<IProduct | null>(null);
+  const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -55,7 +57,6 @@ export default function Establishment() {
     if (savedDay) {
       setSelectedDay(savedDay);
     }
-
 
     const fetchData = async () => {
       try {
@@ -109,8 +110,8 @@ export default function Establishment() {
 
   const handleDaySelection = (day: string) => {
     setSelectedDay(day);
-    localStorage.setItem("selectedDay", day)
-  }
+    localStorage.setItem("selectedDay", day);
+  };
 
   const days = [
     { label: "Segunda", value: "monday" },
@@ -185,8 +186,8 @@ export default function Establishment() {
                   <div
                     className=""
                     onClick={() => {
-                      setCurrentProduct(item)
-                      setIsModalVisible(true)
+                      setCurrentProduct(item);
+                      setIsModalVisible(true);
                     }}
                   >
                     <ProductCard
@@ -206,14 +207,28 @@ export default function Establishment() {
           )}
         </div>
 
-        {currentProduct && (
+        {currentProduct && menuForSelectedDay && (
           <ProductModal
             isVisible={isModalVisible}
             establishmentId={establishment.id}
             product={currentProduct}
             onClose={() => {
-              setIsModalVisible(false)
+              setIsModalVisible(false);
             }}
+            menuId={menuForSelectedDay.id}
+            onError={(title = "Erro", message = "Ocorreu um erro") => {
+              setErrorModal({ title, message });
+              setIsModalVisible(false);
+            }}
+          />
+        )}
+
+        {errorModal && (
+          <Modal
+            isVisible={!!errorModal}
+            title={errorModal.title}
+            message={errorModal.message}
+            onClose={() => setErrorModal(null)}
           />
         )}
       </div>
