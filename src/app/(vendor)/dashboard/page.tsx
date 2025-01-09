@@ -106,7 +106,7 @@ export default function VendorDashboard() {
                 <FontAwesomeIcon icon={faCalendarAlt} className="text-2xl" />
                 <span>Cardápio</span>
               </RedirectLink>
-              <RedirectLink href="/" className="py-3">
+              <RedirectLink href="/orders" className="py-3">
                 <FontAwesomeIcon icon={faClipboardList} className="text-2xl" />
                 <span>Agendamentos</span>
               </RedirectLink>
