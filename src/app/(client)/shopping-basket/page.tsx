@@ -10,6 +10,7 @@ import SecondaryButton from "@/components/form/SecondaryButton";
 import Link from "next/link";
 import Loading from "@/components/form/LoadingSpinner";
 import ConfirmModal from "@/components/ConfirmModal";
+import { useRouter } from "next/navigation";
 
 interface ShoppingBasketItem {
     id: number;
@@ -41,6 +42,7 @@ export default function ShoppingBasket() {
     const [menu, setMenu] = useState<IMenuDay>();
     const [error, setError] = useState<string | null>(null);
     const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
+    const router = useRouter()
 
     const [loading, setLoading] = useState(true);
     const [confirmModalProps, setConfirmModalProps] = useState<ConfirmModalProps | null>(null);
@@ -158,11 +160,9 @@ export default function ShoppingBasket() {
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
 
-            await fetchShoppingBasket();
+            await router.push("/")
         } catch (err) {
             console.error("Erro ao cancelar pedido:", err);
-        } finally {
-            setConfirmModalProps(null);
         }
     };
 
@@ -193,11 +193,9 @@ export default function ShoppingBasket() {
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
 
-            await fetchShoppingBasket();
+            await router.push("/")
         } catch (err) {
             console.error("Erro ao finalizar pedido:", err);
-        } finally {
-            setConfirmModalProps(null);
         }
     };
 
