@@ -4,42 +4,15 @@ import SecondaryButton from "@/components/form/SecondaryButton";
 import ContentCard from "@/components/layout/ContentCard";
 import { apiUrl } from "@/config/api";
 import { useEffect, useState } from "react";
-
-type Order = {
-  id: number;
-  order_date: string;
-  status: string;
-  total_price: string;
-  user: {
-    name: string;
-    phone: string;
-  };
-  orderItems: {
-    id: number;
-    product: {
-      name: string;
-      image: string;
-      description: string;
-      price: string;
-    };
-    quantity: number;
-    price: string;
-  }[];
-};
-
-const translateStatus = (status: string): string => {
-  const statusTranslations: { [key: string]: string } = {
-    pending: "Pendente",
-    completed: "Concluído",
-  };
-
-  return statusTranslations[status] || "Desconhecido";
-};
+import OrderDetailsModal from "./VendorOrdersDetails";
+import { translateStatus } from "@/utils/translateStatus";
 
 export default function VendorOrders() {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -67,6 +40,11 @@ export default function VendorOrders() {
     fetchOrders();
   }, []);
 
+  const handleOpenModal = (order: IOrder) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
+
   if (loading) {
     return <div className="text-center mt-5">Carregando pedidos...</div>;
   }
@@ -90,18 +68,14 @@ export default function VendorOrders() {
                 </h2>
                 <span
                   className={`px-3 py-1 text-xs font-medium rounded-full ${order.status === "completed"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-yellow-100 text-yellow-800"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-yellow-100 text-yellow-800"
                     }`}
                 >
                   {translateStatus(order.status)}
                 </span>
               </div>
               <div className="space-y-1">
-                <p className="text-gray-600 text-sm">
-                  <span className="font-semibold">Data:</span>{" "}
-                  {new Date(order.order_date).toLocaleString()}
-                </p>
                 <p className="text-gray-600 text-sm">
                   <span className="font-semibold">Cliente:</span> {order.user.name}
                 </p>
@@ -112,38 +86,34 @@ export default function VendorOrders() {
                   Total: R$ {parseFloat(order.total_price).toFixed(2)}
                 </p>
               </div>
-              <div className="mt-4">
+              <div className="my-2">
                 <h3 className="text-lg font-semibold text-primary">
-                  Itens:
+                  Itens: ({order.orderItems.length})
                 </h3>
-                <ul className="my-2 h-48 overflow-y-auto space-y-3 scrollbar-thin scrollbar-thumb-primary scrollbar-track-gray-200">
+                <div className="flex flex-row overflow-hidden gap-2 mt-1">
                   {order.orderItems.map((item) => (
-                    <li key={item.id} className="flex items-start space-x-4">
-                      <img
-                        src={item.product.image}
-                        alt={item.product.name}
-                        className="w-12 h-12 object-cover rounded-lg border"
-                      />
-                      <div className="text-sm">
-                        <p className="font-semibold text-gray-800">
-                          {item.product.name}
-                        </p>
-                        <p className="text-gray-600">
-                          Quantidade: {item.quantity}
-                        </p>
-                        <p className="text-gray-600">
-                          Preço Unitário: R$ {item.product.price}
-                        </p>
-                      </div>
-                    </li>
+                    <img
+                    key={item.id}
+                      src={item.product.image}
+                      alt={item.product.name}
+                      className="w-12 h-12 object-cover rounded-lg border"
+                    />
                   ))}
-                </ul>
+                </div>
               </div>
-              <SecondaryButton>Detalhes</SecondaryButton>
+              <SecondaryButton onClick={() => handleOpenModal(order)}>
+                Detalhes
+              </SecondaryButton>
             </ContentCard>
           ))}
         </div>
       )}
+
+      <OrderDetailsModal
+        order={selectedOrder}
+        isOpen={isModalOpen}
+        onClose={setIsModalOpen}
+      />
     </div>
 
   );
