@@ -144,13 +144,12 @@ export default function ShoppingBasket() {
             });
             console.log("ID do estabelecimento:", establishment?.id);
 
-            const response = await fetch(`${apiUrl}/shopping-basket/confirm`, {
-                method: "POST",
+            const response = await fetch(`${apiUrl}/shopping-basket`, {
+                method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     token: `${localStorage.getItem("token")}`,
                 },
-                body: JSON.stringify({ idEstablishment: establishment?.id }),
             });
 
             if (!response.ok) {
