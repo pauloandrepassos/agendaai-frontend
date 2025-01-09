@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faTrash, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import PrimaryButton from "@/components/form/PrimaryButton";
 import SecondaryButton from "@/components/form/SecondaryButton";
-import RedirectLink from "@/components/form/RedirectLink";
 import Link from "next/link";
 import Loading from "@/components/form/LoadingSpinner";
 import ConfirmModal from "@/components/ConfirmModal";
@@ -21,9 +20,18 @@ interface ShoppingBasketItem {
 interface ShoppingBasketResponse {
     id: number;
     establishment: IEstablishment;
-    menu: IMenuDay
+    menu: IMenuDay;
     total_price: string;
     shoppingBasketItems: ShoppingBasketItem[];
+}
+
+interface ConfirmModalProps {
+    title: string;
+    onClose: () => void;
+    onConfirm: () => void;
+    isVisible: boolean;
+    textButton?: string;
+    loading?: boolean;
 }
 
 export default function ShoppingBasket() {
@@ -31,10 +39,11 @@ export default function ShoppingBasket() {
     const [totalPrice, setTotalPrice] = useState<string>("0.00");
     const [establishment, setEstablishment] = useState<IEstablishment | null>(null);
     const [menu, setMenu] = useState<IMenuDay>();
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
-    const [isConfirmModalVisible, setIsConfirmModalVisible] = useState<boolean>(false);
+
+    const [loading, setLoading] = useState(true);
+    const [confirmModalProps, setConfirmModalProps] = useState<ConfirmModalProps | null>(null);
 
     const fetchShoppingBasket = async () => {
         setLoading(true);
@@ -83,7 +92,7 @@ export default function ShoppingBasket() {
             if (!response.ok) {
                 throw new Error("Erro ao atualizar item.");
             }
-            
+
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
 
@@ -108,7 +117,7 @@ export default function ShoppingBasket() {
             if (!response.ok) {
                 throw new Error("Erro ao remover item.");
             }
-            
+
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
 
@@ -122,25 +131,97 @@ export default function ShoppingBasket() {
 
     const cancelOrder = async () => {
         try {
-            const response = await fetch(`${apiUrl}/shopping-basket`, {
-                method: "DELETE",
+            setConfirmModalProps((prevProps) => {
+                if (!prevProps) {
+                    return null;
+                }
+                return {
+                    ...prevProps,
+                    loading: true,
+                };
+            });
+            console.log("ID do estabelecimento:", establishment?.id);
+
+            const response = await fetch(`${apiUrl}/shopping-basket/confirm`, {
+                method: "POST",
                 headers: {
+                    "Content-Type": "application/json",
                     token: `${localStorage.getItem("token")}`,
                 },
+                body: JSON.stringify({ idEstablishment: establishment?.id }),
             });
 
             if (!response.ok) {
                 throw new Error("Erro ao cancelar pedido.");
             }
-            
+
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
 
             await fetchShoppingBasket();
         } catch (err) {
             console.error("Erro ao cancelar pedido:", err);
+        } finally {
+            setConfirmModalProps(null);
         }
-    }
+    };
+
+    const finalizeOrder = async () => {
+        try {
+            setConfirmModalProps((prevProps) => {
+                if (!prevProps) {
+                    return null;
+                }
+                return {
+                    ...prevProps,
+                    loading: true,
+                };
+            });
+            const response = await fetch(`${apiUrl}/shopping-basket/confirm`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json", 
+                    token: `${localStorage.getItem("token")}`,
+                },
+                body: JSON.stringify({ idEstablishment: establishment?.id }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao finalizar pedido.");
+            }
+
+            const basketUpdatedEvent = new CustomEvent("basketUpdated");
+            window.dispatchEvent(basketUpdatedEvent);
+
+            await fetchShoppingBasket();
+        } catch (err) {
+            console.error("Erro ao finalizar pedido:", err);
+        } finally {
+            setConfirmModalProps(null);
+        }
+    };
+
+    const showConfirmModal = (type: "cancel" | "finalize") => {
+        if (type === "cancel") {
+            setConfirmModalProps({
+                title: "Tem certeza que deseja cancelar o pedido?",
+                textButton: "Cancelar pedido",
+                isVisible: true,
+                loading: false,
+                onClose: () => setConfirmModalProps(null),
+                onConfirm: cancelOrder,
+            });
+        } else if (type === "finalize") {
+            setConfirmModalProps({
+                title: "Tem certeza que deseja finalizar o pedido?",
+                textButton: "Finalizar pedido",
+                isVisible: true,
+                loading: false,
+                onClose: () => setConfirmModalProps(null),
+                onConfirm: finalizeOrder,
+            });
+        }
+    };
 
     useEffect(() => {
         fetchShoppingBasket();
@@ -148,25 +229,24 @@ export default function ShoppingBasket() {
 
     const translateDay = (day: string) => {
         const days = [
-          { label: "Segunda-feira", value: "monday" },
-          { label: "Terça-feira", value: "tuesday" },
-          { label: "Quarta-feira", value: "wednesday" },
-          { label: "Quinta-feira", value: "thursday" },
-          { label: "Sexta-feira", value: "friday" },
-          { label: "Sábado", value: "saturday" },
-          { label: "Domingo", value: "sunday" },
+            { label: "Segunda-feira", value: "monday" },
+            { label: "Terça-feira", value: "tuesday" },
+            { label: "Quarta-feira", value: "wednesday" },
+            { label: "Quinta-feira", value: "thursday" },
+            { label: "Sexta-feira", value: "friday" },
+            { label: "Sábado", value: "saturday" },
+            { label: "Domingo", value: "sunday" },
         ];
         const translatedDay = days.find((d) => d.value === day);
-        return translatedDay ? translatedDay.label : day; 
-      };
-      
+        return translatedDay ? translatedDay.label : day;
+    };
 
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <Loading />
             </div>
-        )
+        );
     } else if (error) {
         return <p className="text-red-500">{error}</p>;
     }
@@ -177,6 +257,7 @@ export default function ShoppingBasket() {
                 <h1 className="text-2xl font-bold">Cesto de Compras</h1>
                 {establishment && (
                     <div className="flex justify-end">
+                        {establishment.id}
                         <Link href={`/establishment/${establishment.id}`} className="flex items-center gap-4">
                             <img
                                 src={establishment.logo}
@@ -237,7 +318,7 @@ export default function ShoppingBasket() {
                                         disabled={loadingItemId === item.id}
                                         onClick={() => {
                                             updateItemQuantity(item.id, item.product.id);
-                                        }} //(itemId: number, establishmentId: number, productId: number, quantity: number, menuId: number)
+                                        }}
                                     >
                                         {loadingItemId === item.id ? (
                                             <FontAwesomeIcon icon={faSpinner} spin />
@@ -255,27 +336,25 @@ export default function ShoppingBasket() {
                         </h2>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
-                        <SecondaryButton
-                            onClick={() => {
-                                setIsConfirmModalVisible(true)
-                            }}
-                        >
+                        <SecondaryButton onClick={() => showConfirmModal("cancel")}>
                             Cancelar pedido
                         </SecondaryButton>
-                        <PrimaryButton>Finalizar pedido</PrimaryButton>
+                        <PrimaryButton onClick={() => showConfirmModal("finalize")}>
+                            Finalizar pedido
+                        </PrimaryButton>
                     </div>
                 </div>
             )}
-            <ConfirmModal
-                isVisible={isConfirmModalVisible}
-                onClose={() => setIsConfirmModalVisible(false)}
-                title="Cancelar pedido?"
-                textButton="Cancelar pedido"
-                /*onConfirm={() => {
-                    setIsConfirmModalVisible(false);
-                    cancelOrder();
-                }}*/
-            />
+            {confirmModalProps && (
+                <ConfirmModal
+                    isVisible={confirmModalProps.isVisible}
+                    onClose={confirmModalProps.onClose}
+                    title={confirmModalProps.title}
+                    textButton={confirmModalProps.textButton}
+                    onConfirm={confirmModalProps.onConfirm}
+                    loading={confirmModalProps.loading}
+                />
+            )}
         </div>
     );
 }

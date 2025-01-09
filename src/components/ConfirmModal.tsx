@@ -6,11 +6,13 @@ import PrimaryButton from "./form/PrimaryButton"
 interface ConfirmModalProps {
     title: string
     onClose: () => void
+    onConfirm: () => void
     isVisible: boolean
     textButton?: string
+    loading?: boolean
 }
 
-const ConfirmModal: React.FC<ConfirmModalProps> = ({ title, onClose, isVisible, textButton }) => {
+const ConfirmModal: React.FC<ConfirmModalProps> = ({ title, onClose, onConfirm, isVisible, textButton, loading }) => {
     if (!isVisible) return null
 
     return (
@@ -19,7 +21,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ title, onClose, isVisible, 
                 <h2 className="text-xl text-center font-bold mb-4">{title}</h2>
                 <div className="grid grid-cols-2 gap-4">
                     <SecondaryButton onClick={()=>onClose()}>Voltar</SecondaryButton>
-                    <PrimaryButton>{textButton ? `${textButton}` : "Confirmar"}</PrimaryButton>
+                    <PrimaryButton onClick={()=>onConfirm()} isLoading={loading}>{textButton ? `${textButton}` : "Confirmar"}</PrimaryButton>
                 </div>
             </ContentCard>
         </div>
