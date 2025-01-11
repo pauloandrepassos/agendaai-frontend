@@ -11,6 +11,7 @@ import Link from "next/link";
 import Loading from "@/components/form/LoadingSpinner";
 import ConfirmModal from "@/components/ConfirmModal";
 import { useRouter } from "next/navigation";
+import Modal from "@/components/Modal";
 
 interface ShoppingBasketItem {
     id: number;
@@ -37,6 +38,7 @@ interface ConfirmModalProps {
 }
 
 export default function ShoppingBasket() {
+    const [pickupTime, setPickupTime] = useState<string>("");
     const [basketItems, setBasketItems] = useState<ShoppingBasketItem[]>([]);
     const [totalPrice, setTotalPrice] = useState<string>("0.00");
     const [establishment, setEstablishment] = useState<IEstablishment | null>(null);
@@ -44,6 +46,7 @@ export default function ShoppingBasket() {
     const [orderDate, setOrderDate] = useState<string>(""); 
     const [error, setError] = useState<string | null>(null);
     const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
+    const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
     const router = useRouter()
 
     const [loading, setLoading] = useState(true);
@@ -169,6 +172,11 @@ export default function ShoppingBasket() {
     };
 
     const finalizeOrder = async () => {
+        if (!pickupTime) {
+            setErrorModal({message: "Informe o horário de retirada.", title: "Horário de retirada obrigatório"});
+            setConfirmModalProps(null)
+            return;
+        }
         try {
             setConfirmModalProps((prevProps) => {
                 if (!prevProps) {
@@ -185,7 +193,7 @@ export default function ShoppingBasket() {
                     "Content-Type": "application/json", 
                     token: `${localStorage.getItem("token")}`,
                 },
-                body: JSON.stringify({ idEstablishment: establishment?.id }),
+                body: JSON.stringify({ idEstablishment: establishment?.id, pickupTime }),
             });
 
             if (!response.ok) {
@@ -347,6 +355,21 @@ export default function ShoppingBasket() {
                             Subtotal: R$ {Number(totalPrice).toFixed(2)}
                         </h2>
                     </div>
+                    <div className="mt-4 flex flex-col">
+                        <label htmlFor="pickupTime" className="block mb-2">
+                            Para finalizar o pedido, informe o horário de retirada:
+                        </label>
+                        <input
+                            type="time"
+                            id="pickupTime"
+                            value={pickupTime}
+                            onChange={(e) => setPickupTime(e.target.value)}
+                            className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${error
+                                ? "focus:ring-red-500 border border-red-500"
+                                : "focus:ring-[#FA240F]"
+                            }`}
+                        />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                         <SecondaryButton onClick={() => showConfirmModal("cancel")}>
                             Cancelar pedido
@@ -366,6 +389,15 @@ export default function ShoppingBasket() {
                     onConfirm={confirmModalProps.onConfirm}
                     loading={confirmModalProps.loading}
                 />
+            )}
+
+            {errorModal && (
+              <Modal
+                isVisible={!!errorModal}
+                title={errorModal.title}
+                message={errorModal.message}
+                onClose={() => setErrorModal(null)}
+              />
             )}
         </div>
     );
