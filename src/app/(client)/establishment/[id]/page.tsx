@@ -15,6 +15,7 @@ import OperatingHoursModal from "@/components/OperatingHoursModal";
 import ProductFormModal from "@/app/(vendor)/product/ProductModalForm";
 import ProductModal from "./ProductModal";
 import Modal from "@/components/Modal";
+import { formatDateWithDay, getNextDayDate, weekDays } from "@/utils/weekDays";
 
 interface Address {
   id: number;
@@ -113,7 +114,7 @@ export default function Establishment() {
     localStorage.setItem("selectedDay", day);
   };
 
-  const days = [
+  /*const days = [
     { label: "Segunda", value: "monday" },
     { label: "Terça", value: "tuesday" },
     { label: "Quarta", value: "wednesday" },
@@ -121,7 +122,12 @@ export default function Establishment() {
     { label: "Sexta", value: "friday" },
     { label: "Sábado", value: "saturday" },
     { label: "Domingo", value: "sunday" },
-  ];
+  ];*/
+
+  const days = weekDays.map((day) => ({
+    label: formatDateWithDay(day),
+    value: day,
+  }));
 
   const menuForSelectedDay = menu.find((day) => day.day === selectedDay);
 
@@ -216,6 +222,7 @@ export default function Establishment() {
               setIsModalVisible(false);
             }}
             menuId={menuForSelectedDay.id}
+            orderDate={getNextDayDate(selectedDay)}
             onError={(title = "Erro", message = "Ocorreu um erro") => {
               setErrorModal({ title, message });
               setIsModalVisible(false);

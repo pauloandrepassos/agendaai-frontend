@@ -14,6 +14,7 @@ interface ProductModalProps {
     product: IProduct;
     establishmentId: number;
     menuId: number;
+    orderDate: Date;
     onError: (title: string, message?: string) => void;
 }
 
@@ -23,6 +24,7 @@ export default function ProductModal({
     product,
     establishmentId,
     menuId,
+    orderDate,
     onError
 }: ProductModalProps) {
     const [quantity, setQuantity] = useState<number>(1);
@@ -43,7 +45,8 @@ export default function ProductModal({
                 establishmentId,
                 productId: product.id,
                 quantity,
-                menuId
+                menuId,
+                orderDate: orderDate.toISOString()
             }, {
                 headers: {
                     token: `${localStorage.getItem("token")}`
@@ -75,6 +78,8 @@ export default function ProductModal({
                         <LobsterText className="text-3xl text-center text-primary">
                             {product.name}
                         </LobsterText>
+
+                        <p>{String(orderDate)}</p>
 
                         <p className="text-gray-600">{product.description}</p>
 

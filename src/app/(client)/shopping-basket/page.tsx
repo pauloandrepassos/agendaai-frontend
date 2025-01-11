@@ -24,6 +24,7 @@ interface ShoppingBasketResponse {
     menu: IMenuDay;
     total_price: string;
     shoppingBasketItems: ShoppingBasketItem[];
+    order_date: string;
 }
 
 interface ConfirmModalProps {
@@ -40,6 +41,7 @@ export default function ShoppingBasket() {
     const [totalPrice, setTotalPrice] = useState<string>("0.00");
     const [establishment, setEstablishment] = useState<IEstablishment | null>(null);
     const [menu, setMenu] = useState<IMenuDay>();
+    const [orderDate, setOrderDate] = useState<string>(""); 
     const [error, setError] = useState<string | null>(null);
     const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
     const router = useRouter()
@@ -72,6 +74,7 @@ export default function ShoppingBasket() {
             setTotalPrice(data.total_price);
             setEstablishment(data.establishment);
             setMenu(data.menu);
+            setOrderDate(data.order_date)
         } catch (err) {
             setError("Não foi possível carregar o cesto de compras. Tente novamente.");
         } finally {
@@ -238,6 +241,16 @@ export default function ShoppingBasket() {
         return translatedDay ? translatedDay.label : day;
     };
 
+    const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("pt-BR", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        });
+    };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center h-screen">
@@ -254,7 +267,6 @@ export default function ShoppingBasket() {
                 <h1 className="text-2xl font-bold">Cesto de Compras</h1>
                 {establishment && (
                     <div className="flex justify-end">
-                        {establishment.id}
                         <Link href={`/establishment/${establishment.id}`} className="flex items-center gap-4">
                             <img
                                 src={establishment.logo}
@@ -275,7 +287,10 @@ export default function ShoppingBasket() {
                 </div>
             ) : (
                 <div className="flex flex-col gap-4">
-                    <p>Cesto de compras com itens referente ao cardápio de {translateDay(menu?.day || "")}</p>
+                    <div className="flex gap-2">
+                        <p>Pedido para</p>
+                        <p className="font-bold">{formatDate(orderDate)}</p>
+                    </div>
                     {basketItems.map((item) => (
                         <ContentCard
                             className="flex items-center gap-4 overflow-hidden"
