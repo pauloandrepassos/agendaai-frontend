@@ -79,8 +79,6 @@ export default function ProductModal({
                             {product.name}
                         </LobsterText>
 
-                        <p>{String(orderDate)}</p>
-
                         <p className="text-gray-600">{product.description}</p>
 
                         <p className="mt-2 flex justify-between">
