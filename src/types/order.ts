@@ -5,5 +5,6 @@ interface IOrder {
     status: string;
     total_price: string;
     user: IUser;
+    establishment: IEstablishment;
     orderItems: IOrderItem[];
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { faBell, faHome, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faFileAlt, faHome, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -127,19 +127,33 @@ export default function Navbar() {
         {/* Menu para dispositivos móveis */}
         <div className="block lg:hidden"></div>
 
-        <div className="relative flex items-center gap-4">
+        <div className="relative flex items-center gap-8">
           {/* Cesto de Compras */}
           {userType === "client" && (
             <>
+              <Link href={`/order`} className="text-secondary hover:text-primary h-10 text-center flex items-center justify-center gap-1">
+                <FontAwesomeIcon className="text-2xl" icon={faFileAlt} />
+                Pedidos
+              </Link>
               <button
                 onClick={() => toggleDropdown("basket")}
-                className="text-primary text-2xl h-10 text-center flex items-center justify-center gap-1 relative"
+                className="text-secondary hover:text-primary h-10 text-center flex items-center justify-center gap-1 relative"
               >
-                <FontAwesomeIcon icon={faShoppingBasket} />
+                <FontAwesomeIcon icon={faShoppingBasket} className="text-2xl"/>
+                Cesto
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-semibold px-1 rounded-full">
+                    {totalItems}
+                  </span>
+                )}
+                {/**
                 <div className="text-sm">
                   <p className="">{totalItems} itens</p>
                   <p>R$ {Number(totalPrice).toFixed(2)}</p>
                 </div>
+                 * 
+                 * 
+                 */}
               </button>
               {dropdownOpen === "basket" && (
                 <ContentCard className="absolute right-0 top-14 w-96 bg-white overflow-hidden z-50 shadow-lg">
@@ -179,7 +193,7 @@ export default function Navbar() {
           {/* Botão do Usuário */}
           <button
             onClick={() => toggleDropdown("user")}
-            className="text-white text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-primary focus:outline-none border border-secondary"
+            className="text-white text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-secondary hover:bg-primary focus:outline-none border border-secondary"
           >
             <FontAwesomeIcon icon={faUser} />
           </button>
