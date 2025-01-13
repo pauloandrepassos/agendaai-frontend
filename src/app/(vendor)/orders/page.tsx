@@ -88,16 +88,22 @@ export default function VendorOrders() {
               </div>
               <div className="my-2">
                 <h3 className="text-lg font-semibold text-primary">
-                  Itens: ({order.orderItems.length})
+                  Itens: ({order.orderItems.reduce((total, item) => total + item.quantity, 0)})
                 </h3>
                 <div className="flex flex-row overflow-hidden gap-2 mt-1">
                   {order.orderItems.map((item) => (
-                    <img
-                    key={item.id}
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-12 h-12 object-cover rounded-lg border"
-                    />
+                    <div className="relative" key={item.id}>
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="w-12 h-12 object-cover rounded-lg border"
+                      />
+                      {item.quantity > 1 && (
+                        <span className="absolute top-0 right-0 bg-red-500 text-white text-sm font-bold rounded-full px-2">
+                          {item.quantity}
+                        </span>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>
