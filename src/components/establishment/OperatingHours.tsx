@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import ContentCard from "../layout/ContentCard";
 import RedirectLink from "../form/RedirectLink";
+import LobsterText from "../form/LobsterText";
 
 interface OperatingHoursProps {
     className?: string;
@@ -48,14 +49,14 @@ export default function OperatingHours({ className, operatingHours, showEditButt
             ) : (
                 <div className="grid gap-2">
                     <div className="flex justify-between items-center">
-                        <h2>Horários</h2>
+                        <LobsterText className="text-xl text-primary">Horários:</LobsterText>
                         {showEditButton && (
                             <RedirectLink href="/">Editar</RedirectLink>
                         )}
                     </div>
                     {Object.entries(groupedHours).map(([day, hours]) => (
                         <div key={day} className="grid grid-cols-[1fr_3fr] gap-2">
-                            <span className="bg-primary text-white text-center rounded-full">
+                            <span className="bg-secondary text-white text-center rounded-full">
                                 {dayOfWeekMap[day]}
                             </span>
                             <div className="flex flex-wrap gap-2">

@@ -3,6 +3,7 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import RedirectLink from "@/components/form/RedirectLink"
 import ContentCard from "../layout/ContentCard"
 import { Establishment } from "@/app/(vendor)/dashboard/page"
+import LobsterText from "../form/LobsterText"
 
 interface Props {
   className?: string;
@@ -42,7 +43,7 @@ export default function EstablishmentHeader({ establishment, showEditButton = fa
           </div>
         </div>
         <div className="hidden md:block col-span-1">
-          <p>Descrição:</p>
+          <LobsterText className="text-xl text-primary">Descrição:</LobsterText>
           <p>
             Um espaço acolhedor com opções de lanches variados, bebidas
             refrescantes e um ambiente perfeito para relaxar ou se reunir com amigos.
