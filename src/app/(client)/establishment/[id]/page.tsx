@@ -156,7 +156,7 @@ export default function Establishment() {
             <OperatingHours
               className="h-full ml-4"
               operatingHours={operatingHours}
-              showEditButton={true}
+              showEditButton={false}
             />
           </div>
           <button
