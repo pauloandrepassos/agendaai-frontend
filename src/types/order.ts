@@ -7,4 +7,5 @@ interface IOrder {
     user: IUser;
     establishment: IEstablishment;
     orderItems: IOrderItem[];
+    created_at: Date
 }
