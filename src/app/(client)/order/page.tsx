@@ -65,8 +65,8 @@ export default function ClientOrder() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {orders.map((order) => (
                         <ContentCard key={order.id} className="p-6">
-                            <div className="grid grid-cols-3 items-center border-b pb-3 mb-3">
-                                <div className="flex items-center gap-2">
+                            <div className="grid grid-cols-6 items-center border-b pb-3 mb-3">
+                                <div className="flex items-center gap-2 order-3 sm:order-1 col-span-6 sm:col-span-2 justify-center sm:justify-start">
                                     <img
                                         src={order.establishment.logo}
                                         alt={order.establishment.name}
@@ -76,10 +76,10 @@ export default function ClientOrder() {
                                         {order.establishment.name}
                                     </span>
                                 </div>
-                                <h2 className="text-xl font-semibold text-secondary text-center">
+                                <h2 className="text-xl font-semibold text-secondary text-start sm:text-center order-1 sm:order-2 col-span-3 sm:col-span-2">
                                     Pedido #{order.id}
                                 </h2>
-                                <div className="flex items-center justify-end">
+                                <div className="flex items-center justify-end order-2 sm:order-3 col-span-3 sm:col-span-2">
                                     <span
                                         className={`px-3 py-1 text-xs font-medium rounded-full ${order.status === "completed"
                                             ? "bg-green-100 text-green-800"
@@ -96,11 +96,11 @@ export default function ClientOrder() {
                                 </h3>
                                 <div className="flex flex-row overflow-hidden gap-2 mt-1">
                                     {order.orderItems.map((item) => (
-                                        <div className="relative" key={item.id}>
+                                        <div className="relative min-w-12" key={item.id}>
                                             <img
                                                 src={item.product.image}
                                                 alt={item.product.name}
-                                                className="w-12 h-12 object-cover rounded-lg border"
+                                                className="w-12 h-12 object-cover rounded-lg"
                                             />
                                             {item.quantity > 1 && (
                                                 <span className="absolute top-0 right-0 bg-red-500 text-white text-sm font-bold rounded-full px-2">

@@ -271,10 +271,10 @@ export default function ShoppingBasket() {
 
     return (
         <div className="max-w-2xl mx-auto p-3">
-            <div className="grid grid-cols-2 items-center gap-4 mb-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 mb-2">
                 <h1 className="text-2xl font-bold">Cesto de Compras</h1>
                 {establishment && (
-                    <div className="flex justify-end">
+                    <div className="flex justify-center sm:justify-end">
                         <Link href={`/establishment/${establishment.id}`} className="flex items-center gap-4">
                             <img
                                 src={establishment.logo}
@@ -295,7 +295,7 @@ export default function ShoppingBasket() {
                 </div>
             ) : (
                 <div className="flex flex-col gap-4">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-col sm:flex-row">
                         <p>Pedido para</p>
                         <p className="font-bold">{formatDate(orderDate)}</p>
                     </div>
@@ -304,48 +304,52 @@ export default function ShoppingBasket() {
                             className="flex items-center gap-4 overflow-hidden"
                             key={item.id}
                         >
-                            <img
-                                src={item.product.image}
-                                alt={item.product.name}
-                                className="w-32 h-24 object-cover rounded"
-                            />
-                            <div className="flex-1">
-                                <h2 className="font-semibold">{item.product.name}</h2>
-                                <p className="text-gray-600 flex gap-1">
-                                    R$<p className="text-xl">{Number(item.product.price).toFixed(2)}</p>
-                                </p>
+                            <div className="w-40">
+                                <img
+                                    src={item.product.image}
+                                    alt={item.product.name}
+                                    className="w-full h-28 object-cover rounded"
+                                />
                             </div>
-                            <div className="flex mr-4 justify-center items-center gap-2">
-                                <div className="flex justify-center items-center gap-2 rounded-full border-2 border-secondary">
-                                    <button
-                                        className="p-2 rounded-full h-12 w-12"
-                                        disabled={loadingItemId === item.id}
-                                        onClick={() => {
-                                            removeItem(item.id);
-                                        }}
-                                    >
-                                        {loadingItemId === item.id ? (
-                                            <FontAwesomeIcon icon={faSpinner} spin />
-                                        ) : item.quantity === 1 ? (
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        ) : (
-                                            <FontAwesomeIcon icon={faMinus} />
-                                        )}
-                                    </button>
-                                    <span className="font-semibold">{item.quantity}</span>
-                                    <button
-                                        className="p-2 rounded-full h-12 w-12"
-                                        disabled={loadingItemId === item.id}
-                                        onClick={() => {
-                                            updateItemQuantity(item.id, item.product.id);
-                                        }}
-                                    >
-                                        {loadingItemId === item.id ? (
-                                            <FontAwesomeIcon icon={faSpinner} spin />
-                                        ) : (
-                                            <FontAwesomeIcon icon={faPlus} />
-                                        )}
-                                    </button>
+                            <div className="flex flex-col sm:flex-row w-full p-3">
+                                <div className="flex flex-1 justify-between sm:flex-col gap-1 mb-2">
+                                    <h2 className="font-semibold">{item.product.name}</h2>
+                                    <p className="text-gray-600 flex gap-1">
+                                        R$<p className="text-xl">{Number(item.product.price).toFixed(2)}</p>
+                                    </p>
+                                </div>
+                                <div className="flex mr-4 justify-center items-center gap-2">
+                                    <div className="flex justify-center items-center gap-2 rounded-full border-2 border-secondary">
+                                        <button
+                                            className="p-2 rounded-full h-12 w-12"
+                                            disabled={loadingItemId === item.id}
+                                            onClick={() => {
+                                                removeItem(item.id);
+                                            }}
+                                        >
+                                            {loadingItemId === item.id ? (
+                                                <FontAwesomeIcon icon={faSpinner} spin />
+                                            ) : item.quantity === 1 ? (
+                                                <FontAwesomeIcon icon={faTrash} />
+                                            ) : (
+                                                <FontAwesomeIcon icon={faMinus} />
+                                            )}
+                                        </button>
+                                        <span className="font-semibold">{item.quantity}</span>
+                                        <button
+                                            className="p-2 rounded-full h-12 w-12"
+                                            disabled={loadingItemId === item.id}
+                                            onClick={() => {
+                                                updateItemQuantity(item.id, item.product.id);
+                                            }}
+                                        >
+                                            {loadingItemId === item.id ? (
+                                                <FontAwesomeIcon icon={faSpinner} spin />
+                                            ) : (
+                                                <FontAwesomeIcon icon={faPlus} />
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </ContentCard>

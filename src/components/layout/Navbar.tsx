@@ -156,7 +156,7 @@ export default function Navbar() {
                  */}
               </button>
               {dropdownOpen === "basket" && (
-                <ContentCard className="absolute right-0 top-14 w-96 bg-white overflow-hidden z-50 shadow-lg">
+                <ContentCard className="absolute right-0 top-14 w-72 md:w-96 bg-white overflow-hidden z-50 shadow-lg">
                   <div onMouseLeave={() => setDropdownOpen(null)}>
                     <div className="p-4 max-h-64 flex flex-col gap-4 overflow-y-auto">
                       {basketItems.map((item) => (
@@ -229,7 +229,7 @@ export default function Navbar() {
 
       {/* Menu lateral para dispositivos móveis */}
       <div className={`fixed inset-0 z-50 bg-black bg-opacity-50 lg:hidden transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`} onClick={toggleMenu}>
-        <div className={`fixed left-0 top-0 w-2/3 h-full bg-primary p-4 transition-transform duration-300 ${isMenuOpen ? "transform translate-x-0" : "transform -translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
+        <div className={`fixed left-0 top-0 w-1/2 h-full bg-primary p-4 transition-transform duration-300 ${isMenuOpen ? "transform translate-x-0" : "transform -translate-x-full"}`} onClick={(e) => e.stopPropagation()}>
           <div className="flex justify-end">
             <button className="text-white text-2xl mb-8" onClick={toggleMenu}>
               <svg
@@ -247,8 +247,6 @@ export default function Navbar() {
                 />
               </svg>
             </button>
-          </div>
-          <div className="flex flex-col gap-2">
           </div>
         </div>
       </div>

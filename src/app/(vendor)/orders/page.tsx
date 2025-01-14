@@ -92,11 +92,11 @@ export default function VendorOrders() {
                 </h3>
                 <div className="flex flex-row overflow-hidden gap-2 mt-1">
                   {order.orderItems.map((item) => (
-                    <div className="relative" key={item.id}>
+                    <div className="relative min-w-12" key={item.id}>
                       <img
                         src={item.product.image}
                         alt={item.product.name}
-                        className="w-12 h-12 object-cover rounded-lg border"
+                        className="w-12 h-12 object-cover rounded-lg"
                       />
                       {item.quantity > 1 && (
                         <span className="absolute top-0 right-0 bg-red-500 text-white text-sm font-bold rounded-full px-2">
