@@ -6,6 +6,7 @@ import { apiUrl } from "@/config/api";
 import { useEffect, useState } from "react";
 import OrderDetailsModal from "./VendorOrdersDetails";
 import { translateStatus } from "@/utils/translateStatus";
+import Input from "@/components/form/TextInput";
 
 export default function VendorOrders() {
   const [orders, setOrders] = useState<IOrder[]>([]);
@@ -13,36 +14,42 @@ export default function VendorOrders() {
   const [error, setError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
+
+  const fetchOrders = async (date: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${apiUrl}/orders/establishment?date=${date}`, {
+        method: "GET",
+        headers: {
+          token: `${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao buscar pedidos.");
+      }
+
+      const data = await response.json();
+      setOrders(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro desconhecido.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/orders/establishment`, {
-          method: "GET",
-          headers: {
-            token: `${localStorage.getItem("token")}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Erro ao buscar pedidos.");
-        }
-
-        const data = await response.json();
-        setOrders(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Erro desconhecido.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, []);
+    fetchOrders(selectedDate);
+  }, [selectedDate]);
 
   const handleOpenModal = (order: IOrder) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
+  };
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDate(event.target.value);
   };
 
   if (loading) {
@@ -56,8 +63,19 @@ export default function VendorOrders() {
   return (
     <div className="max-w-7xl mx-auto p-5">
       <h1 className="text-3xl font-bold text-primary mb-8">Agendamentos</h1>
+
+      <div className="mb-6">
+        <Input
+          label="Selecionar Data"
+          placeholder="Selecione a data"
+          type="date"
+          value={selectedDate}
+          onChange={handleDateChange}
+        />
+      </div>
+
       {orders.length === 0 ? (
-        <p className="text-gray-500 text-center">Nenhum pedido encontrado.</p>
+        <p className="text-gray-500 text-center">Nenhum pedido encontrado para a data selecionada.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order) => (
@@ -121,6 +139,5 @@ export default function VendorOrders() {
         onClose={setIsModalOpen}
       />
     </div>
-
   );
 }
