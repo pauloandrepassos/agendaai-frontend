@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import OrderDetailsModal from "./VendorOrdersDetails";
 import { translateStatus } from "@/utils/translateStatus";
 import Input from "@/components/form/TextInput";
+import DateInput from "@/components/form/DateInput";
+import { date } from "yup";
+import { formatDateWithDay } from "@/utils/weekDays";
 
 export default function VendorOrders() {
   const [orders, setOrders] = useState<IOrder[]>([]);
@@ -14,12 +17,16 @@ export default function VendorOrders() {
   const [error, setError] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split("T")[0]);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
-  const fetchOrders = async (date: string) => {
+  const fetchOrders = async (date: Date | null) => {
     setLoading(true);
+    if (!date) {
+      setLoading(false);
+      return;
+    }
     try {
-      const response = await fetch(`${apiUrl}/orders/establishment?date=${date}`, {
+      const response = await fetch(`${apiUrl}/orders/establishment?date=${date.toISOString().split("T")[0]}`, {
         method: "GET",
         headers: {
           token: `${localStorage.getItem("token")}`,
@@ -49,7 +56,8 @@ export default function VendorOrders() {
   };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(event.target.value);
+    const dateValue = event.target.value ? new Date(event.target.value) : null;
+    setSelectedDate(dateValue);
   };
 
   if (loading) {
@@ -62,15 +70,15 @@ export default function VendorOrders() {
 
   return (
     <div className="max-w-7xl mx-auto p-5">
-      <h1 className="text-3xl font-bold text-primary mb-8">Agendamentos</h1>
-
-      <div className="mb-6">
-        <Input
-          label="Selecionar Data"
-          placeholder="Selecione a data"
-          type="date"
-          value={selectedDate}
-          onChange={handleDateChange}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-primary text-center sm:text-left">
+          Agendamentos {selectedDate && <>de {formatDateWithDay(String(selectedDate))}</>}
+        </h1>
+        <DateInput
+          label="Alterar Data"
+          selectedDate={selectedDate}
+          onDateChange={setSelectedDate}
+          className="w-full sm:w-auto"
         />
       </div>
 
