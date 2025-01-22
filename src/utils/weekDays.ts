@@ -25,6 +25,16 @@ export const formatDateWithDay = (day: string) => {
     }).format(targetDate);
 };
 
+export const formatDate = (dateStr: string) => { // dateStr: formato 2024-09-30
+    const date = new Date(`${dateStr}T00:00:00`);
+    return date.toLocaleDateString("pt-BR", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+};
+
 export function getNextDayDate(day: string): Date {
     const daysOfWeek: Record<string, number> = {
         sunday: 0,

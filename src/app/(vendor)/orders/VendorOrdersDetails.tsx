@@ -67,9 +67,12 @@ export default function OrderDetailsModal({
                         Detalhes do Pedido #{order.id}
                     </h2>
                     <span
-                        className={`px-3 py-1 text-xs font-medium rounded-full ${order.status === "completed"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                        className={`px-3 py-1 text-xs font-medium rounded-full ${
+                                order.status === "completed"
+                                ? "bg-green-500 text-white"
+                                : order.status === "canceled"
+                                ? "bg-red-500 text-white"
+                                : "bg-yellow-500 text-white"
                             }`}
                     >
                         {translateStatus(order.status)}
