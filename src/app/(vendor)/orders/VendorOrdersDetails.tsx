@@ -1,26 +1,62 @@
 "use client";
 
+import ConfirmModal from "@/components/ConfirmModal";
 import PrimaryButton from "@/components/form/PrimaryButton";
 import SecondaryButton from "@/components/form/SecondaryButton";
 import ContentCard from "@/components/layout/ContentCard";
+import { apiUrl } from "@/config/api";
 import { formatarData, formatarDataComDia, formatarHorario } from "@/utils/time";
 import { translateStatus } from "@/utils/translateStatus";
 import { formatDateWithDay } from "@/utils/weekDays";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface ModalProps {
     order: IOrder | null;
     isOpen: boolean;
     onClose: Dispatch<SetStateAction<boolean>>;
+    onUpdateOrder: (updatedOrder: IOrder) => void;
 }
 
 export default function OrderDetailsModal({
     order,
     isOpen,
     onClose,
+    onUpdateOrder,
 }: ModalProps) {
+    const [isConfirmVisible, setIsConfirmVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleConfirmPickup = async () => {
+        if (!order) return;
+
+        setLoading(true);
+        try {
+            const response = await fetch(`${apiUrl}/order/${order.id}/confirm-pickup`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    token: `${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao confirmar retirada do pedido.");
+            }
+
+            const updatedOrder = await response.json();
+            onUpdateOrder(updatedOrder);
+            console.log("Pedido atualizado:", updatedOrder);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+            setIsConfirmVisible(false);
+            onClose(false);
+        }
+    };
+
     if (!isOpen || !order) return null;
 
     return (
@@ -103,8 +139,18 @@ export default function OrderDetailsModal({
                     </p>
                 </div>
                 <SecondaryButton onClick={() => onClose(false)}>Fechar</SecondaryButton>
-                <PrimaryButton>Retirar pedido</PrimaryButton>
+                {order.status === "pending" && (<PrimaryButton onClick={() => setIsConfirmVisible(true)}>Retirar pedido</PrimaryButton>)}
             </ContentCard>
+
+            <ConfirmModal
+                title="Confirmar retirada do pedido"
+                message={`Confirma que o pedido está sendo retirado por ${order.user.name} na data e horário informados?`}
+                onClose={() => setIsConfirmVisible(false)}
+                onConfirm={handleConfirmPickup}
+                isVisible={isConfirmVisible}
+                textButton="Confirmar"
+                loading={loading}
+            />
         </div>
     );
 }

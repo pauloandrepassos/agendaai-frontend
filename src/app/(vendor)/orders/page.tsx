@@ -60,6 +60,14 @@ export default function VendorOrders() {
     setSelectedDate(dateValue);
   };
 
+  const updateOrderStatus = (updatedOrder: IOrder) => {
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === updatedOrder.id ? { ...order, ...updatedOrder } : order
+      )
+    );
+  };  
+
   if (loading) {
     return <div className="text-center mt-5">Carregando pedidos...</div>;
   }
@@ -145,6 +153,7 @@ export default function VendorOrders() {
         order={selectedOrder}
         isOpen={isModalOpen}
         onClose={setIsModalOpen}
+        onUpdateOrder={updateOrderStatus}
       />
     </div>
   );
