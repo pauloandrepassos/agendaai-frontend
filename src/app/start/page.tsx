@@ -3,6 +3,7 @@ import Features from "@/components/Features"
 import LobsterText from "@/components/form/LobsterText"
 import PrimaryButton from "@/components/form/PrimaryButton"
 import SecondaryButton from "@/components/form/SecondaryButton"
+import Footer from "@/components/layout/Footer"
 import Navbar from "@/components/layout/Navbar"
 import Team from "@/components/Team"
 import Link from "next/link"
@@ -47,6 +48,7 @@ export default function Start() {
       <AboutUs />
       <Features />
       <Team />
+      <Footer isInitialPage={true}/>
     </div>
   )
 }
