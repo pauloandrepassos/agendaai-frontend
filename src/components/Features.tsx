@@ -5,13 +5,13 @@ import { faBook, faBookOpen, faChartArea, faChartBar } from "@fortawesome/free-s
 export default function Features() {
     return (
         <section className="p-5 max-w-7xl mx-auto">
-            <LobsterText className="text-5xl text-primary text-center">
+            <LobsterText className="text-5xl text-primary text-center mb-8 mt-3">
                 Funcionalidades
             </LobsterText>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-7 mt-4">
                 <div>
                     <div className="text-primary">
-                        <FontAwesomeIcon icon={faBook} className="w-20 h-20" />
+                        <FontAwesomeIcon icon={faBook} className="w-10 hw-10" />
                     </div>
                     <h1 className="text-secondary text-2xl font-bold">
                         Reserva antecipada
@@ -22,7 +22,7 @@ export default function Features() {
                 </div>
                 <div>
                     <div className="text-primary">
-                        <FontAwesomeIcon icon={faBookOpen} className="w-20 h-20" />
+                        <FontAwesomeIcon icon={faBookOpen} className="w-10 hw-10" />
                     </div>
                     <h1 className="text-secondary text-2xl font-bold">
                         Cardápio digital
@@ -33,7 +33,7 @@ export default function Features() {
                 </div>
                 <div>
                     <div className="text-primary">
-                        <FontAwesomeIcon icon={faChartBar} className="w-20 h-20" />
+                        <FontAwesomeIcon icon={faChartBar} className="w-10 hw-10" />
                     </div>
                     <h1 className="text-secondary text-2xl font-bold">
                         Previsão e Estatísticas
