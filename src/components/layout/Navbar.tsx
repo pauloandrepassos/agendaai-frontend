@@ -201,7 +201,7 @@ export default function Navbar() {
             <ContentCard className="absolute right-0 top-14 w-48 bg-white overflow-hidden z-50">
               <div className="" onMouseLeave={() => setDropdownOpen(null)}>
                 <Link
-                  href="/"
+                  href="/profile"
                   className="block px-4 py-2 hover:bg-gray-100"
                 >
                   <FontAwesomeIcon icon={faUser} className="mr-2" />

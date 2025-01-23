@@ -8,7 +8,6 @@ export default function ClientLayout({
 }>) {
   return (
     <ProtectedRoute allowedTypes={['client']}>
-      <Navbar />
       {children}
     </ProtectedRoute>
   )

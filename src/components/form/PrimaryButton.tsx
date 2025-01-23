@@ -16,7 +16,7 @@ export default function PrimaryButton({ className, children, onClick, isLoading 
                 ${className}`}
             type="button"
         >
-            {children}
+            {isLoading ? "Carregando..." : children}
         </button>
     )
 }

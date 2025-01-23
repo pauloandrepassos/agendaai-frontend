@@ -6,7 +6,7 @@ import Modal from "../Modal"
 import { error } from "console"
 
 interface ProtectedRouteProps {
-    allowedTypes: string[]
+    allowedTypes?: string[]
     children: React.ReactNode
 }
 
@@ -48,7 +48,7 @@ export default function ProtectedRoute({ allowedTypes, children }: ProtectedRout
         }
     }
 
-    if (!userType || !allowedTypes.includes(userType)) {
+    if (allowedTypes && (!userType || !allowedTypes.includes(userType))) {
         router.push("/")
         return null
     }
