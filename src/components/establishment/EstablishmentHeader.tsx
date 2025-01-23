@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import RedirectLink from "@/components/form/RedirectLink"
 import ContentCard from "../layout/ContentCard"
-import { Establishment } from "@/app/(vendor)/dashboard/page"
 import LobsterText from "../form/LobsterText"
+import { Establishment } from "@/app/(authenticated)/(vendor)/dashboard/page"
 
 interface Props {
   className?: string;

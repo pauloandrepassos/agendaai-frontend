@@ -183,8 +183,8 @@ export default function UserProfile() {
                 <LobsterText className="text-2xl font-semibold text-primary">Imagem do Perfil</LobsterText>
                 {imagePreview || user?.image ? (
                     <Image
-                        src={imagePreview || user.image}
-                        alt={`Imagem de ${user?.name}`}
+                        src={imagePreview || user?.image || "/default-avatar.png"}
+                        alt={`Imagem de ${user?.name || "usuário"}`}
                         width={120}
                         height={120}
                         className="rounded-full"
@@ -203,7 +203,7 @@ export default function UserProfile() {
 
             {/* Seção 2: Informações do Usuário */}
             <ContentCard className="p-5 grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
-            <LobsterText className="text-2xl font-semibold text-primary col-span-2">Informações de usuário</LobsterText>
+                <LobsterText className="text-2xl font-semibold text-primary col-span-2">Informações de usuário</LobsterText>
                 <Input
                     label="Nome"
                     placeholder=""
@@ -252,7 +252,7 @@ export default function UserProfile() {
 
             {/* Seção 3: Redefinir Senha */}
             <ContentCard className="col-span-2 p-5">
-            <LobsterText className="text-2xl font-semibold text-primary">Redefinir senha</LobsterText>
+                <LobsterText className="text-2xl font-semibold text-primary">Redefinir senha</LobsterText>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                         label="Nova Senha"
