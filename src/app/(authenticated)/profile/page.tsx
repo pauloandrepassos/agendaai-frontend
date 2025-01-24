@@ -192,13 +192,9 @@ export default function UserProfile() {
             {/* Seção 1: Imagem do Perfil */}
             <ContentCard className="flex flex-col items-center gap-4 p-5 col-span-2 md:col-span-1 min-h-[300px]">
                 <LobsterText className="text-2xl font-semibold text-primary">Imagem do Perfil</LobsterText>
-                <Image
-                    src={imagePreview || user.image || "/default-avatar.png"}
-                    alt={`Imagem de ${user.name}`}
-                    width={120}
-                    height={120}
-                    className="rounded-full"
-                />
+                <div className="h-[120px] w-[120px]">
+                    <img src={imagePreview || user.image || "/default-avatar.png"} alt={`Imagem de ${user.name}`} className="w-full h-full rounded-full object-cover" />
+                </div>
                 {!isEditingImage ? (
                     <PrimaryButton className="mt-auto" onClick={() => setIsEditingImage(true)}>Alterar Imagem</PrimaryButton>
                 ) : (
