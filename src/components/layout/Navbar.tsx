@@ -129,14 +129,14 @@ export default function Navbar() {
             <>
               <Link href={`/order`} className="text-secondary hover:text-primary h-10 text-center flex items-center justify-center gap-1">
                 <FontAwesomeIcon className="text-2xl" icon={faFileAlt} />
-                Pedidos
+                <span className="hidden md:block">Pedidos</span>
               </Link>
               <button
                 onClick={() => toggleDropdown("basket")}
                 className="text-secondary hover:text-primary h-10 text-center flex items-center justify-center gap-1 relative"
               >
                 <FontAwesomeIcon icon={faShoppingBasket} className="text-2xl" />
-                Cesto
+                <span className="hidden md:block">Cesto</span>
                 {totalItems > 0 && (
                   <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-semibold px-1 rounded-full">
                     {totalItems}
