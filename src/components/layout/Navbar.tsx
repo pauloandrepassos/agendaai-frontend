@@ -77,6 +77,21 @@ export default function Navbar() {
   }, [router]);
 
   useEffect(() => {
+    const handleProfileImageUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent<{ imageUrl: string }>;
+      setUser((prevUser) =>
+        prevUser ? { ...prevUser, image: customEvent.detail.imageUrl } : null
+      );
+    };
+
+    window.addEventListener("profileImageUpdated", handleProfileImageUpdated);
+
+    return () => {
+      window.removeEventListener("profileImageUpdated", handleProfileImageUpdated);
+    };
+  }, []);
+
+  useEffect(() => {
     if (user?.user_type === "client") {
       fetchShoppingBasket();
 

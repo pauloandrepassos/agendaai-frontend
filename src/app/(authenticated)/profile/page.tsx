@@ -25,6 +25,7 @@ export default function UserProfile() {
     const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
     const [image, setImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [isEditingImage, setIsEditingImage] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -83,10 +84,21 @@ export default function UserProfile() {
 
             const result = await response.json();
             setUser((prev) => (prev ? { ...prev, image: result.imageUrl } : prev));
+
+            window.dispatchEvent(new CustomEvent("profileImageUpdated", { detail: { imageUrl: result.imageUrl } }));
+
             alert("Imagem do perfil atualizada com sucesso!");
         } catch (err) {
             alert(err instanceof Error ? err.message : "Erro desconhecido.");
+        } finally {
+            setIsEditingImage(false)
         }
+    };
+
+    const handleCancelImageEdit = () => {
+        setImage(null);
+        setImagePreview(null);
+        setIsEditingImage(false);
     };
 
     const handleEditToggle = () => {
@@ -157,8 +169,7 @@ export default function UserProfile() {
         }
 
         try {
-            // Aqui vai a lógica para enviar a nova senha para o backend quando a rota estiver pronta.
-            alert("Redefinição de senha ainda não implementada.");
+            alert("Redefinição de senha ainda não implementada.");//adicionar lógica futuramente
         } catch (err) {
             alert(err instanceof Error ? err.message : "Erro desconhecido.");
         }
@@ -179,31 +190,43 @@ export default function UserProfile() {
     return (
         <div className="max-w-7xl mx-auto p-5 grid grid-cols-2 gap-3">
             {/* Seção 1: Imagem do Perfil */}
-            <ContentCard className="flex flex-col items-center gap-4 p-3 col-span-2 md:col-span-1">
+            <ContentCard className="flex flex-col items-center gap-4 p-5 col-span-2 md:col-span-1 min-h-[300px]">
                 <LobsterText className="text-2xl font-semibold text-primary">Imagem do Perfil</LobsterText>
-                {imagePreview || user?.image ? (
-                    <Image
-                        src={imagePreview || user?.image || "/default-avatar.png"}
-                        alt={`Imagem de ${user?.name || "usuário"}`}
-                        width={120}
-                        height={120}
-                        className="rounded-full"
-                    />
+                <Image
+                    src={imagePreview || user.image || "/default-avatar.png"}
+                    alt={`Imagem de ${user.name}`}
+                    width={120}
+                    height={120}
+                    className="rounded-full"
+                />
+                {!isEditingImage ? (
+                    <PrimaryButton className="mt-auto" onClick={() => setIsEditingImage(true)}>Alterar Imagem</PrimaryButton>
                 ) : (
-                    <div className="w-30 h-30 rounded-full bg-gray-200" />
+                    <div className="flex flex-col items-center gap-2 w-full">
+                        <label
+                            htmlFor="image"
+                            className="cursor-pointerbg-elementbg shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4"
+                        >
+                            Escolher nova imagem
+                        </label>
+                        <input
+                            id="image"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                        />
+                        <div className="flex gap-2 mt-2 w-full">
+                            <SecondaryButton onClick={handleCancelImageEdit}>Cancelar</SecondaryButton>
+                            <PrimaryButton onClick={handleImageUpload}>Salvar</PrimaryButton>
+                        </div>
+                    </div>
                 )}
-                <input type="file" accept="image/*" onChange={handleImageChange} />
-                <button
-                    className="px-4 py-2 bg-primary text-white rounded-md"
-                    onClick={handleImageUpload}
-                >
-                    Atualizar Imagem
-                </button>
             </ContentCard>
 
             {/* Seção 2: Informações do Usuário */}
-            <ContentCard className="p-5 grid grid-cols-2 gap-4 col-span-2 md:col-span-1">
-                <LobsterText className="text-2xl font-semibold text-primary col-span-2">Informações de usuário</LobsterText>
+            <ContentCard className="p-5 grid grid-cols-2 gap-4 col-span-2 md:col-span-1 min-h-[300px]">
+                <LobsterText className="text-2xl text-center font-semibold text-primary col-span-2">Informações de usuário</LobsterText>
                 <Input
                     label="Nome"
                     placeholder=""
@@ -240,7 +263,7 @@ export default function UserProfile() {
                 )}
                 {nameError && <p className="text-red-500">{nameError}</p>}
                 {phoneError && <p className="text-red-500">{phoneError}</p>}
-                <div className="col-span-2 flex items-end gap-3">
+                <div className="col-span-2 flex items-end gap-3 mt-auto">
                     {isEditing && (
                         <SecondaryButton onClick={hancleCancelEdit}>Cancelar</SecondaryButton>
                     )}
@@ -252,7 +275,7 @@ export default function UserProfile() {
 
             {/* Seção 3: Redefinir Senha */}
             <ContentCard className="col-span-2 p-5">
-                <LobsterText className="text-2xl font-semibold text-primary">Redefinir senha</LobsterText>
+                <LobsterText className="text-2xl text-center font-semibold text-primary mb-5">Redefinir senha</LobsterText>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                         label="Nova Senha"
