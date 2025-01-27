@@ -18,6 +18,7 @@ export default function VendorOrders() {
   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [highlightedDates, setHighlightedDates] = useState<string[]>([]);
 
   const fetchOrders = async (date: Date | null) => {
     setLoading(true);
@@ -46,8 +47,29 @@ export default function VendorOrders() {
     }
   };
 
+  const fetchHighlightedDates = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/orders/establishment/dates`, {
+        method: "GET",
+        headers: {
+          token: `${localStorage.getItem("token")}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erro ao buscar datas.");
+      }
+  
+      const data = await response.json();
+      setHighlightedDates(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     fetchOrders(selectedDate);
+    fetchHighlightedDates()
   }, [selectedDate]);
 
   const handleOpenModal = (order: IOrder) => {
@@ -86,6 +108,7 @@ export default function VendorOrders() {
           label="Alterar Data"
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
+          highlightedDates={highlightedDates}
           className="w-full sm:w-auto"
         />
       </div>
