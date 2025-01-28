@@ -16,6 +16,7 @@ const config: Config = {
         secondary: 'var(--secondary)',
         hoversecondary: 'var(--hoversecondary)',
         elementbg: 'var(--element-bg)',
+        hovertext: 'var(--hovertext)',
       },
     },
   },

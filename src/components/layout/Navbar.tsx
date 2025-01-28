@@ -105,10 +105,10 @@ export default function Navbar() {
   }, [user]);
 
   return (
-    <nav className="" style={{ boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" }}>
+    <nav className="bg-primary text-elementbg" style={{ boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between p-3">
         <div className="flex items-center">
-          <button onClick={toggleMenu} className="text-secondary lg:hidden focus:outline-none">
+          <button onClick={toggleMenu} className=" lg:hidden focus:outline-none">
             <svg
               className="w-6 h-6"
               fill="none"
@@ -127,13 +127,13 @@ export default function Navbar() {
         <div className="relative flex items-center gap-8">
           {user?.user_type === "client" && (
             <>
-              <Link href={`/order`} className="text-secondary hover:text-primary h-10 text-center flex items-center justify-center gap-1">
+              <Link href={`/order`} className=" hover:text-hovertext h-10 text-center flex items-center justify-center gap-1">
                 <FontAwesomeIcon className="text-2xl" icon={faFileAlt} />
                 <span className="hidden md:block">Pedidos</span>
               </Link>
               <button
                 onClick={() => toggleDropdown("basket")}
-                className="text-secondary hover:text-primary h-10 text-center flex items-center justify-center gap-1 relative"
+                className=" hover:text-hovertext h-10 text-center flex items-center justify-center gap-1 relative"
               >
                 <FontAwesomeIcon icon={faShoppingBasket} className="text-2xl" />
                 <span className="hidden md:block">Cesto</span>
@@ -144,7 +144,7 @@ export default function Navbar() {
                 )}
               </button>
               {dropdownOpen === "basket" && (
-                <ContentCard className="absolute right-0 top-14 w-72 md:w-96 bg-white overflow-hidden z-50 shadow-lg">
+                <ContentCard className="absolute right-0 top-14 w-72 md:w-96 bg-white overflow-hidden z-50 shadow-lg text-black">
                   <div onMouseLeave={() => setDropdownOpen(null)}>
                     <div className="p-4 max-h-64 flex flex-col gap-4 overflow-y-auto">
                       {basketItems.map((item) => (
@@ -180,17 +180,17 @@ export default function Navbar() {
             )}
           </button>
           {dropdownOpen === "user" && (
-            <ContentCard className="absolute right-0 top-14 w-48 bg-white overflow-hidden z-50">
+            <ContentCard className="absolute right-0 top-14 w-48 bg-elementbg overflow-hidden z-50 text-black">
               <div onMouseLeave={() => setDropdownOpen(null)}>
-                <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100">
+                <Link href="/profile" className="block px-4 py-2 hover:bg-gray-200">
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   Perfil
                 </Link>
-                <Link href="/" className="block px-4 py-2 hover:bg-gray-100">
+                <Link href="/" className="block px-4 py-2 hover:bg-gray-200">
                   <FontAwesomeIcon icon={faBell} className="mr-2" />
                   Notificações
                 </Link>
-                <button onClick={logout} className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                <button onClick={logout} className="block w-full text-left px-4 py-2 hover:bg-gray-200">
                   <FontAwesomeIcon icon={faSignOut} className="mr-2" />
                   Sair
                 </button>
