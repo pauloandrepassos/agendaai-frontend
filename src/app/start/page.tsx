@@ -35,12 +35,12 @@ export default function Start() {
             Não <span className="text-primary">espere</span> pelo seu lanche, faça ele esperar <span className="text-primary">por você</span>!
           </LobsterText>
           <p className="text-[#fffff0] font-bold text-lg">Um maior controle de sua rotina na palma da sua mão</p>
-          <div className="flex gap-4">
-            <PrimaryButton>
-              <Link href="/auth/login" className="font-bold">Entrar</Link>
+          <div className="grid grid-cols-2 gap-4">
+            <PrimaryButton className="p-0">
+              <Link href="/auth/login" className="font-bold flex items-center justify-center h-full">Entrar</Link>
             </PrimaryButton>
             <SecondaryButton>
-              <Link href="/auth/register" className="font-bold">Cadastrar</Link>
+              <Link href="/auth/register" className="font-bold flex items-center justify-center h-full">Cadastrar</Link>
             </SecondaryButton>
           </div>
         </div>
