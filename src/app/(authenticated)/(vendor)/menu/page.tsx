@@ -13,6 +13,7 @@ import Select from "@/components/form/Select";
 
 export default function Menu() {
   const [menu, setMenu] = useState<IMenuDay[]>([]);
+  const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([]);
   const [selectedDay, setSelectedDay] = useState<string>("monday");
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,8 +46,29 @@ export default function Menu() {
         setLoading(false);
       }
     };
+    const fetchOperatingHours = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/operating-hours`, {
+          headers: {
+            token: `${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar horários de funcionamento.");
+        }
+
+        const data = await response.json();
+        setOperatingHours(data);
+      } catch (err: any) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchMenu();
+    fetchOperatingHours();
   }, []);
 
   const handleAddItems = async (itemIds: number[]) => {
@@ -75,6 +97,8 @@ export default function Menu() {
     setSelectedDay(day);
     localStorage.setItem("selectedDay", day)
   }
+
+  const isClosed = operatingHours.find((hour) => hour.day_of_week === selectedDay)?.is_closed;
 
   if (loading) {
     return (
@@ -109,18 +133,24 @@ export default function Menu() {
       {/* Lateral com os dias (visível apenas em telas médias ou maiores) */}
       <div className="hidden md:block">
         <div className="mr-6 flex flex-col gap-3">
-          {days.map((day) => (
-            <button
-              key={day.value}
-              onClick={() => handleDaySelection(day.value)}
-              className={`p-2 rounded-md ${selectedDay === day.value
-                ? "bg-gradient-to-tr from-secondary to-primary text-white"
-                : "bg-elementbg shadow-primary border-2 border-primary"
-                }`}
-            >
-              {day.label}
-            </button>
-          ))}
+          {days.map((day) => {
+            const isClosed = operatingHours.find((h) => h.day_of_week === day.value)?.is_closed;
+
+            return (
+              <button
+                key={day.value}
+                onClick={() => handleDaySelection(day.value)}
+                className={`p-2 rounded-md transition-all shadow-primary border-primary text-black ${isClosed
+                  ? "bg-[#333333] bg-opacity-30"
+                  : selectedDay === day.value
+                    ? "bg-gradient-to-tr from-secondary to-primary text-white"
+                    : "bg-elementbg border-2"} // Padrão
+          `}
+              >
+                {day.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -146,23 +176,37 @@ export default function Menu() {
             <div className="order-3 md:order-2 col-span-2 md:col-span-1">
               {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 && (
                 <h1 className="text-center">
-                {menuForSelectedDay?.menuItems.length || 0} opções selecionadas
-              </h1>
+                  {menuForSelectedDay?.menuItems.length || 0} opções selecionadas
+                </h1>
               )}
             </div>
 
-            <div className="flex justify-end order-2 md:order-3 h-full">
-              <ActionButton className="flex items-center justify-center w-full max-w-[200px]" onClick={() => setIsModalOpen(true)}>
-                {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
-                  <>Editar</>
-                ):(
-                  <>Adicionar</>
-                )}
-              </ActionButton>
-            </div>
+            {!isClosed && (
+              <div className="flex justify-end order-2 md:order-3 h-full">
+                <ActionButton className="flex items-center justify-center w-full max-w-[200px]" onClick={() => setIsModalOpen(true)}>
+                  {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
+                    <>Editar</>
+                  ) : (
+                    <>Adicionar</>
+                  )}
+                </ActionButton>
+              </div>
+            )}
           </div>
 
-          {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
+          {isClosed ? (
+            <div className="flex flex-col gap-4 items-center justify-center h-full">
+              <p className="text-center text-primary font-bold">
+                Seu estabelecimento está fechado neste dia.
+              </p>
+              <p className="text-center text-gray-600">
+                Para adicionar um cardápio neste dia, primeiro configure os horários de funcionamento.
+              </p>
+              <RedirectLink href="/operating-hours" className="">
+                Gerenciar horários
+              </RedirectLink>
+            </div>
+          ) : menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {menuForSelectedDay.menuItems.map((item) => (
                 <ProductCard
@@ -175,9 +219,7 @@ export default function Menu() {
             </div>
           ) : (
             <div className="flex flex-col gap-4 items-center justify-center h-full">
-              <p className="text-center text-gray-500">
-                Nenhum item encontrado para este dia. 
-              </p>
+              <p className="text-center text-gray-500">Nenhum item encontrado para este dia.</p>
             </div>
           )}
         </div>
