@@ -15,7 +15,9 @@ interface ProductModalProps {
     establishmentId: number;
     menuId: number;
     orderDate: Date;
+    quantityInBasket?: number
     onError: (title: string, message?: string) => void;
+    onAddToBasket: (addedQuantity: number) => void;
 }
 
 export default function ProductModal({
@@ -25,7 +27,9 @@ export default function ProductModal({
     establishmentId,
     menuId,
     orderDate,
-    onError
+    quantityInBasket = 0,
+    onError,
+    onAddToBasket
 }: ProductModalProps) {
     const [quantity, setQuantity] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -53,6 +57,7 @@ export default function ProductModal({
                 }
             });
             console.log("Item adicionado ao cesto:", response.data);
+            onAddToBasket(quantity);
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
             setQuantity(1);
@@ -100,11 +105,17 @@ export default function ProductModal({
                             <button
                                 className="p-2 bg-secondary text-white rounded-full h-12 w-12 hover:bg-primary disabled:opacity-50"
                                 onClick={incrementQuantity}
-                                disabled={quantity >= 5}
+                                disabled={quantity  + quantityInBasket >= 5}
                             >
                                 <FontAwesomeIcon icon={faPlus} />
                             </button>
                         </div>
+                        {quantity  + quantityInBasket >= 5 && (
+                            <div className="text-xs text-primary font-bold">
+                                {quantityInBasket > 0 && <p>Você já possui {quantityInBasket} itens no cesto de compras.</p>}
+                                <p>No momento voce está limitado a pedir uma quantidade máxima de 5 itens no total.</p>
+                            </div>
+                        )}
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 col-span-1 sm:col-span-2">
                         <SecondaryButton onClick={()=>{

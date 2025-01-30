@@ -14,30 +14,10 @@ import ProductModal from "./ProductModal";
 import Modal from "@/components/Modal";
 import { formatDateWithDay, getNextDayDate, weekDays } from "@/utils/weekDays";
 
-interface Address {
-  id: number;
-  zip_code: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
-  complement: string;
-  reference_point: string;
-}
-
-interface Establishment {
-  id: number;
-  name: string;
-  logo: string;
-  background_image: string;
-  address: Address;
-}
-
 export default function Establishment() {
   const { id } = useParams(); // Obtém o ID da URL.
 
-  const [establishment, setEstablishment] = useState<Establishment | null>(null);
+  const [establishment, setEstablishment] = useState<IEstablishment | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [menu, setMenu] = useState<IMenuDay[]>([]);
@@ -47,6 +27,7 @@ export default function Establishment() {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [currentProduct, setCurrentProduct] = useState<IProduct | null>(null);
   const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
+  const [quantityInBasket, setQuantityInBasket] = useState<number>(0)
 
   useEffect(() => {
     if (!id) return;
@@ -101,9 +82,33 @@ export default function Establishment() {
       }
     };
 
+    const fetchQuantityInBasket = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/shopping-basket/count`, {
+          headers: {
+            token: `${localStorage.getItem("token")}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Erro ao buscar o cardápio.");
+        }
+
+        const data = await response.json();
+        setQuantityInBasket(data.itemCount);
+      } catch (err: any) {
+        console.error(err);
+        setError(err.message || "Erro desconhecido.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchData();
 
     fetchMenu();
+
+    fetchQuantityInBasket()
   }, [id]);
 
   const handleDaySelection = (day: string) => {
@@ -224,6 +229,8 @@ export default function Establishment() {
               setErrorModal({ title, message });
               setIsModalVisible(false);
             }}
+            quantityInBasket={quantityInBasket}
+            onAddToBasket={(addedQuantity) => setQuantityInBasket(prev => prev + addedQuantity)}
           />
         )}
 

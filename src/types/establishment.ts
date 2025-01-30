@@ -6,4 +6,5 @@ interface IEstablishment {
     cnpj: string
     vendor_id: IUser
     address_id: IAddress
+    address: IAddress;
 }

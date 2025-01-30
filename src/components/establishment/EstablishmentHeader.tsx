@@ -7,7 +7,7 @@ import { Establishment } from "@/app/(authenticated)/(vendor)/dashboard/page"
 
 interface Props {
   className?: string;
-  establishment: Establishment
+  establishment: IEstablishment
   showEditButton?: boolean
 }
 

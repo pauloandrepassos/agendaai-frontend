@@ -43,10 +43,11 @@ export default function ShoppingBasket() {
     const [totalPrice, setTotalPrice] = useState<string>("0.00");
     const [establishment, setEstablishment] = useState<IEstablishment | null>(null);
     const [menu, setMenu] = useState<IMenuDay>();
-    const [orderDate, setOrderDate] = useState<string>(""); 
+    const [orderDate, setOrderDate] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
     const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
+    const [quantityInBasket, setQuantityInBasket] = useState<number>(0)
     const router = useRouter()
 
     const [loading, setLoading] = useState(true);
@@ -85,6 +86,28 @@ export default function ShoppingBasket() {
         }
     };
 
+    const fetchQuantityInBasket = async () => {
+        try {
+            const response = await fetch(`${apiUrl}/shopping-basket/count`, {
+                headers: {
+                    token: `${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao buscar o cardápio.");
+            }
+
+            const data = await response.json();
+            setQuantityInBasket(data.itemCount);
+        } catch (err: any) {
+            console.error(err);
+            setError(err.message || "Erro desconhecido.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const updateItemQuantity = async (itemId: number, productId: number) => {
         setLoadingItemId(itemId);
         try {
@@ -100,6 +123,8 @@ export default function ShoppingBasket() {
             if (!response.ok) {
                 throw new Error("Erro ao atualizar item.");
             }
+
+            setQuantityInBasket(quantityInBasket + 1)
 
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
@@ -125,6 +150,8 @@ export default function ShoppingBasket() {
             if (!response.ok) {
                 throw new Error("Erro ao remover item.");
             }
+
+            setQuantityInBasket(quantityInBasket - 1)
 
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
@@ -173,7 +200,7 @@ export default function ShoppingBasket() {
 
     const finalizeOrder = async () => {
         if (!pickupTime) {
-            setErrorModal({message: "Informe o horário de retirada.", title: "Horário de retirada obrigatório"});
+            setErrorModal({ message: "Informe o horário de retirada.", title: "Horário de retirada obrigatório" });
             setConfirmModalProps(null)
             return;
         }
@@ -190,7 +217,7 @@ export default function ShoppingBasket() {
             const response = await fetch(`${apiUrl}/shopping-basket/confirm`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json", 
+                    "Content-Type": "application/json",
                     token: `${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify({ idEstablishment: establishment?.id, pickupTime }),
@@ -233,6 +260,7 @@ export default function ShoppingBasket() {
 
     useEffect(() => {
         fetchShoppingBasket();
+        fetchQuantityInBasket()
     }, []);
 
     const translateDay = (day: string) => {
@@ -301,14 +329,14 @@ export default function ShoppingBasket() {
                     </div>
                     {basketItems.map((item) => (
                         <ContentCard
-                            className="flex items-center gap-4 overflow-hidden"
+                            className="flex items-center gap-4"
                             key={item.id}
                         >
                             <div className="w-40">
                                 <img
                                     src={item.product.image}
                                     alt={item.product.name}
-                                    className="w-full h-28 object-cover rounded"
+                                    className="w-full h-28 object-cover rounded-l-2xl"
                                 />
                             </div>
                             <div className="flex flex-col sm:flex-row w-full p-3">
@@ -319,13 +347,11 @@ export default function ShoppingBasket() {
                                     </p>
                                 </div>
                                 <div className="flex mr-4 justify-center items-center gap-2">
-                                    <div className="flex justify-center items-center gap-2 rounded-full border-2 border-secondary">
+                                    <div className="flex justify-center items-center gap-2 rounded-full border-2 border-secondary relative">
                                         <button
                                             className="p-2 rounded-full h-12 w-12"
                                             disabled={loadingItemId === item.id}
-                                            onClick={() => {
-                                                removeItem(item.id);
-                                            }}
+                                            onClick={() => removeItem(item.id)}
                                         >
                                             {loadingItemId === item.id ? (
                                                 <FontAwesomeIcon icon={faSpinner} spin />
@@ -336,21 +362,32 @@ export default function ShoppingBasket() {
                                             )}
                                         </button>
                                         <span className="font-semibold">{item.quantity}</span>
-                                        <button
-                                            className="p-2 rounded-full h-12 w-12"
-                                            disabled={loadingItemId === item.id}
-                                            onClick={() => {
-                                                updateItemQuantity(item.id, item.product.id);
-                                            }}
-                                        >
-                                            {loadingItemId === item.id ? (
-                                                <FontAwesomeIcon icon={faSpinner} spin />
-                                            ) : (
-                                                <FontAwesomeIcon icon={faPlus} />
+
+                                        {/* Botão de adicionar com efeito visual se desabilitado */}
+                                        <div className="relative group">
+                                            <button
+                                                className={`p-2 rounded-full h-12 w-12 transition-all ${quantityInBasket === 5 ? "opacity-50 cursor-not-allowed" : ""
+                                                    }`}
+                                                disabled={loadingItemId === item.id || quantityInBasket === 5}
+                                                onClick={() => updateItemQuantity(item.id, item.product.id)}
+                                            >
+                                                {loadingItemId === item.id ? (
+                                                    <FontAwesomeIcon icon={faSpinner} spin />
+                                                ) : (
+                                                    <FontAwesomeIcon icon={faPlus} />
+                                                )}
+                                            </button>
+
+                                            {/* Tooltip ao passar o mouse */}
+                                            {quantityInBasket === 5 && (
+                                                <div className="absolute right-0 bottom-full mb-2 w-48 text-center text-xs text-white bg-red-500 p-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    Você atingiu o limite máximo de 5 itens no cesto.
+                                                </div>
                                             )}
-                                        </button>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </ContentCard>
                     ))}
@@ -371,7 +408,7 @@ export default function ShoppingBasket() {
                             className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${error
                                 ? "focus:ring-red-500 border border-red-500"
                                 : "focus:ring-[#FA240F]"
-                            }`}
+                                }`}
                         />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
@@ -396,12 +433,12 @@ export default function ShoppingBasket() {
             )}
 
             {errorModal && (
-              <Modal
-                isVisible={!!errorModal}
-                title={errorModal.title}
-                message={errorModal.message}
-                onClose={() => setErrorModal(null)}
-              />
+                <Modal
+                    isVisible={!!errorModal}
+                    title={errorModal.title}
+                    message={errorModal.message}
+                    onClose={() => setErrorModal(null)}
+                />
             )}
         </div>
     );
