@@ -14,28 +14,8 @@ import EstablishmentHeader from "@/components/establishment/EstablishmentHeader"
 
 const lobster = Lobster({ subsets: ["latin"], weight: "400" })
 
-interface Address {
-  id: number;
-  zip_code: string;
-  state: string;
-  city: string;
-  neighborhood: string;
-  street: string;
-  number: string;
-  complement: string;
-  reference_point: string;
-}
-
-export interface Establishment {
-  id: number
-  name: string
-  logo: string
-  background_image: string
-  address: Address
-}
-
 export default function VendorDashboard() {
-  const [establishment, setEstablishment] = useState<Establishment | null>(null)
+  const [establishment, setEstablishment] = useState<IEstablishment | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
   const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([])
