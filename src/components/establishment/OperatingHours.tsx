@@ -51,7 +51,7 @@ export default function OperatingHours({ className, operatingHours, showEditButt
                     <div className="flex justify-between items-center">
                         <LobsterText className="text-xl text-primary">Horários:</LobsterText>
                         {showEditButton && (
-                            <RedirectLink href="/">Editar</RedirectLink>
+                            <RedirectLink href="/operating-hours">Editar</RedirectLink>
                         )}
                     </div>
                     {Object.entries(groupedHours).map(([day, hours]) => (

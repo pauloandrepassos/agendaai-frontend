@@ -74,6 +74,7 @@ export default function VendorDashboard() {
           <OperatingHours
             operatingHours={operatingHours}
             className="order-4 md:order-2 col-span-2 md:col-span-1"
+            showEditButton={true}
           />
 
           <section className="order-2 md:order-3 col-span-2">
