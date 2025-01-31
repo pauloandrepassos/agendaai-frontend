@@ -39,7 +39,11 @@ export default function VendorDashboard() {
         setEstablishment(establishmentData);
 
         const operatingHoursResponse = await fetch(
-          `${apiUrl}/operating-hours/establishment/${establishmentData.id}`
+          `${apiUrl}/operating-hours/establishment`, {
+          headers: {
+            token: `${localStorage.getItem("token")}`,
+          },
+        }
         );
 
         if (!operatingHoursResponse.ok) {

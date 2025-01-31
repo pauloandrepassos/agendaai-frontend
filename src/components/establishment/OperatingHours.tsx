@@ -33,7 +33,6 @@ export default function OperatingHours({ className, operatingHours, showEditButt
         setCurrentDate(formattedDate)
     }, [operatingHours])
 
-
     const groupedHours = operatingHours.reduce<Record<string, IOperatingHour[]>>((acc, hour) => {
         if (!acc[hour.day_of_week]) {
             acc[hour.day_of_week] = [];
@@ -45,23 +44,37 @@ export default function OperatingHours({ className, operatingHours, showEditButt
     return (
         <ContentCard className={`p-4 ${className}`}>
             {operatingHours.length === 0 ? (
-                <p>Sem horários disponíveis</p>
+                showEditButton ? (
+                    <div className="flex flex-col gap-3 items-center justify-center h-full">
+                        <p className="text-center text-gray-700 text-sm">Sem horários registrados. Acesse o gerenciamento de horários para configurá-los.</p>
+                        <RedirectLink href="/operating-hours">Gerenciar horários</RedirectLink>
+                    </div>
+                ) : (
+                    <div className="flex flex-col gap-3 items-center justify-center h-full">
+                        <p className="text-center text-gray-700 text-sm">Sem horários registrados.</p>
+                    </div>
+                )
             ) : (
-                <div className="grid gap-2">
+                <div className="grid gap-2 h-full">
                     <div className="flex justify-between items-center">
                         <LobsterText className="text-xl text-primary">Horários:</LobsterText>
                         {showEditButton && (
                             <RedirectLink href="/operating-hours">Editar</RedirectLink>
                         )}
                     </div>
-                    {Object.entries(groupedHours).map(([day, hours]) => (
-                        <div key={day} className="grid grid-cols-[1fr_3fr] gap-2">
-                            <span className="bg-secondary text-white text-center rounded-full">
-                                {dayOfWeekMap[day]}
-                            </span>
-                            <div className="flex flex-wrap gap-2">
-                                {hours
-                                    .map((hour, index) => (
+                    {Object.entries(groupedHours).map(([day, hours]) => {
+                        const isDayClosed = hours.some((hour) => hour.is_closed);
+
+                        return (
+                            <div key={day} className="grid grid-cols-[1fr_3fr] gap-2">
+                                <span
+                                    className={`flex items-center justify-center text-white text-center rounded-full ${isDayClosed ? "bg-primary" : "bg-secondary"
+                                        }`}
+                                >
+                                    {dayOfWeekMap[day]}
+                                </span>
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {hours.map((hour, index) => (
                                         <span key={hour.id}>
                                             {hour.is_closed
                                                 ? "Fechado"
@@ -69,9 +82,10 @@ export default function OperatingHours({ className, operatingHours, showEditButt
                                             {index < hours.length - 1 && " | "}
                                         </span>
                                     ))}
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
         </ContentCard>
