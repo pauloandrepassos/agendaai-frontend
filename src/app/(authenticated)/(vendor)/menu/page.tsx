@@ -48,7 +48,7 @@ export default function Menu() {
     };
     const fetchOperatingHours = async () => {
       try {
-        const response = await fetch(`${apiUrl}/operating-hours`, {
+        const response = await fetch(`${apiUrl}/operating-hours/establishment`, {
           headers: {
             token: `${localStorage.getItem("token")}`,
           },
@@ -98,7 +98,8 @@ export default function Menu() {
     localStorage.setItem("selectedDay", day)
   }
 
-  const isClosed = operatingHours.find((hour) => hour.day_of_week === selectedDay)?.is_closed;
+  const operatingHourForSelectedDay = operatingHours.find((hour) => hour.day_of_week === selectedDay);
+  const isClosed = operatingHourForSelectedDay ? operatingHourForSelectedDay.is_closed : true;
 
   if (loading) {
     return (
@@ -134,18 +135,19 @@ export default function Menu() {
       <div className="hidden md:block">
         <div className="mr-6 flex flex-col gap-3">
           {days.map((day) => {
-            const isClosed = operatingHours.find((h) => h.day_of_week === day.value)?.is_closed;
+            const operatingHourForDay = operatingHours.find((h) => h.day_of_week === day.value);
+            const isDayClosed = operatingHourForDay ? operatingHourForDay.is_closed : true;
 
             return (
               <button
                 key={day.value}
                 onClick={() => handleDaySelection(day.value)}
-                className={`p-2 rounded-md transition-all shadow-primary border-primary text-black ${isClosed
-                  ? "bg-[#333333] bg-opacity-30"
-                  : selectedDay === day.value
-                    ? "bg-gradient-to-tr from-secondary to-primary text-white"
-                    : "bg-elementbg border-2"} // Padrão
-          `}
+                className={`p-2 rounded-md transition-all shadow-primary border-primary text-black ${isDayClosed
+                    ? "bg-[#333333] bg-opacity-30"
+                    : selectedDay === day.value
+                      ? "bg-gradient-to-tr from-secondary to-primary text-white"
+                      : "bg-elementbg border-2"
+                  }`}
               >
                 {day.label}
               </button>

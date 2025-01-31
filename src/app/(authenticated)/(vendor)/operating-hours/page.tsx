@@ -37,6 +37,14 @@ export default function OperatingHoursPage() {
     const [loading, setLoading] = useState(true);
     const [loadingRequest, setLoadingRequest] = useState(false);
 
+    // Cria um array padrão com todos os dias da semana, marcados como fechados
+    const defaultOperatingHours: OperatingHour[] = daysOfWeek.map(({ value }) => ({
+        day_of_week: value as Day,
+        open_time: null,
+        close_time: null,
+        is_closed: true,
+    }));
+
     useEffect(() => {
         async function fetchOperatingHours() {
             try {
@@ -50,22 +58,17 @@ export default function OperatingHoursPage() {
                     headers: { token: `${token}` },
                 });
 
-                if (response.data.length === 0) {
-                    setOperatingHours(
-                        daysOfWeek.map(({ value }) => ({
-                            day_of_week: value as Day,
-                            open_time: "",
-                            close_time: "",
-                            is_closed: true,
-                        }))
-                    );
-                } else {
-                    setOperatingHours(response.data);
-                }
+                // Mescla os dados da API com o array padrão
+                const mergedHours = defaultOperatingHours.map((defaultHour) => {
+                    const apiHour = response.data.find((hour: OperatingHour) => hour.day_of_week === defaultHour.day_of_week);
+                    return apiHour ? apiHour : defaultHour;
+                });
+
+                setOperatingHours(mergedHours);
             } catch (error) {
                 console.error("Erro ao carregar horários:", error);
             } finally {
-                setLoading(false)
+                setLoading(false);
             }
         }
         fetchOperatingHours();
@@ -121,7 +124,7 @@ export default function OperatingHoursPage() {
             <div className="flex items-center justify-center h-screen">
                 <Loading />
             </div>
-        )
+        );
     }
 
     return (
