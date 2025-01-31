@@ -7,8 +7,11 @@ import { apiUrl } from "@/config/api";
 import { translateDayOfWeek } from "@/utils/translateDay";
 import SecondaryButton from "@/components/form/SecondaryButton";
 import PrimaryButton from "@/components/form/PrimaryButton";
+import ContentCard from "@/components/layout/ContentCard";
+import Loading from "@/components/form/LoadingSpinner";
+import LobsterText from "@/components/form/LobsterText";
 
-export enum Day {
+enum Day {
     Sunday = "sunday",
     Monday = "monday",
     Tuesday = "tuesday",
@@ -31,7 +34,8 @@ type OperatingHour = {
 export default function OperatingHoursPage() {
     const establishmentId = 17; // ID do estabelecimento
     const [operatingHours, setOperatingHours] = useState<OperatingHour[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [loadingRequest, setLoadingRequest] = useState(false);
 
     useEffect(() => {
         async function fetchOperatingHours() {
@@ -60,6 +64,8 @@ export default function OperatingHoursPage() {
                 }
             } catch (error) {
                 console.error("Erro ao carregar horários:", error);
+            } finally {
+                setLoading(false)
             }
         }
         fetchOperatingHours();
@@ -67,7 +73,7 @@ export default function OperatingHoursPage() {
 
     async function handleSave() {
         try {
-            setLoading(true);
+            setLoadingRequest(true);
             const token = localStorage.getItem("token");
             if (!token) {
                 console.error("Token não encontrado.");
@@ -78,7 +84,7 @@ export default function OperatingHoursPage() {
                 ...hour,
                 open_time: hour.open_time && hour.open_time.length === 5 ? `${hour.open_time}:00` : hour.open_time,
                 close_time: hour.close_time && hour.close_time.length === 5 ? `${hour.close_time}:00` : hour.close_time,
-            }));            
+            }));
 
             await axios.post(
                 `${apiUrl}/operating-hours`,
@@ -90,7 +96,7 @@ export default function OperatingHoursPage() {
         } catch (error) {
             console.error("Erro ao salvar horário:", error);
         } finally {
-            setLoading(false);
+            setLoadingRequest(false);
         }
     }
 
@@ -110,10 +116,18 @@ export default function OperatingHoursPage() {
         );
     }
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-screen">
+                <Loading />
+            </div>
+        )
+    }
+
     return (
         <div className="p-6 bg-cream min-h-screen flex flex-col items-center">
-            <h2 className="text-2xl font-bold text-primary mb-6">Gerenciar Horários de Funcionamento</h2>
-            <div className="w-full max-w-2xl bg-white shadow-md p-6 rounded-md">
+            <LobsterText className="text-2xl font-semibold text-primary mb-5">Gerenciar horários</LobsterText>
+            <ContentCard className="w-full max-w-2xl p-5">
                 {operatingHours.map((hour, index) => (
                     <div key={hour.day_of_week} className="grid grid-cols-2 items-center gap-4 mb-2">
                         <div className="grid grid-cols-[4fr_1fr]">
@@ -122,21 +136,19 @@ export default function OperatingHoursPage() {
                                 <Switch
                                     checked={!hour.is_closed}
                                     onChange={() => toggleDay(index)}
-                                    className={`${
-                                        hour.is_closed ? "bg-gray-300" : "bg-primary"
-                                    } relative inline-flex h-6 w-11 items-center rounded-full`}
+                                    className={`${hour.is_closed ? "bg-gray-300" : "bg-primary"
+                                        } relative inline-flex h-6 w-11 items-center rounded-full`}
                                 >
                                     <span className="sr-only">{hour.is_closed ? "Fechado" : "Aberto"}</span>
                                     <span
-                                        className={`${
-                                            hour.is_closed ? "translate-x-1" : "translate-x-6"
-                                        } inline-block h-4 w-4 transform bg-white rounded-full transition`}
+                                        className={`${hour.is_closed ? "translate-x-1" : "translate-x-6"
+                                            } inline-block h-4 w-4 transform bg-white rounded-full transition`}
                                     />
                                 </Switch>
                                 <span className="text-sm w-20">{hour.is_closed ? "Fechado" : "Aberto"}</span>
                             </div>
                         </div>
-                        <div className="grid grid-cols-3">
+                        <div className="grid grid-cols-3 items-center">
                             <input
                                 type="time"
                                 value={hour.open_time ? hour.open_time.slice(0, 5) : ""}
@@ -156,10 +168,10 @@ export default function OperatingHoursPage() {
                     </div>
                 ))}
                 <div className="flex justify-end gap-4 mt-6">
-                    <SecondaryButton onClick={()=>window.location.reload()}>Cancelar</SecondaryButton>
-                    <PrimaryButton onClick={handleSave}>Salvar</PrimaryButton>
+                    <SecondaryButton onClick={() => window.location.reload()}>Cancelar</SecondaryButton>
+                    <PrimaryButton onClick={handleSave} isLoading={loadingRequest}>Salvar</PrimaryButton>
                 </div>
-            </div>
+            </ContentCard>
         </div>
     );
 }

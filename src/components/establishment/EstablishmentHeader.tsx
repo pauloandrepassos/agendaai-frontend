@@ -3,7 +3,6 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons"
 import RedirectLink from "@/components/form/RedirectLink"
 import ContentCard from "../layout/ContentCard"
 import LobsterText from "../form/LobsterText"
-import { Establishment } from "@/app/(authenticated)/(vendor)/dashboard/page"
 
 interface Props {
   className?: string;
