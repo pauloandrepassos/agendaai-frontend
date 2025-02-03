@@ -449,7 +449,7 @@ export default function ShoppingBasket() {
                                         <img
                                             src={establishment.logo}
                                             alt={establishment.name}
-                                            className="w-16 h-16 object-cover rounded-full"
+                                            className="w-16 h-16 object-cover rounded-full border"
                                         />
                                         <div>
                                             <h2 className="text-lg font-semibold">{establishment.name}</h2>
