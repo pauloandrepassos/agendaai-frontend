@@ -299,23 +299,9 @@ export default function ShoppingBasket() {
     }
 
     return (
-        <div className="max-w-2xl mx-auto p-3">
-            <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 mb-2">
+        <div className="max-w-7xl mx-auto p-3">
+            <div className="mb-3">
                 <PrimaryTitle>Cesto de compras:</PrimaryTitle>
-                {establishment && (
-                    <div className="flex justify-center sm:justify-end">
-                        <Link href={`/establishment/${establishment.id}`} className="flex items-center gap-4">
-                            <img
-                                src={establishment.logo}
-                                alt={establishment.name}
-                                className="w-16 h-16 object-cover rounded-full"
-                            />
-                            <div>
-                                <h2 className="text-lg font-semibold">{establishment.name}</h2>
-                            </div>
-                        </Link>
-                    </div>
-                )}
             </div>
             {basketItems.length === 0 ? (
                 <div>
@@ -323,76 +309,134 @@ export default function ShoppingBasket() {
                     <PrimaryButton>Adicionar</PrimaryButton>
                 </div>
             ) : (
-                <div className="flex flex-col gap-4">
-                    <div className="flex gap-2 flex-col sm:flex-row">
-                        <p>Pedido para</p>
-                        <p className="font-bold">{formatDate(orderDate)}</p>
-                    </div>
-                    {basketItems.map((item) => (
-                        <ContentCard
-                            className="flex items-center gap-4"
-                            key={item.id}
-                        >
-                            <div className="w-40">
-                                <img
-                                    src={item.product.image}
-                                    alt={item.product.name}
-                                    className="w-full h-28 object-cover rounded-l-2xl"
-                                />
-                            </div>
-                            <div className="flex flex-col sm:flex-row w-full p-3">
-                                <div className="flex flex-1 justify-between sm:flex-col gap-1 mb-2">
-                                    <h2 className="font-semibold">{item.product.name}</h2>
-                                    <p className="text-gray-600 flex gap-1">
-                                        R$<p className="text-xl">{Number(item.product.price).toFixed(2)}</p>
-                                    </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-4">
+                        {basketItems.map((item) => (
+                            <ContentCard
+                                className="flex items-center gap-4"
+                                key={item.id}
+                            >
+                                <div className="w-40">
+                                    <img
+                                        src={item.product.image}
+                                        alt={item.product.name}
+                                        className="w-full h-28 object-cover rounded-l-2xl"
+                                    />
                                 </div>
-                                <div className="flex mr-4 justify-center items-center gap-2">
-                                    <div className="flex justify-center items-center gap-2 rounded-full border-2 border-secondary relative">
-                                        <button
-                                            className="p-2 rounded-full h-12 w-12"
-                                            disabled={loadingItemId === item.id}
-                                            onClick={() => removeItem(item.id)}
-                                        >
-                                            {loadingItemId === item.id ? (
-                                                <FontAwesomeIcon icon={faSpinner} spin />
-                                            ) : item.quantity === 1 ? (
-                                                <FontAwesomeIcon icon={faTrash} />
-                                            ) : (
-                                                <FontAwesomeIcon icon={faMinus} />
-                                            )}
-                                        </button>
-                                        <span className="font-semibold">{item.quantity}</span>
-
-                                        {/* Botão de adicionar com efeito visual se desabilitado */}
-                                        <div className="relative group">
+                                <div className="flex flex-col sm:flex-row w-full p-3">
+                                    <div className="flex flex-1 justify-between sm:flex-col gap-1 mb-2">
+                                        <h2 className="font-semibold">{item.product.name}</h2>
+                                        <p className="text-gray-600 flex gap-1">
+                                            R$<p className="text-xl">{Number(item.product.price).toFixed(2)}</p>
+                                        </p>
+                                    </div>
+                                    <div className="flex mr-4 justify-center items-center gap-2">
+                                        <div className="flex justify-center items-center gap-2 rounded-full border-2 border-secondary relative">
                                             <button
-                                                className={`p-2 rounded-full h-12 w-12 transition-all ${quantityInBasket === 5 ? "opacity-50 cursor-not-allowed" : ""
-                                                    }`}
-                                                disabled={loadingItemId === item.id || quantityInBasket === 5}
-                                                onClick={() => updateItemQuantity(item.id, item.product.id)}
+                                                className="p-2 rounded-full h-12 w-12"
+                                                disabled={loadingItemId === item.id}
+                                                onClick={() => removeItem(item.id)}
                                             >
                                                 {loadingItemId === item.id ? (
                                                     <FontAwesomeIcon icon={faSpinner} spin />
+                                                ) : item.quantity === 1 ? (
+                                                    <FontAwesomeIcon icon={faTrash} />
                                                 ) : (
-                                                    <FontAwesomeIcon icon={faPlus} />
+                                                    <FontAwesomeIcon icon={faMinus} />
                                                 )}
                                             </button>
-
-                                            {/* Tooltip ao passar o mouse */}
-                                            {quantityInBasket === 5 && (
-                                                <div className="absolute right-0 bottom-full mb-2 w-48 text-center text-xs text-white bg-red-500 p-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    Você atingiu o limite máximo de 5 itens no cesto.
-                                                </div>
-                                            )}
+                                            <span className="font-semibold">{item.quantity}</span>
+                                            {/* Botão de adicionar com efeito visual se desabilitado */}
+                                            <div className="relative group">
+                                                <button
+                                                    className={`p-2 rounded-full h-12 w-12 transition-all ${quantityInBasket === 5 ? "opacity-50 cursor-not-allowed" : ""
+                                                        }`}
+                                                    disabled={loadingItemId === item.id || quantityInBasket === 5}
+                                                    onClick={() => updateItemQuantity(item.id, item.product.id)}
+                                                >
+                                                    {loadingItemId === item.id ? (
+                                                        <FontAwesomeIcon icon={faSpinner} spin />
+                                                    ) : (
+                                                        <FontAwesomeIcon icon={faPlus} />
+                                                    )}
+                                                </button>
+                                                {/* Tooltip ao passar o mouse */}
+                                                {quantityInBasket === 5 && (
+                                                    <div className="absolute right-0 bottom-full mb-2 w-48 text-center text-xs text-white bg-red-500 p-2 rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        Você atingiu o limite máximo de 5 itens no cesto.
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
+                            </ContentCard>
+                        ))}
+                    </div>
+                    <div>
+                        <ContentCard className="p-5 flex flex-col gap-5">
+                            {establishment && (
+                                <div className="flex justify-center">
+                                    <Link href={`/establishment/${establishment.id}`} className="flex items-center gap-4">
+                                        <img
+                                            src={establishment.logo}
+                                            alt={establishment.name}
+                                            className="w-16 h-16 object-cover rounded-full"
+                                        />
+                                        <div>
+                                            <h2 className="text-lg font-semibold">{establishment.name}</h2>
+                                        </div>
+                                    </Link>
+                                </div>
+                            )}
+                            <div className="flex gap-2 flex-col sm:flex-row justify-between">
+                                <p>Pedido para</p>
+                                <p className="font-bold">{formatDate(orderDate)}</p>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <label htmlFor="pickupTime" className="block">
+                                    Horário de retirada:
+                                </label>
+                                <input
+                                    type="time"
+                                    id="pickupTime"
+                                    value={pickupTime}
+                                    onChange={(e) => setPickupTime(e.target.value)}
+                                    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
+                                        error ? "focus:ring-red-500 border-red-500" : "focus:ring-[#FA240F]"
+                                    }`}
+                                />
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <label htmlFor="paymentMethod" className="block font-medium">
+                                    Forma de pagamento:
+                                </label>
+                                <select
+                                    id="paymentMethod"
+                                    value="Pagamento na retirada"
+                                    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
+                                        error ? "focus:ring-red-500 border-red-500" : "focus:ring-[#FA240F]"
+                                    }`}
+                                    disabled
+                                >
+                                    <option value="Pagamento na retirada">Pagamento na retirada</option>
+                                </select>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>Preço total do pedido: </p>
+                                <p className="font-bold">R$ {Number(totalPrice).toFixed(2)}</p>
+                            </div>
+                            <div className="grid grid-cols-2 gap-4">
+                                <SecondaryButton onClick={() => showConfirmModal("cancel")}>
+                                    Cancelar pedido
+                                </SecondaryButton>
+                                <PrimaryButton onClick={() => showConfirmModal("finalize")}>
+                                    Finalizar pedido
+                                </PrimaryButton>
                             </div>
                         </ContentCard>
-                    ))}
-                    <div className="mt-6">
+                    </div>
+                    {/*<div className="mt-6">
                         <h2 className="text-xl text-center font-bold">
                             Subtotal: R$ {Number(totalPrice).toFixed(2)}
                         </h2>
@@ -419,7 +463,7 @@ export default function ShoppingBasket() {
                         <PrimaryButton onClick={() => showConfirmModal("finalize")}>
                             Finalizar pedido
                         </PrimaryButton>
-                    </div>
+                    </div>*/}
                 </div>
             )}
             {confirmModalProps && (
