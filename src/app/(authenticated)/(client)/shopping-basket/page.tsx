@@ -13,6 +13,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import PrimaryTitle from "@/components/form/title/PrimaryTitle";
+import { getDayOfWeek } from "@/utils/dateUtils";
 
 interface ShoppingBasketItem {
     id: number;
@@ -49,6 +50,7 @@ export default function ShoppingBasket() {
     const [loadingItemId, setLoadingItemId] = useState<number | null>(null);
     const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
     const [quantityInBasket, setQuantityInBasket] = useState<number>(0)
+    const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([]);
     const router = useRouter()
 
     const [loading, setLoading] = useState(true);
@@ -84,6 +86,31 @@ export default function ShoppingBasket() {
             setError("Não foi possível carregar o cesto de compras. Tente novamente.");
         } finally {
             setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchOperatingHours();
+    }, [establishment]);
+
+    const fetchOperatingHours = async () => {
+        if (!establishment) return;
+
+        try {
+            const response = await fetch(`${apiUrl}/operating-hours/establishment/${establishment.id}`, {
+                headers: {
+                    token: `${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error("Erro ao buscar horários de funcionamento.");
+            }
+
+            const data = await response.json();
+            setOperatingHours(data);
+        } catch (err) {
+            console.error("Erro ao buscar horários de funcionamento:", err);
         }
     };
 
@@ -202,9 +229,15 @@ export default function ShoppingBasket() {
     const finalizeOrder = async () => {
         if (!pickupTime) {
             setErrorModal({ message: "Informe o horário de retirada.", title: "Horário de retirada obrigatório" });
-            setConfirmModalProps(null)
+            setConfirmModalProps(null);
             return;
         }
+
+        if (!validatePickupTime(pickupTime)) {
+            setConfirmModalProps(null);
+            return;
+        }
+
         try {
             setConfirmModalProps((prevProps) => {
                 if (!prevProps) {
@@ -215,6 +248,7 @@ export default function ShoppingBasket() {
                     loading: true,
                 };
             });
+
             const response = await fetch(`${apiUrl}/shopping-basket/confirm`, {
                 method: "POST",
                 headers: {
@@ -231,7 +265,7 @@ export default function ShoppingBasket() {
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
 
-            await router.push("/")
+            await router.push("/");
         } catch (err) {
             console.error("Erro ao finalizar pedido:", err);
         }
@@ -286,6 +320,40 @@ export default function ShoppingBasket() {
             month: "long",
             year: "numeric",
         });
+    };
+
+    const validatePickupTime = (time: string): boolean => {
+        if (!establishment || !orderDate) return false;
+
+        const dayOfWeek = getDayOfWeek(orderDate);
+        const hoursForDay = operatingHours.find((hours) => hours.day_of_week === dayOfWeek);
+
+        if (!hoursForDay || hoursForDay.is_closed) {
+            setErrorModal({ title: "Erro", message: "O estabelecimento está fechado no dia selecionado." });
+            return false;
+        }
+
+        const openTime = hoursForDay.open_time;
+        const closeTime = hoursForDay.close_time;
+
+        if (!openTime || !closeTime) {
+            setErrorModal({ title: "Erro", message: "Horário de funcionamento não disponível." });
+            return false;
+        }
+
+        const selectedTime = new Date(`1970-01-01T${time}:00`);
+        const openTimeDate = new Date(`1970-01-01T${openTime}`);
+        const closeTimeDate = new Date(`1970-01-01T${closeTime}`);
+
+        if (selectedTime < openTimeDate || selectedTime > closeTimeDate) {
+            setErrorModal({
+                title: "Erro",
+                message: `O horário de retirada deve estar dentro do horário de funcionamento do dia do pedido. ${openTime} - ${closeTime}.`
+            });
+            return false;
+        }
+
+        return true;
     };
 
     if (loading) {
@@ -402,9 +470,8 @@ export default function ShoppingBasket() {
                                     id="pickupTime"
                                     value={pickupTime}
                                     onChange={(e) => setPickupTime(e.target.value)}
-                                    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
-                                        error ? "focus:ring-red-500 border-red-500" : "focus:ring-[#FA240F]"
-                                    }`}
+                                    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${error ? "focus:ring-red-500 border-red-500" : "focus:ring-[#FA240F]"
+                                        }`}
                                 />
                             </div>
                             <div className="flex justify-between items-center">
@@ -414,9 +481,8 @@ export default function ShoppingBasket() {
                                 <select
                                     id="paymentMethod"
                                     value="Pagamento na retirada"
-                                    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${
-                                        error ? "focus:ring-red-500 border-red-500" : "focus:ring-[#FA240F]"
-                                    }`}
+                                    className={`p-2 border rounded-md focus:outline-none focus:ring-2 ${error ? "focus:ring-red-500 border-red-500" : "focus:ring-[#FA240F]"
+                                        }`}
                                     disabled
                                 >
                                     <option value="Pagamento na retirada">Pagamento na retirada</option>
@@ -436,34 +502,6 @@ export default function ShoppingBasket() {
                             </div>
                         </ContentCard>
                     </div>
-                    {/*<div className="mt-6">
-                        <h2 className="text-xl text-center font-bold">
-                            Subtotal: R$ {Number(totalPrice).toFixed(2)}
-                        </h2>
-                    </div>
-                    <div className="mt-4 flex flex-col">
-                        <label htmlFor="pickupTime" className="block mb-2">
-                            Para finalizar o pedido, informe o horário de retirada:
-                        </label>
-                        <input
-                            type="time"
-                            id="pickupTime"
-                            value={pickupTime}
-                            onChange={(e) => setPickupTime(e.target.value)}
-                            className={`h-12 p-3 rounded-xl shadow-secondary focus:outline-none focus:ring-2 ${error
-                                ? "focus:ring-red-500 border border-red-500"
-                                : "focus:ring-[#FA240F]"
-                                }`}
-                        />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                        <SecondaryButton onClick={() => showConfirmModal("cancel")}>
-                            Cancelar pedido
-                        </SecondaryButton>
-                        <PrimaryButton onClick={() => showConfirmModal("finalize")}>
-                            Finalizar pedido
-                        </PrimaryButton>
-                    </div>*/}
                 </div>
             )}
             {confirmModalProps && (
