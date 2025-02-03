@@ -6,6 +6,7 @@ import ContentCard from "@/components/layout/ContentCard";
 import { apiUrl } from "@/config/api";
 import { translateStatus } from "@/utils/translateStatus";
 import { useEffect, useState } from "react";
+import { formatDate } from "react-datepicker/dist/date_utils";
 
 export default function ClientOrder() {
     const [orders, setOrders] = useState<IOrder[]>([]);
@@ -47,6 +48,15 @@ export default function ClientOrder() {
     const handleOpenModal = (order: IOrder) => {
         setSelectedOrder(order);
         setIsModalOpen(true);
+    };
+
+    const formatDate = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("pt-BR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        });
     };
 
     if (loading) {
@@ -92,6 +102,7 @@ export default function ClientOrder() {
                                 </div>
                             </div>
                             <div className="my-2">
+                                <p className="text-center text-sm">{formatDate(order.order_date)} - {order.pickup_time.slice(0, 5)}</p>
                                 <h3 className="text-base font-semibold text-primary">
                                     Itens: ({order.orderItems.reduce((total, item) => total + item.quantity, 0)})
                                 </h3>
