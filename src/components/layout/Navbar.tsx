@@ -171,7 +171,7 @@ export default function Navbar() {
 
           <button
             onClick={() => toggleDropdown("user")}
-            className="text-white text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-secondary hover:bg-primary focus:outline-none"
+            className="text-primary text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-elementbg hover:bg-hovertext focus:outline-none"
           >
             {user?.image ? (
               <img src={user.image} alt="User" className="w-full h-full rounded-full object-cover" />
