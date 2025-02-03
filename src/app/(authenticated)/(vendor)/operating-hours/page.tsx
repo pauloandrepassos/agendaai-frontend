@@ -10,6 +10,7 @@ import PrimaryButton from "@/components/form/PrimaryButton";
 import ContentCard from "@/components/layout/ContentCard";
 import Loading from "@/components/form/LoadingSpinner";
 import LobsterText from "@/components/form/LobsterText";
+import PrimaryTitle from "@/components/form/title/PrimaryTitle";
 
 enum Day {
     Sunday = "sunday",
@@ -129,7 +130,7 @@ export default function OperatingHoursPage() {
 
     return (
         <div className="p-6 bg-cream min-h-screen flex flex-col items-center">
-            <LobsterText className="text-2xl font-semibold text-primary mb-5">Gerenciar horários</LobsterText>
+            <PrimaryTitle>Gerenciar horários:</PrimaryTitle>
             <ContentCard className="w-full max-w-2xl p-5">
                 {operatingHours.map((hour, index) => (
                     <div key={hour.day_of_week} className="grid grid-cols-2 items-center gap-4 mb-2">

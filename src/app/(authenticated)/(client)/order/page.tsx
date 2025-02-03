@@ -1,6 +1,7 @@
 "use client"
 
 import SecondaryButton from "@/components/form/SecondaryButton";
+import PrimaryTitle from "@/components/form/title/PrimaryTitle";
 import ContentCard from "@/components/layout/ContentCard";
 import { apiUrl } from "@/config/api";
 import { translateStatus } from "@/utils/translateStatus";
@@ -58,7 +59,7 @@ export default function ClientOrder() {
 
     return (
         <div className="max-w-7xl mx-auto p-5">
-            <h1 className="text-3xl font-bold text-primary mb-8">Agendamentos</h1>
+            <PrimaryTitle>Agendamentos</PrimaryTitle>
             {orders.length === 0 ? (
                 <p className="text-gray-500 text-center">Nenhum pedido encontrado.</p>
             ) : (

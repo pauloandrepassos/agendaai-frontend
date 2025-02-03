@@ -10,6 +10,7 @@ import LobsterText from "@/components/form/LobsterText";
 import ActionButton from "@/components/form/ActionButton";
 import ProductSelectionModal from "@/components/establishment/ProductSelectionModal";
 import Select from "@/components/form/Select";
+import SecondaryTitle from "@/components/form/title/SecondaryTitle";
 
 export default function Menu() {
   const [menu, setMenu] = useState<IMenuDay[]>([]);
@@ -162,9 +163,9 @@ export default function Menu() {
           <div className="grid grid-cols-2 md:grid-cols-3 items-center py-3 gap-4">
             <div className="order-2 md:order-1">
               <div className="hidden md:block">
-                <LobsterText className="text-2xl font-bold mb-4 capitalize">
+                <SecondaryTitle className="">
                   {days.find((d) => d.value === selectedDay)?.label}
-                </LobsterText>
+                </SecondaryTitle>
               </div>
               <div className="block md:hidden">
                 <Select

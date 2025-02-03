@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ProtectedRoute from "@/components/auth/ProtectedRoute";
 import { apiUrl } from "@/config/api";
-import Image from "next/image";
 import ContentCard from "@/components/layout/ContentCard";
 import Input from "@/components/form/TextInput";
 import PrimaryButton from "@/components/form/PrimaryButton";
-import { set } from "react-hook-form";
 import SecondaryButton from "@/components/form/SecondaryButton";
-import LobsterText from "@/components/form/LobsterText";
+import SecondaryTitle from "@/components/form/title/SecondaryTitle";
 
 export default function UserProfile() {
     const [user, setUser] = useState<IUser>();
@@ -191,7 +188,7 @@ export default function UserProfile() {
         <div className="max-w-7xl mx-auto p-5 grid grid-cols-2 gap-3">
             {/* Seção 1: Imagem do Perfil */}
             <ContentCard className="flex flex-col items-center gap-4 p-5 col-span-2 md:col-span-1 min-h-[300px]">
-                <LobsterText className="text-2xl font-semibold text-primary">Imagem do Perfil</LobsterText>
+                <SecondaryTitle>Imagem do Perfil</SecondaryTitle>
                 <div className="h-[120px] w-[120px]">
                     <img src={imagePreview || user.image || "/default-avatar.png"} alt={`Imagem de ${user.name}`} className="w-full h-full rounded-full object-cover" />
                 </div>
@@ -222,7 +219,7 @@ export default function UserProfile() {
 
             {/* Seção 2: Informações do Usuário */}
             <ContentCard className="p-5 grid grid-cols-2 gap-4 col-span-2 md:col-span-1 min-h-[300px]">
-                <LobsterText className="text-2xl text-center font-semibold text-primary col-span-2">Informações de usuário</LobsterText>
+                <SecondaryTitle className="col-span-2 text-center">Informações de usuário</SecondaryTitle>
                 <Input
                     label="Nome"
                     placeholder=""
@@ -271,7 +268,7 @@ export default function UserProfile() {
 
             {/* Seção 3: Redefinir Senha */}
             <ContentCard className="col-span-2 p-5">
-                <LobsterText className="text-2xl text-center font-semibold text-primary mb-5">Redefinir senha</LobsterText>
+                <SecondaryTitle className="text-center">Redefinir senha</SecondaryTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                         label="Nova Senha"

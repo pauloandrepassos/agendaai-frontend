@@ -12,6 +12,7 @@ import Loading from "@/components/form/LoadingSpinner";
 import ConfirmModal from "@/components/ConfirmModal";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
+import PrimaryTitle from "@/components/form/title/PrimaryTitle";
 
 interface ShoppingBasketItem {
     id: number;
@@ -300,7 +301,7 @@ export default function ShoppingBasket() {
     return (
         <div className="max-w-2xl mx-auto p-3">
             <div className="grid grid-cols-1 sm:grid-cols-2 items-center gap-4 mb-2">
-                <h1 className="text-2xl font-bold">Cesto de Compras</h1>
+                <PrimaryTitle>Cesto de compras:</PrimaryTitle>
                 {establishment && (
                     <div className="flex justify-center sm:justify-end">
                         <Link href={`/establishment/${establishment.id}`} className="flex items-center gap-4">

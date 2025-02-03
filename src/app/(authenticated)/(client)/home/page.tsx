@@ -7,6 +7,7 @@ import EstablishmentCard from "@/components/EstablishmentCard"
 import SearchBar from "@/components/form/SearchBar"
 import LobsterText from "@/components/form/LobsterText"
 import Loading from "@/components/form/LoadingSpinner"
+import Title from "@/components/form/title/PrimaryTitle"
 
 interface Establishment {
   id: number
@@ -90,7 +91,7 @@ export default function Home() {
       <div className="mb-5">
         <SearchBar placeholder="Pesquisar..."/>
       </div>
-      <LobsterText className="text-2xl mb-3">Estabelecimentos disponíveis:</LobsterText>
+      <Title>Estabelecimentos disponíveis:</Title>
       {establishments.length === 0 ? (
         <p className="text-center">Nenhum estabelecimento encontrado.</p>
       ) : (

@@ -10,6 +10,7 @@ import PrimaryButton from "../form/PrimaryButton"
 import SecondaryButton from "../form/SecondaryButton"
 import LobsterText from "../form/LobsterText"
 import { categoryLabels } from "@/types/categoryLabels"
+import SecondaryTitle from "../form/title/SecondaryTitle"
 
 interface ProductSelectionModalProps {
     isOpen: boolean
@@ -85,7 +86,7 @@ export default function ProductSelectionModal({
                 ) : (
                     <div>
                         <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-between mb-4">
-                            <h2 className="text-xl font-bold">Selecione Produtos</h2>
+                            <SecondaryTitle>Selecione os produtos:</SecondaryTitle>
                             <div className="grid grid-cols-2 gap-3">
                                 <SecondaryButton onClick={onClose}>Cancelar</SecondaryButton>
                                 <PrimaryButton onClick={handleAdd}>Salvar</PrimaryButton>
