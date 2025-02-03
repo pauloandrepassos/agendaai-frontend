@@ -33,7 +33,6 @@ type OperatingHour = {
 };
 
 export default function OperatingHoursPage() {
-    const establishmentId = 17; // ID do estabelecimento
     const [operatingHours, setOperatingHours] = useState<OperatingHour[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingRequest, setLoadingRequest] = useState(false);
@@ -55,7 +54,7 @@ export default function OperatingHoursPage() {
                     return;
                 }
 
-                const response = await axios.get(`${apiUrl}/operating-hours/establishment/${establishmentId}`, {
+                const response = await axios.get(`${apiUrl}/operating-hours/establishment`, {
                     headers: { token: `${token}` },
                 });
 
@@ -92,7 +91,7 @@ export default function OperatingHoursPage() {
 
             await axios.post(
                 `${apiUrl}/operating-hours`,
-                { establishment_id: establishmentId, hours: formattedHours },
+                { hours: formattedHours },
                 { headers: { token: `${token}` } }
             );
 
@@ -133,7 +132,7 @@ export default function OperatingHoursPage() {
             <PrimaryTitle>Gerenciar horários:</PrimaryTitle>
             <ContentCard className="w-full max-w-2xl p-5">
                 {operatingHours.map((hour, index) => (
-                    <div key={hour.day_of_week} className="grid grid-cols-2 items-center gap-4 mb-2">
+                    <div key={hour.day_of_week} className="grid grid-cols-1 sm:grid-cols-2 items-center gap-3 mb-3 pb-3 border-b border-b-gray-300 sm:border-b-0">
                         <div className="grid grid-cols-[4fr_1fr]">
                             <span className="font-medium">{translateDayOfWeek(hour.day_of_week)}</span>
                             <div className="flex items-center gap-3">
