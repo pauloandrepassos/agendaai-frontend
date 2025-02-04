@@ -17,6 +17,8 @@ export default function Start() {
         router.push("/home")
       } else if (userType === "vendor") {
         router.push("/dashboard")
+      } else if (userType === "admin") {
+        router.push("/control-panel")
       }
     } else {
       router.push("/start")
