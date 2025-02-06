@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { useState, useEffect } from "react";
 import { Switch } from "@headlessui/react";
 import axios from "axios";
@@ -36,8 +35,8 @@ export default function OperatingHoursPage() {
     const [operatingHours, setOperatingHours] = useState<OperatingHour[]>([]);
     const [loading, setLoading] = useState(true);
     const [loadingRequest, setLoadingRequest] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null); // Estado para mensagem de erro
 
-    // Cria um array padrão com todos os dias da semana, marcados como fechados
     const defaultOperatingHours: OperatingHour[] = daysOfWeek.map(({ value }) => ({
         day_of_week: value as Day,
         open_time: null,
@@ -58,7 +57,6 @@ export default function OperatingHoursPage() {
                     headers: { token: `${token}` },
                 });
 
-                // Mescla os dados da API com o array padrão
                 const mergedHours = defaultOperatingHours.map((defaultHour) => {
                     const apiHour = response.data.find((hour: OperatingHour) => hour.day_of_week === defaultHour.day_of_week);
                     return apiHour ? apiHour : defaultHour;
@@ -114,9 +112,21 @@ export default function OperatingHoursPage() {
     }
 
     function updateTime(index: number, field: "open_time" | "close_time", value: string) {
-        setOperatingHours((prev) =>
-            prev.map((hour, i) => (i === index ? { ...hour, [field]: value } : hour))
-        );
+        setOperatingHours((prev) => {
+            const updatedHours = prev.map((hour, i) =>
+                i === index ? { ...hour, [field]: value } : hour
+            );
+
+            // Verifica se o horário de fechamento é menor que o de abertura
+            const currentHour = updatedHours[index];
+            if (currentHour.open_time && currentHour.close_time && currentHour.close_time < currentHour.open_time) {
+                setErrorMessage(`Horário de fechamento não pode ser menor que o de abertura em ${translateDayOfWeek(currentHour.day_of_week)}.`);
+            } else {
+                setErrorMessage(null); // Limpa a mensagem de erro se estiver correta
+            }
+
+            return updatedHours;
+        });
     }
 
     if (loading) {
@@ -131,6 +141,11 @@ export default function OperatingHoursPage() {
         <div className="p-6 bg-cream min-h-screen flex flex-col items-center">
             <PrimaryTitle>Gerenciar horários:</PrimaryTitle>
             <ContentCard className="w-full max-w-2xl p-5">
+                {errorMessage && ( // Exibe a mensagem de erro, se houver
+                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                        {errorMessage}
+                    </div>
+                )}
                 {operatingHours.map((hour, index) => (
                     <div key={hour.day_of_week} className="grid grid-cols-1 sm:grid-cols-2 items-center gap-3 mb-3 pb-3 border-b border-b-gray-300 sm:border-b-0">
                         <div className="grid grid-cols-[4fr_1fr]">
@@ -157,7 +172,7 @@ export default function OperatingHoursPage() {
                                 value={hour.open_time ? hour.open_time.slice(0, 5) : ""}
                                 onChange={(e) => updateTime(index, "open_time", e.target.value)}
                                 disabled={hour.is_closed}
-                                className="border p-1 rounded text-center disabled:bg-gray-100"
+                                className="border p-1 rounded text-center disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
                             />
                             <span className="text-sm text-center">até às</span>
                             <input
@@ -165,7 +180,7 @@ export default function OperatingHoursPage() {
                                 value={hour.close_time ? hour.close_time.slice(0, 5) : ""}
                                 onChange={(e) => updateTime(index, "close_time", e.target.value)}
                                 disabled={hour.is_closed}
-                                className="border p-1 rounded text-center disabled:bg-gray-100"
+                                className={"border p-1 rounded text-center disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"}
                             />
                         </div>
                     </div>
