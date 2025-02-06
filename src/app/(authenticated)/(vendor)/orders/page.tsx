@@ -10,6 +10,11 @@ import Input from "@/components/form/TextInput";
 import DateInput from "@/components/form/DateInput";
 import { date } from "yup";
 import { formatDate, formatDateWithDay } from "@/utils/weekDays";
+import PrimaryTitle from "@/components/form/title/PrimaryTitle";
+import SearchBar from "@/components/form/SearchBar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { formatarHorario } from "@/utils/time";
 
 export default function VendorOrders() {
   const [orders, setOrders] = useState<IOrder[]>([]);
@@ -55,11 +60,11 @@ export default function VendorOrders() {
           token: `${localStorage.getItem("token")}`,
         },
       });
-  
+
       if (!response.ok) {
         throw new Error("Erro ao buscar datas.");
       }
-  
+
       const data = await response.json();
       setHighlightedDates(data);
     } catch (err) {
@@ -88,7 +93,7 @@ export default function VendorOrders() {
         order.id === updatedOrder.id ? { ...order, ...updatedOrder } : order
       )
     );
-  };  
+  };
 
   if (loading) {
     return <div className="text-center mt-5">Carregando pedidos...</div>;
@@ -100,17 +105,38 @@ export default function VendorOrders() {
 
   return (
     <div className="max-w-7xl mx-auto p-5">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-primary text-center sm:text-left">
-          Agendamentos {selectedDate && <>de {formatDate(selectedDate.toISOString().split("T")[0])}</>}
-        </h1>
-        <DateInput
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-between w-full">
+          <PrimaryTitle>Agendamentos</PrimaryTitle>
+          <PrimaryTitle>{selectedDate ? selectedDate.toLocaleDateString() : ""}</PrimaryTitle>
+        </div>
+        <div className="mb-4 flex justify-between">
+          <div className="flex gap-4">
+            <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
+              Todos
+            </button>
+            <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
+              Pendentes
+            </button>
+            <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
+              Concluídos
+            </button>
+          </div>
+          <div className="flex gap-4">
+            <SearchBar placeholder="Número do pedido" />
+            <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
+              Data
+            </button>
+          </div>
+        </div>
+
+        {/*<DateInput
           label="Alterar Data"
           selectedDate={selectedDate}
           onDateChange={setSelectedDate}
           highlightedDates={highlightedDates}
           className="w-full sm:w-auto"
-        />
+        />*/}
       </div>
 
       {orders.length === 0 ? (
@@ -119,34 +145,52 @@ export default function VendorOrders() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order) => (
             <ContentCard key={order.id} className="p-6">
-              <div className="flex items-center justify-between border-b pb-3 mb-3">
-                <h2 className="text-xl font-semibold text-secondary">
-                  Pedido #{order.id}
-                </h2>
-                <span
-                  className={`px-3 py-1 text-xs font-medium rounded-full ${
-                    order.status === "completed"
+              <div className="border-b-2 pb-3 mb-3">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <div className="flex gap-3 items-center">
+                      {order.user.image ? (
+                        <img
+                          src={order.user.image}
+                          alt={order.user.name}
+                          className="w-16 h-16 object-cover rounded-full border"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center text-white text-3xl">
+                          <FontAwesomeIcon icon={faUser} />
+                        </div>
+                      )}
+                      <div>
+                        <h2 className="font-semibold">
+                          {order.user.name}
+                        </h2>
+                        <h2 className="font-semibold text-secondary">
+                          Pedido #{order.id}
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                  <span
+                    className={`px-3 py-1 text-xs font-medium rounded-full ${order.status === "completed"
                       ? "bg-green-500 text-white"
                       : order.status === "canceled"
-                      ? "bg-red-500 text-white"
-                      : "bg-yellow-500 text-white"
-                    }`}
-                >
-                  {translateStatus(order.status)}
-                </span>
+                        ? "bg-red-500 text-white"
+                        : "bg-yellow-500 text-white"
+                      }`}
+                  >
+                    {translateStatus(order.status)}
+                  </span>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <p>
+                    {new Intl.DateTimeFormat('pt-BR').format(new Date(order.order_date))}
+                  </p>
+                  <p>
+                    {formatarHorario(order.pickup_time)}
+                  </p>
+                </div>
               </div>
-              <div className="space-y-1">
-                <p className="text-gray-600 text-sm">
-                  <span className="font-semibold">Cliente:</span> {order.user.name}
-                </p>
-                <p className="text-gray-600 text-sm">
-                  <span className="font-semibold">Contato:</span> {order.user.phone}
-                </p>
-                <p className="text-gray-800 font-bold">
-                  Total: R$ {parseFloat(order.total_price).toFixed(2)}
-                </p>
-              </div>
-              <div className="my-2">
+              <div className="border-b-2 pb-3 mb-3">
                 <h3 className="text-lg font-semibold text-primary">
                   Itens: ({order.orderItems.reduce((total, item) => total + item.quantity, 0)})
                 </h3>
@@ -166,6 +210,10 @@ export default function VendorOrders() {
                     </div>
                   ))}
                 </div>
+              </div>
+              <div className="text-gray-800 font-bold flex justify-between">
+                <p>Total:</p>
+                <p>R$ {parseFloat(order.total_price).toFixed(2)}</p>
               </div>
               <SecondaryButton onClick={() => handleOpenModal(order)}>
                 Detalhes
