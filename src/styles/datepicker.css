@@ -1,0 +1,94 @@
+.react-datepicker {
+    border: none;
+    border-radius: 8px;
+    background-color: white;
+}
+
+/* Cabeçalho do calendário */
+.react-datepicker__header {
+    padding: 10px;
+    color: #fff;
+    background-color: white;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 2px solid #FF5800;
+}
+
+/* Dias destacados */
+.highlighted-date {
+    border: 2px solid #FF5800 !important;
+    background-color: transparent !important;
+    border-radius: 50%;
+    color: black !important;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover dos dias destacados */
+.highlighted-date:hover {
+    background-color: #FF5800 !important;
+    color: white !important;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Dia selecionado */
+.react-datepicker__day--selected,
+.react-datepicker__day--selected:hover {
+    background-color: #FF5800 !important;
+    color: white !important;
+    border-radius: 50%;
+    font-weight: bold;
+    transform: scale(1.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover do dia selecionado */
+.react-datepicker__day--keyboard-selected {
+    background-color: #D94E00 !important;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+/* Esconde os dias de meses anteriores e seguintes */
+.react-datepicker__day--outside-month {
+    opacity: 0.4 !important; /* Deixa os dias fora do mês menos visíveis */
+    pointer-events: none; /* Impede interação com esses dias */
+}
+
+/* Destaca apenas os dias do mês atual */
+.react-datepicker__day:not(.react-datepicker__day--outside-month) {
+    opacity: 1 !important;
+}
+
+/* Estilização da legenda */
+.legend {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Dia selecionado */
+.legend.selected {
+    background-color: #FF5800;
+}
+
+/* Dias destacados */
+.legend.highlighted {
+    border: 2px solid #FF5800;
+    background-color: transparent;
+}
+
+/* Dias fora do mês atual */
+.legend.outside-month {
+    background-color: #ccc;
+    opacity: 0.4;
+}
+
+.divider {
+    width: 100%;
+    height: 2px;
+    background-color: #FF5800;
+    margin: 10px 0;
+}

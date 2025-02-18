@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import SecondaryButton from "@/components/form/SecondaryButton";
 import ContentCard from "@/components/layout/ContentCard";
@@ -6,15 +6,12 @@ import { apiUrl } from "@/config/api";
 import { useEffect, useState } from "react";
 import OrderDetailsModal from "./VendorOrdersDetails";
 import { translateStatus } from "@/utils/translateStatus";
-import Input from "@/components/form/TextInput";
 import DateInput from "@/components/form/DateInput";
-import { date } from "yup";
-import { formatDate, formatDateWithDay } from "@/utils/weekDays";
+import { formatarHorario } from "@/utils/time";
 import PrimaryTitle from "@/components/form/title/PrimaryTitle";
 import SearchBar from "@/components/form/SearchBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import { formatarHorario } from "@/utils/time";
 
 export default function VendorOrders() {
   const [orders, setOrders] = useState<IOrder[]>([]);
@@ -32,12 +29,15 @@ export default function VendorOrders() {
       return;
     }
     try {
-      const response = await fetch(`${apiUrl}/orders/establishment?date=${date.toISOString().split("T")[0]}`, {
-        method: "GET",
-        headers: {
-          token: `${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        `${apiUrl}/orders/establishment?date=${date.toISOString().split("T")[0]}`,
+        {
+          method: "GET",
+          headers: {
+            token: `${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Erro ao buscar pedidos.");
@@ -74,17 +74,12 @@ export default function VendorOrders() {
 
   useEffect(() => {
     fetchOrders(selectedDate);
-    fetchHighlightedDates()
+    fetchHighlightedDates();
   }, [selectedDate]);
 
   const handleOpenModal = (order: IOrder) => {
     setSelectedOrder(order);
     setIsModalOpen(true);
-  };
-
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const dateValue = event.target.value ? new Date(event.target.value) : null;
-    setSelectedDate(dateValue);
   };
 
   const updateOrderStatus = (updatedOrder: IOrder) => {
@@ -108,7 +103,9 @@ export default function VendorOrders() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between w-full">
           <PrimaryTitle>Agendamentos</PrimaryTitle>
-          <PrimaryTitle>{selectedDate ? selectedDate.toLocaleDateString() : ""}</PrimaryTitle>
+          <PrimaryTitle>
+            {selectedDate ? selectedDate.toLocaleDateString() : ""}
+          </PrimaryTitle>
         </div>
         <div className="mb-4 flex justify-between">
           <div className="flex gap-4">
@@ -124,23 +121,20 @@ export default function VendorOrders() {
           </div>
           <div className="flex gap-4">
             <SearchBar placeholder="Número do pedido" />
-            <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
-              Data
-            </button>
+            <DateInput
+              className=""
+              selectedDate={selectedDate}
+              onDateChange={setSelectedDate}
+              highlightedDates={highlightedDates}
+            />
           </div>
         </div>
-
-        {/*<DateInput
-          label="Alterar Data"
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          highlightedDates={highlightedDates}
-          className="w-full sm:w-auto"
-        />*/}
       </div>
 
       {orders.length === 0 ? (
-        <p className="text-gray-500 text-center">Nenhum pedido encontrado para a data selecionada.</p>
+        <p className="text-gray-500 text-center">
+          Nenhum pedido encontrado para a data selecionada.
+        </p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {orders.map((order) => (
@@ -161,9 +155,7 @@ export default function VendorOrders() {
                         </div>
                       )}
                       <div>
-                        <h2 className="font-semibold">
-                          {order.user.name}
-                        </h2>
+                        <h2 className="font-semibold">{order.user.name}</h2>
                         <h2 className="font-semibold text-secondary">
                           Pedido #{order.id}
                         </h2>
@@ -183,16 +175,18 @@ export default function VendorOrders() {
                 </div>
                 <div className="flex justify-between text-xs">
                   <p>
-                    {new Intl.DateTimeFormat('pt-BR').format(new Date(order.order_date))}
+                    {new Intl.DateTimeFormat("pt-BR").format(
+                      new Date(order.order_date)
+                    )}
                   </p>
-                  <p>
-                    {formatarHorario(order.pickup_time)}
-                  </p>
+                  <p>{formatarHorario(order.pickup_time)}</p>
                 </div>
               </div>
               <div className="border-b-2 pb-3 mb-3">
                 <h3 className="text-lg font-semibold text-primary">
-                  Itens: ({order.orderItems.reduce((total, item) => total + item.quantity, 0)})
+                  Itens: (
+                  {order.orderItems.reduce((total, item) => total + item.quantity, 0)}
+                  )
                 </h3>
                 <div className="flex flex-row overflow-hidden gap-2 mt-1">
                   {order.orderItems.map((item) => (
