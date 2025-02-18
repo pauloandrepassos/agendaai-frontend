@@ -4,7 +4,7 @@ import { faBook, faBookOpen, faChartArea, faChartBar } from "@fortawesome/free-s
 
 export default function Features() {
     return (
-        <section className="p-5 max-w-7xl mx-auto">
+        <section className="px-5 py-20 max-w-7xl mx-auto">
             <LobsterText className="text-5xl text-primary text-center mb-8 mt-3">
                 Funcionalidades
             </LobsterText>

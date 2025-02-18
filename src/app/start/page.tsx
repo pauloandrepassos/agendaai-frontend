@@ -25,12 +25,12 @@ export default function Start() {
         </div>
       </section>
       <div
-        className="relative flex flex-col items-center justify-center bg-cover bg-center py-20 px-5"
+        className="relative flex flex-col items-center justify-center bg-cover bg-center min-h-[90vh] py-20 px-5"
         style={{ backgroundImage: "url('/start-image-1.jpeg')" }}
       >
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-        <div className="relative z-10 text-center max-w-2xl flex flex-col gap-4">
+        <div className="relative z-10 text-center max-w-2xl flex flex-col gap-5">
           <LobsterText className="text-[#fffff0] text-7xl">
             Não <span className="text-primary">espere</span> pelo seu lanche, faça ele esperar <span className="text-primary">por você</span>!
           </LobsterText>

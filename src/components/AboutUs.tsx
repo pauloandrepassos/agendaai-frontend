@@ -2,7 +2,7 @@ import LobsterText from "./form/LobsterText"
 
 export default function AboutUs() {
     return (
-        <section className="bg-secondary p-5">
+        <section className="bg-secondary p-20">
             <LobsterText className="text-5xl text-[#fffff0] text-center">
                 Sobre nós
             </LobsterText>

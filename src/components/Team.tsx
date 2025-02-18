@@ -3,7 +3,7 @@ import { FaInstagram, FaLinkedin, FaGithub } from "react-icons/fa";
 
 export default function Team() {
     return (
-        <section className="bg-secondary p-5">
+        <section className="bg-secondary p-5x py-20">
             <LobsterText className="text-5xl text-[#fffff0] text-center">
                 Nossa equipe
             </LobsterText>
