@@ -107,19 +107,19 @@ export default function VendorOrders() {
             {selectedDate ? selectedDate.toLocaleDateString() : ""}
           </PrimaryTitle>
         </div>
-        <div className="mb-4 flex justify-between">
-          <div className="flex gap-4">
+        <div className="mb-4 flex flex-col md:flex-row justify-between gap-5">
+          <div className="flex gap-4 order-2 md:order-1 justify-between">
             <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
               Todos
             </button>
-            <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
+            {/*<button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
               Pendentes
             </button>
             <button className="bg-elementbg items-center shadow-primary border-2 border-primary hover:bg-primary hover:text-white rounded-lg py-1 px-4 flex gap-2 font-bold">
               Concluídos
-            </button>
+            </button>*/}
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 justify-between order-1 md:order-2">
             <SearchBar placeholder="Número do pedido" />
             <DateInput
               className=""
