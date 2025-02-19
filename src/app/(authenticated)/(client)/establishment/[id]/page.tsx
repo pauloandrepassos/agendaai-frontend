@@ -5,7 +5,7 @@ import { apiUrl } from "@/config/api";
 import Loading from "@/components/form/LoadingSpinner";
 import EstablishmentHeader from "@/components/establishment/EstablishmentHeader";
 import { useParams } from "next/navigation";
-import { getDayString } from "@/utils/dateUtils";
+import { getDayString, getNextDayString } from "@/utils/dateUtils";
 import Select from "@/components/form/Select";
 import ProductCard from "@/components/ProductCard";
 import OperatingHours from "@/components/establishment/OperatingHours";
@@ -21,7 +21,7 @@ export default function Establishment() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [menu, setMenu] = useState<IMenuDay[]>([]);
-  const [selectedDay, setSelectedDay] = useState<string>(getDayString());
+  const [selectedDay, setSelectedDay] = useState<string>(getNextDayString());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -32,10 +32,10 @@ export default function Establishment() {
   useEffect(() => {
     if (!id) return;
 
-    const savedDay = localStorage.getItem("selectedDay");
+    /*const savedDay = localStorage.getItem("selectedDay");
     if (savedDay) {
       setSelectedDay(savedDay);
-    }
+    }*/
 
     const fetchData = async () => {
       try {
@@ -185,6 +185,7 @@ export default function Establishment() {
               options={days}
               value={selectedDay}
               onChange={(e) => handleDaySelection(e.target.value)}
+              disabled={true}
             />
           </div>
           {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (

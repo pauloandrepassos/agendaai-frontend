@@ -4,6 +4,13 @@ export const getDayString = (): string => {
     return days[today]
 }
 
+export const getNextDayString = (): string => {
+    const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const today = new Date().getDay();
+    const nextDayIndex = (today + 1) % 7;
+    return days[nextDayIndex];
+};
+
 export const getDayOfWeek = (dateStr: string): string => {
     const date = new Date(dateStr);
     const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
