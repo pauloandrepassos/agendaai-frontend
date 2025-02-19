@@ -5,4 +5,5 @@ interface IProduct {
     description: string
     price: number
     category: string
+    max_quantity?: number;
 }

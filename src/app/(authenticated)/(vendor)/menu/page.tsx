@@ -72,16 +72,16 @@ export default function Menu() {
     fetchOperatingHours();
   }, []);
 
-  const handleAddItems = async (itemIds: number[]) => {
+  const handleAddItems = async (items: { id: number; maxQuantity?: number }[]) => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await fetch(`${apiUrl}/menu/add-items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           token: `${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ itemIds, day: selectedDay }),
+        body: JSON.stringify({ items, day: selectedDay }),
       });
 
       if (!response.ok) {
@@ -144,10 +144,10 @@ export default function Menu() {
                 key={day.value}
                 onClick={() => handleDaySelection(day.value)}
                 className={`p-2 rounded-md transition-all shadow-primary border-primary text-black ${isDayClosed
-                    ? "bg-[#333333] bg-opacity-30"
-                    : selectedDay === day.value
-                      ? "bg-gradient-to-tr from-secondary to-primary text-white"
-                      : "bg-elementbg border-2"
+                  ? "bg-[#333333] bg-opacity-30"
+                  : selectedDay === day.value
+                    ? "bg-gradient-to-tr from-secondary to-primary text-white"
+                    : "bg-elementbg border-2"
                   }`}
               >
                 {day.label}
@@ -212,12 +212,18 @@ export default function Menu() {
           ) : menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {menuForSelectedDay.menuItems.map((item) => (
-                <ProductCard
-                  image={item.image}
-                  name={item.name}
-                  price={item.price}
-                  key={item.id}
-                />
+                <div key={item.id}>
+                  <ProductCard
+                    image={item.image}
+                    name={item.name}
+                    price={item.price}
+                  />
+                  {item.max_quantity && (
+                    <p className="text-sm text-gray-600 mt-2 text-center">
+                      Quantidade máxima: {item.max_quantity}
+                    </p>
+                  )}
+                </div>
               ))}
             </div>
           ) : (
@@ -232,7 +238,10 @@ export default function Menu() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onAdd={handleAddItems}
-        selectedProductIds={menuForSelectedDay?.menuItems.map((item) => item.id) || []}
+        selectedProducts={menuForSelectedDay?.menuItems.map((item) => ({
+          id: item.id,
+          maxQuantity: item.max_quantity,
+        })) || []}
       />
     </div>
   );
