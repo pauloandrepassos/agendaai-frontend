@@ -23,16 +23,48 @@ interface FormData {
     confirmPassword: string;
 }
 
+// Função para validar CPF
+const isValidCPF = (cpf: string): boolean => {
+    cpf = cpf.replace(/\D/g, ""); // Remove caracteres não numéricos
+
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false; // Verifica se tem 11 dígitos e não é uma sequência repetida
+
+    let sum = 0;
+    let remainder;
+
+    // Validação do primeiro dígito verificador
+    for (let i = 1; i <= 9; i++) {
+        sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf.substring(9, 10))) return false;
+
+    // Validação do segundo dígito verificador
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+        sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+    remainder = (sum * 10) % 11;
+    if (remainder === 10 || remainder === 11) remainder = 0;
+    if (remainder !== parseInt(cpf.substring(10, 11))) return false;
+
+    return true;
+};
+
 const validationSchema = yup.object().shape({
-    name: yup.string().required("O nome é obrigatório"),
+    name: yup
+        .string()
+        .required("O nome é obrigatório")
+        .min(3, "O nome deve ter pelo menos 3 caracteres"),
     cpf: yup
         .string()
         .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "O CPF deve estar no formato 000.000.000-00")
+        .test("is-valid-cpf", "CPF inválido", (value) => isValidCPF(value || "")) // Validação personalizada do CPF
         .required("O CPF é obrigatório"),
     email: yup.string().email("E-mail inválido").required("O e-mail é obrigatório"),
     phone: yup
         .string()
-        //.matches(/^\d{10,11}$/, "O telefone deve conter 10 ou 11 dígitos")
         .required("O telefone é obrigatório"),
     password: yup
         .string()
@@ -70,7 +102,7 @@ export default function Login() {
 
     const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const formattedValue = formatCPF(e.target.value);
-        setValue("cpf", formattedValue)
+        setValue("cpf", formattedValue, { shouldValidate: true });
     };
 
     const onSubmit = (data: FormData) => {
@@ -108,7 +140,6 @@ export default function Login() {
             });
     };
 
-
     return (
         <ContentCard className="relative bg-background p-8 m-3 rounded-2xl w-full max-w-3xl">
             <img src="/logo-agendaai.png" alt="Logo" className="absolute top-[-30px] left-10 w-16 h-16 object-contain" />
@@ -120,13 +151,12 @@ export default function Login() {
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
                 <Modal
                     title="Cadastro Enviado com Sucesso"
-                    message="Para finalizar o seu cadastro, verifique seu email e acesse o link enviado."
+                    message="Para concluir seu cadastro, acesse seu e-mail e clique no link de confirmação que enviamos. Se não encontrar o e-mail, verifique a caixa de spam ou lixo eletrônico."
                     isVisible={isModalVisible}
                     onClose={() => {
                         setIsModalVisible(false)
                         //router.push("/auth/login")
                     }}
-
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <Input
@@ -147,8 +177,9 @@ export default function Login() {
                         label="CPF"
                         placeholder="Digite seu CPF"
                         type="text"
-                        {...register("cpf")}
-                        onChange={handleCPFChange}
+                        {...register("cpf", {
+                            onChange: (e) => handleCPFChange(e),
+                        })}
                         error={errors.cpf?.message}
                     />
                     <Input
