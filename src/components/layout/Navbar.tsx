@@ -186,10 +186,10 @@ export default function Navbar() {
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   Perfil
                 </Link>
-                <Link href="/" className="block px-4 py-2 hover:bg-gray-200">
+                {/*<Link href="/" className="block px-4 py-2 hover:bg-gray-200">
                   <FontAwesomeIcon icon={faBell} className="mr-2" />
                   Notificações
-                </Link>
+                </Link>*/}
                 <button onClick={logout} className="block w-full text-left px-4 py-2 hover:bg-gray-200">
                   <FontAwesomeIcon icon={faSignOut} className="mr-2" />
                   Sair

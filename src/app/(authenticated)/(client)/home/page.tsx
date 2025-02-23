@@ -88,9 +88,9 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <div className="mb-5">
+      {/*<div className="mb-5">
         <SearchBar placeholder="Pesquisar..."/>
-      </div>
+      </div>*/}
       <Title>Estabelecimentos disponíveis:</Title>
       {establishments.length === 0 ? (
         <p className="text-center">Nenhum estabelecimento encontrado.</p>

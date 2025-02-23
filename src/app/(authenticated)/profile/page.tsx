@@ -266,7 +266,7 @@ export default function UserProfile() {
                 </div>
             </ContentCard>
 
-            {/* Seção 3: Redefinir Senha */}
+            {/* Seção 3: Redefinir Senha 
             <ContentCard className="col-span-2 p-5">
                 <SecondaryTitle className="text-center">Redefinir senha</SecondaryTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -293,7 +293,7 @@ export default function UserProfile() {
                         <PrimaryButton className="w-auto" onClick={handleResetPassword}>Redefinir Senha</PrimaryButton>
                     </div>
                 </div>
-            </ContentCard>
+            </ContentCard>*/}
         </div>
     );
 }
