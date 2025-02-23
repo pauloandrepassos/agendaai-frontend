@@ -108,6 +108,7 @@ export default function Navbar() {
     <nav className="bg-primary text-elementbg" style={{ boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between p-3">
         <div className="flex items-center">
+          {/** 
           <button onClick={toggleMenu} className=" lg:hidden focus:outline-none">
             <svg
               className="w-6 h-6"
@@ -118,7 +119,7 @@ export default function Navbar() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
-          </button>
+          </button>*/}
           <Link href="/">
             <img src="/logo-agendaai.png" alt="Logo" className="w-12 h-12" />
           </Link>
