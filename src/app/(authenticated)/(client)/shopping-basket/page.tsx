@@ -232,12 +232,12 @@ export default function ShoppingBasket() {
             setConfirmModalProps(null);
             return;
         }
-
+    
         if (!validatePickupTime(pickupTime)) {
             setConfirmModalProps(null);
             return;
         }
-
+    
         try {
             setConfirmModalProps((prevProps) => {
                 if (!prevProps) {
@@ -248,7 +248,7 @@ export default function ShoppingBasket() {
                     loading: true,
                 };
             });
-
+    
             const response = await fetch(`${apiUrl}/shopping-basket/confirm`, {
                 method: "POST",
                 headers: {
@@ -257,17 +257,32 @@ export default function ShoppingBasket() {
                 },
                 body: JSON.stringify({ idEstablishment: establishment?.id, pickupTime }),
             });
-
+    
             if (!response.ok) {
-                throw new Error("Erro ao finalizar pedido.");
+                const errorData = await response.json(); // Captura a resposta de erro da API
+                if (errorData.message === "Você já possui um pedido em andamento. Você só poderá adicionar um novo pedido, após a finalização do pedido atual.") {
+                    setErrorModal({
+                        title: "Pedido pendente",
+                        message: errorData.message,
+                    });
+                } else {
+                    throw new Error(errorData.message || "Erro ao finalizar pedido.");
+                }
+                return;
             }
-
+    
             const basketUpdatedEvent = new CustomEvent("basketUpdated");
             window.dispatchEvent(basketUpdatedEvent);
-
+    
             await router.push("/");
         } catch (err) {
             console.error("Erro ao finalizar pedido:", err);
+            setErrorModal({
+                title: "Erro",
+                message: err instanceof Error ? err.message : "Erro desconhecido ao finalizar o pedido.",
+            });
+        } finally {
+            setConfirmModalProps(null); // Fecha o modal de confirmação
         }
     };
 
