@@ -128,9 +128,9 @@ export default function ClientOrder() {
                                     Total: R$ {parseFloat(order.total_price).toFixed(2)}
                                 </p>
                             </div>
-                            <SecondaryButton onClick={() => handleOpenModal(order)}>
+                            {/*<SecondaryButton onClick={() => handleOpenModal(order)}>
                                 Detalhes
-                            </SecondaryButton>
+                            </SecondaryButton>*/}
                         </ContentCard>
                     ))}
                 </div>
