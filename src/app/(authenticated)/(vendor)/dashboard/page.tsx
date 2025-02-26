@@ -102,7 +102,7 @@ export default function VendorDashboard() {
             </div>
           </section>
 
-          <Summary className="order-3 md:order-4 col-span-2" />
+          {/*<Summary className="order-3 md:order-4 col-span-2" />*/}
         </div>
       </div>
     )
