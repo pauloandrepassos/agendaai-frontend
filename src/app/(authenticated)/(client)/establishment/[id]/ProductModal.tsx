@@ -42,6 +42,18 @@ export default function ProductModal({
         if (quantity > 1) setQuantity((prev) => prev - 1);
     };
 
+    const formatLocalDate = (date: Date) => {
+        const pad = (num: number) => num.toString().padStart(2, '0');
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+        const seconds = pad(date.getSeconds());
+
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    };
+
     const addToBasket = async () => {
         setIsLoading(true);
         try {
@@ -50,7 +62,7 @@ export default function ProductModal({
                 productId: product.id,
                 quantity,
                 menuId,
-                orderDate: orderDate.toISOString()
+                orderDate: formatLocalDate(orderDate)
             }, {
                 headers: {
                     token: `${localStorage.getItem("token")}`
@@ -86,6 +98,8 @@ export default function ProductModal({
                             {product.name}
                         </LobsterText>
 
+                        <p>{formatLocalDate(orderDate)}</p>
+
                         <p className="text-gray-600">{product.description}</p>
 
                         <p className="mt-2 flex justify-between">
@@ -105,12 +119,12 @@ export default function ProductModal({
                             <button
                                 className="p-2 bg-secondary text-white rounded-full h-12 w-12 hover:bg-primary disabled:opacity-50"
                                 onClick={incrementQuantity}
-                                disabled={quantity  + quantityInBasket >= 5}
+                                disabled={quantity + quantityInBasket >= 5}
                             >
                                 <FontAwesomeIcon icon={faPlus} />
                             </button>
                         </div>
-                        {quantity  + quantityInBasket >= 5 && (
+                        {quantity + quantityInBasket >= 5 && (
                             <div className="text-xs text-primary font-bold">
                                 {quantityInBasket > 0 && <p>Você já possui {quantityInBasket} itens no cesto de compras.</p>}
                                 <p>No momento voce está limitado a pedir uma quantidade máxima de 5 itens no total.</p>
@@ -118,7 +132,7 @@ export default function ProductModal({
                         )}
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 col-span-1 sm:col-span-2">
-                        <SecondaryButton onClick={()=>{
+                        <SecondaryButton onClick={() => {
                             setQuantity(1);
                             onClose();
                         }}>Cancelar</SecondaryButton>
