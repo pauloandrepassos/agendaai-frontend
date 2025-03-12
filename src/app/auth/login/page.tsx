@@ -35,7 +35,10 @@ export default function Login() {
             localStorage.setItem("token", response.data.token)
             window.dispatchEvent(new Event("tokenUpdated"));
 
-            router.push('/')
+            const redirectUrl = localStorage.getItem("redirectUrl");
+            localStorage.removeItem("redirectUrl");
+
+            router.push(redirectUrl || "/");
         }).catch((error) => {
             setLoading(false)
             if (error.response) {

@@ -32,25 +32,12 @@ export default function Establishment() {
   useEffect(() => {
     if (!id) return;
 
-    /*const savedDay = localStorage.getItem("selectedDay");
-    if (savedDay) {
-      setSelectedDay(savedDay);
-    }*/
-
     const fetchData = async () => {
       try {
-        const estRes = await fetch(`${apiUrl}/establishments/${id}`, {
-          headers: {
-            token: `${localStorage.getItem("token")}`,
-          },
-        });
+        const estRes = await fetch(`${apiUrl}/establishments/${id}`);
         const estData = await estRes.json();
         setEstablishment(estData);
-        const hoursRes = await fetch(`${apiUrl}/operating-hours/establishment/${id}`, {
-          headers: {
-            token: `${localStorage.getItem("token")}`,
-          },
-        });
+        const hoursRes = await fetch(`${apiUrl}/operating-hours/establishment/${id}`);
         const hoursData = await hoursRes.json();
         setOperatingHours(hoursData);
       } catch (err) {
@@ -62,11 +49,7 @@ export default function Establishment() {
 
     const fetchMenu = async () => {
       try {
-        const response = await fetch(`${apiUrl}/menu/establishment/${id}`, {
-          headers: {
-            token: `${localStorage.getItem("token")}`,
-          },
-        });
+        const response = await fetch(`${apiUrl}/menu/establishment/${id}`);
 
         if (!response.ok) {
           throw new Error("Erro ao buscar o cardápio.");
@@ -83,15 +66,18 @@ export default function Establishment() {
     };
 
     const fetchQuantityInBasket = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return; // Não faz a requisição se o usuário não estiver autenticado
+
       try {
         const response = await fetch(`${apiUrl}/shopping-basket/count`, {
           headers: {
-            token: `${localStorage.getItem("token")}`,
+            token: token,
           },
         });
 
         if (!response.ok) {
-          throw new Error("Erro ao buscar o cardápio.");
+          throw new Error("Erro ao buscar a quantidade de itens no cesto.");
         }
 
         const data = await response.json();
@@ -99,32 +85,18 @@ export default function Establishment() {
       } catch (err: any) {
         console.error(err);
         setError(err.message || "Erro desconhecido.");
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchData();
-
     fetchMenu();
-
-    fetchQuantityInBasket()
+    fetchQuantityInBasket(); // Busca a quantidade de itens no cesto apenas se o usuário estiver autenticado
   }, [id]);
 
   const handleDaySelection = (day: string) => {
     setSelectedDay(day);
     localStorage.setItem("selectedDay", day);
   };
-
-  /*const days = [
-    { label: "Segunda", value: "monday" },
-    { label: "Terça", value: "tuesday" },
-    { label: "Quarta", value: "wednesday" },
-    { label: "Quinta", value: "thursday" },
-    { label: "Sexta", value: "friday" },
-    { label: "Sábado", value: "saturday" },
-    { label: "Domingo", value: "sunday" },
-  ];*/
 
   const days = weekDays.map((day) => ({
     label: formatDateWithDay(day),

@@ -55,6 +55,12 @@ export default function ProductModal({
     };
 
     const addToBasket = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            localStorage.setItem("redirectUrl", window.location.pathname);
+            window.location.href = "/auth/login";
+            return;
+        }
         setIsLoading(true);
         try {
             const response = await axios.post(`${apiUrl}/shopping-basket/items`, {
@@ -97,8 +103,6 @@ export default function ProductModal({
                         <LobsterText className="text-3xl text-center text-primary">
                             {product.name}
                         </LobsterText>
-
-                        <p>{formatLocalDate(orderDate)}</p>
 
                         <p className="text-gray-600">{product.description}</p>
 
