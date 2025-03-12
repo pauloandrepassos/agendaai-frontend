@@ -9,7 +9,6 @@ export default function AuthenticatedLayout({
 }>) {
   return (
     <ProtectedRoute>
-      <Navbar />
       {children}
     </ProtectedRoute>
   )

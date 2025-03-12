@@ -33,6 +33,7 @@ export default function Login() {
             password: data.password
         }).then((response) => {
             localStorage.setItem("token", response.data.token)
+            window.dispatchEvent(new Event("tokenUpdated"));
 
             router.push('/')
         }).catch((error) => {

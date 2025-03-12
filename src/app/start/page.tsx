@@ -12,18 +12,6 @@ import Link from "next/link"
 export default function Start() {
   return (
     <div className="">
-      <section className="bg-primary">
-        <div className="max-w-7xl mx-auto flex items-center justify-between p-3">
-          <Link href="/">
-            <img src="/logo-agendaai.png" alt="Logo" className="w-12 h-12" />
-          </Link>
-          <div>
-            <Link className="bg-[#fffff0] px-4 py-3 rounded-lg font-bold text-primary" href={"/auth/login"}>
-            Entrar
-          </Link>
-          </div>
-        </div>
-      </section>
       <div
         className="relative flex flex-col items-center justify-center bg-cover bg-center min-h-[90vh] py-20 px-5"
         style={{ backgroundImage: "url('/start-image-1.jpeg')" }}

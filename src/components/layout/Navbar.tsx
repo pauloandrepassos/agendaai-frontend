@@ -7,7 +7,7 @@ import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons/faShoppingBa
 import ContentCard from "./ContentCard";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell, faFileAlt, faHome, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faFileAlt, faHome, faSignOut, faUser, faPlus, faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface ShoppingBasketResponse {
   id: number;
@@ -39,6 +39,8 @@ export default function Navbar() {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("selectedDay");
+    setUser(null); // Limpa o estado do usuário
+    window.dispatchEvent(new Event("tokenUpdated")); // Notifica a atualização do token
     router.push("/auth/login");
   };
 
@@ -60,37 +62,43 @@ export default function Navbar() {
     }
   };
 
+  // Função para buscar o usuário autenticado
+  const fetchUser = async () => {
+    try {
+      const userData = await fetchAuthenticatedUser();
+      if (!userData) throw new Error("Usuário não encontrado.");
+      setUser(userData);
+    } catch (error) {
+      console.error("Erro ao buscar usuário:", error);
+      localStorage.removeItem("token");
+      setUser(null); // Garante que o estado do usuário seja nulo
+    }
+  };
+
+  // Monitora mudanças no token para atualizar o estado do usuário
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const userData = await fetchAuthenticatedUser();
-        if (!userData) throw new Error("Usuário não encontrado.");
-        setUser(userData);
-      } catch (error) {
-        console.error("Erro ao buscar usuário:", error);
-        localStorage.removeItem("token")
-        router.push("/");
+    const handleTokenUpdated = () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        fetchUser(); // Busca o usuário autenticado
+      } else {
+        setUser(null); // Limpa o estado do usuário se não houver token
       }
     };
 
-    fetchUser();
-  }, [router]);
+    // Verifica o token ao montar o componente
+    handleTokenUpdated();
 
-  useEffect(() => {
-    const handleProfileImageUpdated = (event: Event) => {
-      const customEvent = event as CustomEvent<{ imageUrl: string }>;
-      setUser((prevUser) =>
-        prevUser ? { ...prevUser, image: customEvent.detail.imageUrl } : null
-      );
-    };
+    // Ouvinte para o evento personalizado
+    window.addEventListener("tokenUpdated", handleTokenUpdated);
 
-    window.addEventListener("profileImageUpdated", handleProfileImageUpdated);
-
+    // Limpeza do ouvinte ao desmontar o componente
     return () => {
-      window.removeEventListener("profileImageUpdated", handleProfileImageUpdated);
+      window.removeEventListener("tokenUpdated", handleTokenUpdated);
     };
   }, []);
 
+  // Atualiza o carrinho de compras se o usuário for do tipo "client"
   useEffect(() => {
     if (user?.user_type === "client") {
       fetchShoppingBasket();
@@ -108,24 +116,23 @@ export default function Navbar() {
     <nav className="bg-primary text-elementbg" style={{ boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between p-3">
         <div className="flex items-center">
-          {/** 
-          <button onClick={toggleMenu} className=" lg:hidden focus:outline-none">
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>*/}
           <Link href="/">
             <img src="/logo-agendaai.png" alt="Logo" className="w-12 h-12" />
           </Link>
         </div>
 
         <div className="relative flex items-center gap-8">
+          {/* Opções para admin*/}
+          {(user?.user_type === "admin") && (
+            <div></div>
+          )}
+
+          {/* Opções para vendedores*/}
+          {(user?.user_type === "vendor") && (
+            <div></div>
+          )}
+
+          {/* Opções para clientes */}
           {user?.user_type === "client" && (
             <>
               <Link href={`/order`} className=" hover:text-hovertext h-10 text-center flex items-center justify-center gap-1">
@@ -170,16 +177,29 @@ export default function Navbar() {
             </>
           )}
 
-          <button
-            onClick={() => toggleDropdown("user")}
-            className="text-primary text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-elementbg hover:bg-hovertext focus:outline-none"
-          >
-            {user?.image ? (
-              <img src={user.image} alt="User" className="w-full h-full rounded-full object-cover" />
-            ) : (
-              <FontAwesomeIcon icon={faUser} />
-            )}
-          </button>
+          {/* Botão "Entrar" quando não há usuário logado */}
+          {!user && (
+            <Link href="/auth/login" className="hover:text-hovertext h-10 text-center flex items-center justify-center gap-1">
+              <FontAwesomeIcon className="text-2xl" icon={faSignInAlt} />
+              <span className="hidden md:block">Entrar</span>
+            </Link>
+          )}
+
+          {/* Ícone de perfil e dropdown para usuários logados */}
+          {user && (
+            <button
+              onClick={() => toggleDropdown("user")}
+              className="text-primary text-2xl w-10 h-10 text-center flex items-center justify-center rounded-full bg-elementbg hover:bg-hovertext focus:outline-none"
+            >
+              {user?.image ? (
+                <img src={user.image} alt="User" className="w-full h-full rounded-full object-cover" />
+              ) : (
+                <FontAwesomeIcon icon={faUser} />
+              )}
+            </button>
+          )}
+
+          {/* Dropdown do usuário */}
           {dropdownOpen === "user" && (
             <ContentCard className="absolute right-0 top-14 w-48 bg-elementbg overflow-hidden z-50 text-black">
               <div onMouseLeave={() => setDropdownOpen(null)}>
@@ -187,10 +207,6 @@ export default function Navbar() {
                   <FontAwesomeIcon icon={faUser} className="mr-2" />
                   Perfil
                 </Link>
-                {/*<Link href="/" className="block px-4 py-2 hover:bg-gray-200">
-                  <FontAwesomeIcon icon={faBell} className="mr-2" />
-                  Notificações
-                </Link>*/}
                 <button onClick={logout} className="block w-full text-left px-4 py-2 hover:bg-gray-200">
                   <FontAwesomeIcon icon={faSignOut} className="mr-2" />
                   Sair
