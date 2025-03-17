@@ -16,3 +16,9 @@ export const getDayOfWeek = (dateStr: string): string => {
     const days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     return days[date.getDay()];
 };
+
+export const isBeforeCutoffTime = (): boolean => {
+    const now = new Date();
+    const cutoffHour = 14; // 14:00 horas
+    return now.getHours() < cutoffHour;
+};

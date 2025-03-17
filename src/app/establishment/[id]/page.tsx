@@ -5,7 +5,7 @@ import { apiUrl } from "@/config/api";
 import Loading from "@/components/form/LoadingSpinner";
 import EstablishmentHeader from "@/components/establishment/EstablishmentHeader";
 import { useParams } from "next/navigation";
-import { getDayString, getNextDayString } from "@/utils/dateUtils";
+import { getDayString, getNextDayString, isBeforeCutoffTime } from "@/utils/dateUtils";
 import Select from "@/components/form/Select";
 import ProductCard from "@/components/ProductCard";
 import OperatingHours from "@/components/establishment/OperatingHours";
@@ -21,16 +21,21 @@ export default function Establishment() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [menu, setMenu] = useState<IMenuDay[]>([]);
-  const [selectedDay, setSelectedDay] = useState<string>(getNextDayString());
+  const [selectedDay, setSelectedDay] = useState<string>(getDayString());
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [operatingHours, setOperatingHours] = useState<IOperatingHour[]>([]);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [currentProduct, setCurrentProduct] = useState<IProduct | null>(null);
   const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
-  const [quantityInBasket, setQuantityInBasket] = useState<number>(0)
+  const [quantityInBasket, setQuantityInBasket] = useState<number>(0);
 
   useEffect(() => {
     if (!id) return;
+
+    const savedDay = localStorage.getItem("selectedDay");
+    if (savedDay) {
+      setSelectedDay(savedDay);
+    }
 
     const fetchData = async () => {
       try {
@@ -98,10 +103,34 @@ export default function Establishment() {
     localStorage.setItem("selectedDay", day);
   };
 
-  const days = weekDays.map((day) => ({
-    label: formatDateWithDay(day),
-    value: day,
-  }));
+  const getOrderedDaysStartingFromToday = (): string[] => {
+    const today = getDayString(); // Obtém o dia atual
+    const todayIndex = weekDays.indexOf(today); // Encontra o índice do dia atual
+    return [
+      ...weekDays.slice(todayIndex), // Dias a partir do dia atual
+      ...weekDays.slice(0, todayIndex), // Dias antes do dia atual
+    ];
+  };
+
+  const orderedDays = getOrderedDaysStartingFromToday();
+
+  const days = orderedDays.map((day) => {
+    const isToday = day === getDayString();
+    const isDisabled = isToday && !isBeforeCutoffTime(); // Desabilita o dia atual se for após 14:00
+
+    return {
+      label: formatDateWithDay(day),
+      value: day,
+      disabled: isDisabled, // Adiciona a propriedade disabled
+    };
+  });
+
+  const isEstablishmentClosed = (day: string): boolean => {
+    const operatingHour = operatingHours.find((oh) => oh.day_of_week === day);
+    return operatingHour ? operatingHour.is_closed : true; // Assume que está fechado se não encontrar o horário
+  };
+
+  const isClosed = isEstablishmentClosed(selectedDay);
 
   const menuForSelectedDay = menu.find((day) => day.day === selectedDay);
 
@@ -157,10 +186,15 @@ export default function Establishment() {
               options={days}
               value={selectedDay}
               onChange={(e) => handleDaySelection(e.target.value)}
-              disabled={true}
             />
           </div>
-          {menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
+          {isClosed ? (
+            <div className="flex flex-col gap-4 items-center justify-center h-full">
+              <p className="text-center text-red-500 font-bold">
+                O estabelecimento está fechado neste dia.
+              </p>
+            </div>
+          ) : menuForSelectedDay && menuForSelectedDay.menuItems.length > 0 ? (
             <div className="mt-4">
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {menuForSelectedDay.menuItems.map((item) => (
@@ -203,7 +237,8 @@ export default function Establishment() {
               setIsModalVisible(false);
             }}
             quantityInBasket={quantityInBasket}
-            onAddToBasket={(addedQuantity) => setQuantityInBasket(prev => prev + addedQuantity)}
+            onAddToBasket={(addedQuantity) => setQuantityInBasket((prev) => prev + addedQuantity)}
+            selectedDay={selectedDay}
           />
         )}
 
