@@ -55,7 +55,7 @@ export default function EstablishmentHeader({ establishment, showEditButton = fa
         <div className="text-center md:text-left">
           <h2 className="text-xl font-semibold text-gray-800">Descrição</h2>
           <p className="text-gray-600 text-justify">
-            Brownies artesanais feitos por Francisco Henrique, estudante de ADS do IFPI. Venda direta no campus do IFPI.
+            {establishment.description}
           </p>
         </div>
       </div>
