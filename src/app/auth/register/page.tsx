@@ -16,7 +16,6 @@ const lobster = Lobster({ subsets: ["latin"], weight: "400" });
 
 interface FormData {
     name: string;
-    cpf: string;
     email: string;
     phone: string;
     password: string;
@@ -57,11 +56,6 @@ const validationSchema = yup.object().shape({
         .string()
         .required("O nome é obrigatório")
         .min(3, "O nome deve ter pelo menos 3 caracteres"),
-    cpf: yup
-        .string()
-        .matches(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "O CPF deve estar no formato 000.000.000-00")
-        .test("is-valid-cpf", "CPF inválido", (value) => isValidCPF(value || "")) // Validação personalizada do CPF
-        .required("O CPF é obrigatório"),
     email: yup.string().email("E-mail inválido").required("O e-mail é obrigatório"),
     phone: yup
         .string()
@@ -100,18 +94,12 @@ export default function Login() {
             .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     };
 
-    const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const formattedValue = formatCPF(e.target.value);
-        setValue("cpf", formattedValue, { shouldValidate: true });
-    };
-
     const onSubmit = (data: FormData) => {
         setLoading(true);
 
         axios
             .post(`${apiUrl}/register`, {
                 name: data.name,
-                cpf: data.cpf,
                 email: data.email,
                 phone: data.phone,
                 password: data.password,
@@ -160,6 +148,7 @@ export default function Login() {
                 />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <Input
+                    className="col-span-1 sm:col-span-2"
                         label="Nome"
                         placeholder="Digite seu nome"
                         type="text"
@@ -172,15 +161,6 @@ export default function Login() {
                         type="email"
                         {...register("email")}
                         error={errors.email?.message}
-                    />
-                    <Input
-                        label="CPF"
-                        placeholder="Digite seu CPF"
-                        type="text"
-                        {...register("cpf", {
-                            onChange: (e) => handleCPFChange(e),
-                        })}
-                        error={errors.cpf?.message}
                     />
                     <Input
                         label="Telefone"
