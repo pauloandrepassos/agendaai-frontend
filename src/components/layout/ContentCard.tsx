@@ -10,7 +10,7 @@ interface ContentCardProps {
 export default function ContentCard({ className, children }: ContentCardProps) {
     return (
         <div
-            className={`bg-elementbg shadow-secondary rounded-2xl ${className || ""}`}
+            className={`bg-elementbg shadow-secondary rounded-2xl overflow-hidden ${className || ""}`}
         >
             {children}
         </div>
