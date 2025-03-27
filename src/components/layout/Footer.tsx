@@ -22,11 +22,11 @@ export default function Footer({ isInitialPage = false }: { isInitialPage?: bool
                     <ul className="space-y-2">
                         <li className="flex items-center gap-2">
                             <FaPhone />
-                            <span>(89) 99999-9999</span>
+                            <span>(89) 99992-1812</span>
                         </li>
                         <li className="flex items-center gap-2">
                             <FaEnvelope />
-                            <span>contato@agendaai.com</span>
+                            <span>atendimento.agendaai@gmail.com</span>
                         </li>
                         <li className="flex items-center gap-2">
                             <FaMapMarkerAlt />
@@ -40,23 +40,23 @@ export default function Footer({ isInitialPage = false }: { isInitialPage?: bool
                     <h3 className="text-lg font-bold mb-4">Redes Sociais</h3>
                     <div className="flex gap-4">
                         <a
-                            href="https://instagram.com"
+                            href="https://instagram.com/agendeaii"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-[#ffc107]"
                         >
                             <FaInstagram size={24} />
                         </a>
-                        <a
+                        {/*<a
                             href="https://linkedin.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-[#ffc107]"
                         >
                             <FaLinkedin size={24} />
-                        </a>
+                        </a>*/}
                         <a
-                            href="https://github.com"
+                            href="https://github.com/agendeaii"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-[#ffc107]"
