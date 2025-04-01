@@ -47,19 +47,19 @@ export default function ControlPanel() {
 
     // Dados fictícios para exemplo
     const stats = [
-        { title: "Usuários", value: userCount, link: "/users" },
+        { title: "Usuários", value: userCount, link: "/manage-users" },
         { title: "Estabelecimentos", value: establishmentCount, link: "/establishments" },
         { title: "Pedidos", value: orderCount, link: "/orders" },
     ];
 
     const activities = [
-        { description: "Novo usuário cadastrado: João", link: "/users" },
+        { description: "Novo usuário cadastrado: João", link: "/manage-users" },
         { description: "Pedido realizado: #1234", link: "/orders/1234" },
         { description: "Estabelecimento aprovado: Padaria", link: "/establishments/1" },
     ];
 
     const quickLinks = [
-        { title: "Gerenciar Usuários", link: "/users" },
+        { title: "Gerenciar Usuários", link: "/manage-users" },
         { title: "Gerenciar Estabelecimentos", link: "/establishments" },
         { title: "Relatórios", link: "/reports" },
     ];
