@@ -31,6 +31,7 @@ export default function Navbar() {
   const [totalPrice, setTotalPrice] = useState("0.00");
   const [basketItems, setBasketItems] = useState<ShoppingBasketResponse["shoppingBasketItems"]>([]);
   const [user, setUser] = useState<IUser | null>(null);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
   const router = useRouter();
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
@@ -75,14 +76,31 @@ export default function Navbar() {
     }
   };
 
+  const fetchUnreadNotifications = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/notifications/unread-count`, {
+        headers: { token: `${localStorage.getItem("token")}` },
+      });
+
+      if (!response.ok) throw new Error("Erro ao obter notificações não lidas.");
+
+      const data = await response.json();
+      setUnreadNotifications(data.unreadCount);
+    } catch (error) {
+      console.error("Erro ao carregar notificações não lidas:", error);
+    }
+  };
+
   // Monitora mudanças no token para atualizar o estado do usuário
   useEffect(() => {
     const handleTokenUpdated = () => {
       const token = localStorage.getItem("token");
       if (token) {
         fetchUser(); // Busca o usuário autenticado
+        fetchUnreadNotifications(); // Busca notificações não lidas
       } else {
         setUser(null); // Limpa o estado do usuário se não houver token
+        setUnreadNotifications(0); // Reseta as notificações
       }
     };
 
@@ -97,6 +115,13 @@ export default function Navbar() {
       window.removeEventListener("tokenUpdated", handleTokenUpdated);
     };
   }, []);
+
+  {/*useEffect(() => {
+    if (user) {
+      const interval = setInterval(fetchUnreadNotifications, 30000); // Atualiza a cada 30 segundos
+      return () => clearInterval(interval);
+    }
+  }, [user]);*/}
 
   // Atualiza o carrinho de compras se o usuário for do tipo "client"
   useEffect(() => {
@@ -146,7 +171,7 @@ export default function Navbar() {
                 <FontAwesomeIcon icon={faShoppingBasket} className="text-2xl" />
                 <span className="hidden md:block">Cesto</span>
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-semibold px-1 rounded-full">
+                  <span className="absolute -top-2 -right-2 bg-primary border-[3px] border-white text-white text-xs font-semibold px-1 rounded-full">
                     {totalItems}
                   </span>
                 )}
@@ -182,6 +207,18 @@ export default function Navbar() {
             <Link href="/auth/login" className="hover:text-hovertext h-10 text-center flex items-center justify-center gap-1">
               <FontAwesomeIcon className="text-2xl" icon={faSignInAlt} />
               <span className="hidden md:block">Entrar</span>
+            </Link>
+          )}
+
+          {user && (
+            <Link href="/notifications" className="hover:text-hovertext h-10 text-center flex items-center justify-center gap-1 relative">
+              <FontAwesomeIcon className="text-2xl" icon={faBell} />
+              <span className="hidden md:block">Notificações</span>
+              {unreadNotifications > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary border-[3px] border-white text-white text-xs font-semibold px-1 rounded-full">
+                  {unreadNotifications}
+                </span>
+              )}
             </Link>
           )}
 
