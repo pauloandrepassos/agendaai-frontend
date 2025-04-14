@@ -26,7 +26,7 @@ export default function ManageUsers() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
-    const [sortField, setSortField] = useState<SortField>('id');
+    const [sortField, setSortField] = useState<SortField>('name');
     const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
     const searchParams = useSearchParams();
 
