@@ -116,6 +116,18 @@ export default function Navbar() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleNotificationRead = () => {
+      fetchUnreadNotifications();
+    };
+
+    window.addEventListener("notificationRead", handleNotificationRead);
+
+    return () => {
+      window.removeEventListener("notificationRead", handleNotificationRead);
+    };
+  }, []);
+
   {/*useEffect(() => {
     if (user) {
       const interval = setInterval(fetchUnreadNotifications, 30000); // Atualiza a cada 30 segundos
@@ -222,7 +234,6 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Ícone de perfil e dropdown para usuários logados */}
           {user && (
             <button
               onClick={() => toggleDropdown("user")}

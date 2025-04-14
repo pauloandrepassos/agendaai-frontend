@@ -1,5 +1,6 @@
 "use client";
 
+import PrimaryTitle from "@/components/form/title/PrimaryTitle";
 import ContentCard from "@/components/layout/ContentCard";
 import { apiUrl } from "@/config/api";
 import { faBell, faCheck, faCircle, faEnvelope, faEnvelopeOpen } from "@fortawesome/free-solid-svg-icons";
@@ -65,8 +66,9 @@ export default function Notifications() {
                 )
             )
             
-            // Atualiza a contagem
             setUnreadCount(prev => prev - 1)
+
+            window.dispatchEvent(new CustomEvent("notificationRead"));
         } catch (error) {
             console.error("Erro ao marcar notificação como lida:", error)
         }
@@ -107,12 +109,12 @@ export default function Notifications() {
     }
 
     return (
-        <div className="container mx-auto p-4 max-w-4xl">
+        <div className="container mx-auto p-4 max-w-7xl">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-bold flex items-center gap-2">
-                    <FontAwesomeIcon icon={faBell} />
+                <PrimaryTitle>
+                    <FontAwesomeIcon icon={faBell} className="mr-3"/>
                     Notificações
-                </h1>
+                </PrimaryTitle>
                 {unreadCount > 0 && (
                     <button
                         onClick={markAllAsRead}
@@ -123,6 +125,11 @@ export default function Notifications() {
                     </button>
                 )}
             </div>
+            {unreadCount > 0 && (
+                <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-400 text-red-700">
+                    Você tem {unreadCount} notificação{unreadCount > 1 ? "s" : ""} não lida{unreadCount > 1 ? "s" : ""}.
+                </div>
+            )}
 
             <div className="space-y-4">
                 {notifications.length === 0 ? (
